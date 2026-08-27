@@ -241,13 +241,16 @@ import { SITE } from '../site.config.js';
 
   .topo__titulo {
     font-family: var(--font-impacto);
-    font-size: clamp(2.5rem, 6vw, 4.5rem);
-    line-height: 1;
+    font-size: clamp(2rem, 6vw, 4.5rem);
+    line-height: 1.05;
     text-transform: uppercase;
     letter-spacing: var(--tracking-pancada);
     color: var(--carvao);
     margin: 0 0 var(--space-5);
-    max-width: 22ch;
+    max-width: 18ch;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    hyphens: none;
   }
 
   .topo__intro {
@@ -268,11 +271,12 @@ import { SITE } from '../site.config.js';
     border-bottom: var(--border-fina) solid var(--carvao-medio);
   }
 
+  /* Fundos alternados por posição (só se NÃO for a versão escura) */
   .apoio:nth-of-type(1) { background: var(--papel); }
-  .apoio:nth-of-type(2) { background: var(--papel-velho); }
   .apoio:nth-of-type(3) { background: var(--papel); }
 
-  .apoio--escuro {
+  /* Versão escura SEMPRE ganha (vem depois e tem 2 classes) */
+  .apoio.apoio--escuro {
     background: var(--preto);
     color: var(--papel);
     border-bottom: var(--border-grossa) solid var(--carvao);
@@ -312,7 +316,7 @@ import { SITE } from '../site.config.js';
     margin: 0;
   }
 
-  .apoio--escuro .apoio__cabecalho p { color: var(--papel-saco); }
+  .apoio--escuro .apoio__cabecalho p { color: var(--papel); }
 
   .apoio__num {
     font-family: var(--font-impacto);
@@ -470,7 +474,7 @@ import { SITE } from '../site.config.js';
     margin: 0;
   }
 
-  .apoio--escuro .apoio__corpo p { color: var(--papel-saco); }
+  .apoio--escuro .apoio__corpo p { color: var(--papel); }
   .apoio__corpo strong { color: var(--carvao); font-weight: var(--weight-bold); }
   .apoio--escuro .apoio__corpo strong { color: var(--papel); }
 

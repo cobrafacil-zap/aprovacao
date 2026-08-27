@@ -124,7 +124,7 @@ import { PROPOSALS } from '../site.config.js';
   .topo__title {
     font-family: var(--font-impacto);
     font-size: clamp(2.75rem, 9vw, 6rem);
-    line-height: 0.9;
+    line-height: 1.15;
     text-transform: uppercase;
     letter-spacing: var(--tracking-pancada);
     color: var(--carvao);
@@ -135,7 +135,9 @@ import { PROPOSALS } from '../site.config.js';
   .topo__mark {
     background: var(--carmin);
     color: var(--papel);
-    padding-inline: 6px;
+    padding: 0.08em 0.12em;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
   }
 
   .topo__intro {

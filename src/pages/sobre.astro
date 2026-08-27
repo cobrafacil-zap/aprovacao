@@ -238,8 +238,8 @@ import { SITE, TIMELINE } from '../site.config.js';
 
   .hero__titulo {
     font-family: var(--font-impacto);
-    font-size: clamp(2.5rem, 5vw, 4rem);
-    line-height: 0.95;
+    font-size: clamp(2.25rem, 5vw, 3.75rem);
+    line-height: 1.15;
     text-transform: uppercase;
     letter-spacing: var(--tracking-pancada);
     color: var(--carvao);
@@ -249,7 +249,9 @@ import { SITE, TIMELINE } from '../site.config.js';
   .hero__strike {
     color: var(--papel);
     background: var(--carmin);
-    padding-inline: 6px;
+    padding: 0.06em 0.1em;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
   }
 
   .hero__citacao {

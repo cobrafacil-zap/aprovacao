@@ -44,6 +44,10 @@
   --alerta:        #B5651D;
   --erro:          #8B0A1E;
 
+  /* WhatsApp — verde oficial */
+  --verde-whatsapp:      #25D366;   /* verde WhatsApp — texto escuro sempre */
+  --verde-whatsapp-hover:#1DA851;   /* hover (mais escuro) */
+
   /* ====== TIPOGRAFIA ====== */
 
   /* Anton — display condensada, caixa-alta, impacto de faixa de rua */
