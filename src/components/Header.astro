@@ -27,6 +27,13 @@ import { NAV, SITE } from '../site.config.js';
       </span>
     </a>
 
+    {SITE.number && (
+      <a href="#vote" class="header__number" aria-label="Vote 13579 — Deputada Estadual">
+        <span class="header__number-label">Vote</span>
+        <span class="header__number-digits">{SITE.number}</span>
+      </a>
+    )}
+
     <button
       class="header__toggle"
       aria-label="Abrir menu de navegação"
@@ -113,6 +120,46 @@ import { NAV, SITE } from '../site.config.js';
     font-size: var(--text-xs);
     color: var(--carvao-claro);
     font-weight: var(--weight-bold);
+  }
+
+  /* Badge do número — âncora visual no header pra "Vote 13579" */
+  .header__number {
+    display: none;
+    align-items: baseline;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-4);
+    background: var(--carmin);
+    color: var(--papel);
+    text-decoration: none;
+    border: var(--border-grossa) solid var(--carvao);
+    line-height: 1;
+    transition: background-color var(--transition-rapida);
+  }
+
+  .header__number:hover { background: var(--carmin-escuro); }
+
+  .header__number-label {
+    font-family: var(--font-impacto);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-pancada);
+    color: var(--estrela);
+  }
+
+  .header__number-digits {
+    font-family: var(--font-impacto);
+    font-size: var(--text-lg);
+    font-weight: var(--weight-regular);
+    color: var(--papel);
+    letter-spacing: 0.05em;
+  }
+
+  @media (min-width: 540px) { .header__number { display: inline-flex; } }
+  @media (max-width: 880px) {
+    .header__number { display: none; }
+  }
+  @media (min-width: 881px) {
+    .header__number { display: inline-flex; }
   }
 
   .header__nav {

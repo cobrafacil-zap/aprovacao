@@ -1,7 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Button from '../components/Button.astro';
-import { SITE, PILLARS, TIMELINE } from '../site.config.js';
+import { SITE, PILLARS, TIMELINE, GALLERY } from '../site.config.js';
 ---
 
 <Layout
@@ -17,12 +17,16 @@ import { SITE, PILLARS, TIMELINE } from '../site.config.js';
           Eleições 2026 · {SITE.party} · {SITE.state} · Deputada Estadual
         </p>
         <h1 id="hero-title" class="hero__title">
-          Eu sou a neta da Francisca. <span class="hero__title-strike">Agora é a vez</span> das <span class="hero__title-mark">nossas comunidades</span> na Assembleia.
+          Quem cuida de gente tem que estar <span class="hero__title-mark">lá dentro.</span>
         </h1>
+        <p class="hero__title-sub">
+          Elisângela Tomba · Neta da vó Francisca · Candidata a Deputada Estadual
+        </p>
         <p class="hero__tagline">
-          Assistente social. Norte pioneiro do Paraná. Mãe da APAE de Jundiaí do Sul.
-          Tô na campanha pra levar a força de quem cuida, de quem produz, de quem
-          ainda não foi ouvida pra <strong>onde se escreve lei.</strong>
+          Assistente social. Fundadora da APAE de Jundiaí do Sul.
+          Cresci colhendo café e algodão do lado da vó Francisca,
+          que criou 8 filhos sozinha na roça.
+          <strong>Eu tô pronta pra cuidar da próxima lei.</strong>
         </p>
 
         <div class="hero__actions">
@@ -50,14 +54,14 @@ import { SITE, PILLARS, TIMELINE } from '../site.config.js';
       <div class="hero__visual">
         <figure class="hero__portrait">
           <img
-            src="/images/hero-chamado-original.jpg"
-            alt="Elisângela Tomba, de blazer vermelho, com a mão estendida em direção ao espectador, sorrindo — chamando a pessoa à frente dela pra essa campanha."
-            width="1200"
-            height="1800"
+            src="/images/elisangela-apontando.jpg"
+            alt="Elisângela Tomba, de blazer vermelho, apontando em direção ao espectador, sorrindo — chamando a pessoa pra dentro dessa campanha."
+            width="1600"
+            height="1067"
             fetchpriority="high"
           />
           <figcaption class="hero__caption">
-            <span>Jundiaí do Sul · 2024</span>
+            <span>Vote 13579 · Deputada Estadual</span>
           </figcaption>
         </figure>
       </div>
@@ -77,6 +81,32 @@ import { SITE, PILLARS, TIMELINE } from '../site.config.js';
       <span>★</span>
     </div>
   </aside>
+
+  <!-- ====== VOTE 13579 — bloco de destaque do número (alto impacto) ====== -->
+  {SITE.number && (
+    <section class="numero" id="vote" aria-labelledby="numero-title">
+      <div class="container numero__inner">
+        <div class="numero__label">
+          <span class="numero__line numero__line--top">★ ★ ★</span>
+          <p class="numero__eyebrow">Vote pra Deputada Estadual</p>
+          <h2 id="numero-title" class="numero__title">
+            <span class="numero__pre">Anota o número e leva pra urna:</span>
+            <span class="numero__digits" aria-label={`Número ${SITE.number}, Deputada Estadual`}>
+              <span>{SITE.number.slice(0, 2)}</span><span class="numero__sep">·</span><span>{SITE.number.slice(2, 5)}</span>
+            </span>
+          </h2>
+          <p class="numero__sub">
+            <strong>Elisangela Aparecida Tomba</strong> · {SITE.coalition} (PT · PV · PC do B) · Paraná
+          </p>
+          <p class="numero__instrucao">
+            Vote <strong>{SITE.number}</strong> pra Deputada Estadual.<br />
+            Vote <strong>13</strong> pro Senado. Vote <strong>13</strong> pra Governador. Vote <strong>13</strong> pra Presidente.<br />
+            <strong>PT de cabo a rabo, do Paraná pra Brasília.</strong>
+          </p>
+        </div>
+      </div>
+    </section>
+  )}
 
   <!-- ====== QUEM É A ELISÂNGELA (bio em primeira pessoa, assimétrico) ====== -->
   <section class="bio" aria-labelledby="bio-title">
@@ -161,6 +191,64 @@ import { SITE, PILLARS, TIMELINE } from '../site.config.js';
     </div>
   </section>
 
+  <!-- ====== GALERIA — 6 retratos da campanha ====== -->
+  <section class="galeria" aria-labelledby="galeria-title">
+    <div class="container">
+      <header class="galeria__header">
+        <p class="bio__eyebrow">Da campanha</p>
+        <h2 id="galeria-title" class="galeria__title">Eu sou essa. Em todos os ângulos.</h2>
+      </header>
+
+      <div class="galeria__grid">
+        {GALLERY.map((photo) => (
+          <figure class="galeria__item">
+            <img
+              src={photo.thumb}
+              data-src={photo.src}
+              alt={photo.alt}
+              loading="lazy"
+              decoding="async"
+              width="800"
+              height="533"
+            />
+            <figcaption class="galeria__caption">{photo.caption}</figcaption>
+          </figure>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== APOIADOR — quem caminha com a Elisângela ====== -->
+  {SITE.supporter?.name && (
+    <section class="supporter" aria-labelledby="supporter-title">
+      <div class="container supporter__inner">
+        <div class="supporter__portrait">
+          {SITE.supporter.photo ? (
+            <img src={SITE.supporter.photo} alt={`Foto do deputado ${SITE.supporter.name}`} loading="lazy" />
+          ) : (
+            <div class="supporter__placeholder" aria-hidden="true">
+              <svg viewBox="0 0 100 100" width="100%" height="100%">
+                <rect width="100" height="100" fill="#FFCD00"/>
+                <polygon points="50,18 57,40 80,40 61,52 68,74 50,62 32,74 39,52 20,40 43,40" fill="#C8102E"/>
+              </svg>
+            </div>
+          )}
+        </div>
+        <div class="supporter__text">
+          <p class="bio__eyebrow">Caminha com a Elisângela</p>
+          <h2 id="supporter-title" class="supporter__title">{SITE.supporter.name}</h2>
+          <p class="supporter__role">{SITE.supporter.role}</p>
+          <p class="supporter__number">
+            Vote <strong>{SITE.supporter.number}</strong> pra Deputado Federal
+          </p>
+          <p class="supporter__msg">
+            Dois parlamentares do PT, do mesmo campo, defendendo as mulheres, o interior e o povo que trabalha.
+          </p>
+        </div>
+      </div>
+    </section>
+  )}
+
   <!-- ====== CTA FINAL: tarja vermelha — whatsapp + slogan ====== -->
   <section class="cta-final" aria-labelledby="cta-title">
     <div class="container">
@@ -223,28 +311,36 @@ import { SITE, PILLARS, TIMELINE } from '../site.config.js';
 
   .hero__title {
     font-family: var(--font-impacto);
-    font-size: clamp(2.5rem, 6vw, 4.5rem);
-    line-height: 0.95;
+    font-size: clamp(2.75rem, 5.5vw, 4.5rem);
+    line-height: 1;
     letter-spacing: var(--tracking-pancada);
     text-transform: uppercase;
     color: var(--carvao);
-    margin: 0 0 var(--space-5);
-  }
-
-  .hero__title-strike {
-    color: var(--papel);
-    background: var(--carmin);
-    padding-inline: var(--space-1);
+    margin: 0 0 var(--space-3);
+    max-width: 22ch;
   }
 
   .hero__title-mark {
     color: var(--carmin);
   }
 
+  .hero__title-sub {
+    font-family: var(--font-impacto);
+    font-size: clamp(1.25rem, 2.4vw, 1.75rem);
+    line-height: 1.05;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-pancada);
+    color: var(--carvao-claro);
+    border-left: var(--border-grossa) solid var(--carmin);
+    padding-left: var(--space-4);
+    margin: 0 0 var(--space-6);
+    max-width: 30ch;
+  }
+
   .hero__tagline {
     font-family: var(--font-manuscrita);
     font-style: italic;
-    font-size: clamp(1.0625rem, 2vw, 1.25rem);
+    font-size: clamp(1.0625rem, 1.8vw, 1.1875rem);
     line-height: var(--leading-relaxed);
     color: var(--carvao-claro);
     margin: 0 0 var(--space-7);
@@ -255,7 +351,9 @@ import { SITE, PILLARS, TIMELINE } from '../site.config.js';
     color: var(--carvao);
     font-weight: var(--weight-bold);
     background: var(--estrela);
-    padding-inline: 4px;
+    padding: 2px 6px;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
   }
 
   .hero__actions {
@@ -549,6 +647,282 @@ import { SITE, PILLARS, TIMELINE } from '../site.config.js';
 
   .historia__cta {
     margin-top: var(--space-8);
+  }
+
+  /* ============ NÚMERO 13579 — destaque do número ============ */
+  .numero {
+    background: var(--carmin);
+    color: var(--papel);
+    padding-block: var(--space-14);
+    border-block: var(--border-grossa) solid var(--carvao);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .numero::before {
+    content: "★";
+    position: absolute;
+    top: 12%;
+    right: 4%;
+    font-size: clamp(8rem, 18vw, 18rem);
+    color: var(--carmin-escuro);
+    line-height: 1;
+    pointer-events: none;
+    opacity: 0.5;
+  }
+
+  .numero::after {
+    content: "★";
+    position: absolute;
+    bottom: 8%;
+    left: 3%;
+    font-size: clamp(6rem, 14vw, 14rem);
+    color: var(--carmin-escuro);
+    line-height: 1;
+    pointer-events: none;
+    opacity: 0.4;
+  }
+
+  .numero__inner {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+  }
+
+  .numero__line {
+    font-family: var(--font-impacto);
+    color: var(--estrela);
+    letter-spacing: 0.5em;
+    font-size: var(--text-md);
+    display: block;
+    margin-block: var(--space-3);
+  }
+
+  .numero__eyebrow {
+    font-family: var(--font-impacto);
+    font-size: var(--text-sm);
+    color: var(--estrela);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-pancada);
+    margin: 0 0 var(--space-4);
+  }
+
+  .numero__title {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-3);
+  }
+
+  .numero__pre {
+    font-family: var(--font-manuscrita);
+    font-style: italic;
+    font-weight: var(--weight-regular);
+    font-size: clamp(1.125rem, 2.4vw, 1.5rem);
+    color: var(--papel);
+    text-transform: none;
+    letter-spacing: var(--tracking-normal);
+  }
+
+  .numero__digits {
+    font-family: var(--font-impacto);
+    font-size: clamp(4rem, 14vw, 10rem);
+    font-weight: var(--weight-regular);
+    line-height: 0.9;
+    color: var(--papel);
+    letter-spacing: 0.02em;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.05em;
+  }
+
+  .numero__sep {
+    color: var(--estrela);
+    font-size: 0.7em;
+    margin-inline: 0.05em;
+  }
+
+  .numero__sub {
+    font-family: var(--font-impacto);
+    font-size: var(--text-md);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-pancada);
+    color: var(--papel);
+    margin: var(--space-5) 0 var(--space-3);
+  }
+
+  .numero__sub strong {
+    color: var(--estrela);
+    font-weight: var(--weight-regular);
+  }
+
+  .numero__instrucao {
+    font-family: var(--font-corpo);
+    font-size: var(--text-base);
+    color: var(--papel);
+    max-width: 36rem;
+    margin-inline: auto;
+    line-height: var(--leading-relaxed);
+  }
+
+  .numero__instrucao strong {
+    color: var(--estrela);
+    font-weight: var(--weight-bold);
+  }
+
+  /* ============ GALERIA ============ */
+  .galeria {
+    padding-block: var(--space-16);
+    background: var(--papel);
+    border-bottom: var(--border-grossa) solid var(--carvao);
+  }
+
+  .galeria__header {
+    margin-bottom: var(--space-10);
+    border-bottom: var(--border-grossa) solid var(--carvao);
+    padding-bottom: var(--space-5);
+  }
+
+  .galeria__title {
+    font-family: var(--font-impacto);
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-pancada);
+    color: var(--carvao);
+    margin: 0;
+  }
+
+  .galeria__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: var(--space-3);
+  }
+
+  .galeria__item {
+    position: relative;
+    margin: 0;
+    aspect-ratio: 3/2;
+    overflow: hidden;
+    border: var(--border-grossa) solid var(--carvao);
+    background: var(--carvao-medio);
+  }
+
+  .galeria__item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    filter: contrast(1.05) saturate(1.05);
+    transition: transform 250ms ease-out;
+  }
+
+  .galeria__item:hover img {
+    transform: scale(1.04);
+  }
+
+  .galeria__caption {
+    position: absolute;
+    left: var(--space-3);
+    bottom: var(--space-3);
+    padding: var(--space-1) var(--space-3);
+    background: var(--preto);
+    color: var(--estrela);
+    font-family: var(--font-impacto);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-pancada);
+    border: var(--border-fina) solid var(--papel);
+  }
+
+  /* ============ SUPPORTER (Zeca Dirceu) ============ */
+  .supporter {
+    padding-block: var(--space-14);
+    background: var(--papel-velho);
+    border-bottom: var(--border-grossa) solid var(--carvao);
+  }
+
+  .supporter__inner {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-7);
+    align-items: center;
+  }
+
+  @media (min-width: 720px) {
+    .supporter__inner {
+      grid-template-columns: 280px 1fr;
+      gap: var(--space-10);
+    }
+  }
+
+  .supporter__portrait {
+    aspect-ratio: 1/1;
+    border: var(--border-grossa) solid var(--carvao);
+    overflow: hidden;
+    background: var(--carvao-medio);
+    max-width: 320px;
+    margin-inline: auto;
+  }
+
+  .supporter__portrait img,
+  .supporter__placeholder {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .supporter__placeholder {
+    display: block;
+    padding: var(--space-7);
+  }
+
+  .supporter__title {
+    font-family: var(--font-impacto);
+    font-size: clamp(2rem, 5vw, 3.25rem);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-pancada);
+    color: var(--carvao);
+    margin: 0 0 var(--space-2);
+  }
+
+  .supporter__role {
+    font-family: var(--font-impacto);
+    font-size: var(--text-sm);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-pancada);
+    color: var(--carmin);
+    margin: 0 0 var(--space-4);
+  }
+
+  .supporter__number {
+    font-family: var(--font-impacto);
+    font-size: var(--text-lg);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-pancada);
+    color: var(--carvao);
+    margin: 0 0 var(--space-4);
+    padding: var(--space-3) var(--space-4);
+    background: var(--papel);
+    border: var(--border-grossa) solid var(--carvao);
+    display: inline-block;
+  }
+
+  .supporter__number strong {
+    color: var(--carmin);
+    font-weight: var(--weight-regular);
+    font-size: var(--text-xl);
+    letter-spacing: 0.05em;
+  }
+
+  .supporter__msg {
+    font-family: var(--font-manuscrita);
+    font-style: italic;
+    font-size: var(--text-md);
+    line-height: var(--leading-relaxed);
+    color: var(--carvao-claro);
+    margin: 0;
+    max-width: 36rem;
   }
 
   /* ============ CTA FINAL ============ */

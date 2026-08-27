@@ -32,24 +32,32 @@ const {
   class: className = '',
 } = Astro.props;
 
-const tag = href ? 'a' : 'button';
 const target = external ? '_blank' : undefined;
 const rel = external ? 'noopener noreferrer' : undefined;
 
 const classes = ['btn', `btn--${variant}`, `btn--${size}`, className].filter(Boolean).join(' ');
 ---
 
-<tag
-  class={classes}
-  href={href}
-  type={!href ? type : undefined}
-  target={target}
-  rel={rel}
-  aria-label={ariaLabel}
-  disabled={disabled}
->
-  <slot />
-</tag>
+{href ? (
+  <a
+    class={classes}
+    href={href}
+    target={target}
+    rel={rel}
+    aria-label={ariaLabel}
+  >
+    <slot />
+  </a>
+) : (
+  <button
+    class={classes}
+    type={type}
+    aria-label={ariaLabel}
+    disabled={disabled}
+  >
+    <slot />
+  </button>
+)}
 
 <style>
   .btn {

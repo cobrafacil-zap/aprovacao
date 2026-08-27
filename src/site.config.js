@@ -11,24 +11,34 @@
 
 export const SITE = {
   // Identificação
-  name: 'Elisângela Tomba',
+  name: 'Elisangela Aparecida Tomba',
   shortName: 'Elisângela',
   role: 'Candidata a Deputada Estadual',
   state: 'Paraná',
   party: 'PT',
   partyFull: 'Partido dos Trabalhadores',
-  number: null, // ⚠️ Preencher com número de urna quando tiver
-  coalition: null,
+  number: '13579',
+  numberDisplay: '13.579',
+  coalition: 'Federação Brasil da Esperança',
+  coalitionParties: ['PT', 'PV', 'PC do B'],
+
+  // Apoiador destaque — deputado federal que caminha junto
+  supporter: {
+    name: 'Zeca Dirceu',
+    number: '1310',
+    role: 'Deputado Federal',
+    photo: null, // foto do Zeca a ser adicionada quando o usuário fornecer
+  },
 
   // Slogan — frase de campanha, primeira pessoa
-  slogan: 'Eu sou a neta da Francisca. Agora é a vez das nossas comunidades na Assembleia.',
+  slogan: 'Quem cuida de gente tem que estar lá dentro.',
   subtitle: 'Assistente social. Neta da vó Francisca. Fundadora da APAE de Jundiaí do Sul.',
 
   // Biografia curta — primeira pessoa, sem repetição "neta da"
   shortBio:
-    'Nasci na roça colhendo café e algodão com a vó Francisca. ' +
-    'Virei assistente social e fundei a APAE de Jundiaí do Sul. ' +
-    'Vou levar a força das mulheres do Paraná pra Assembleia Legislativa.',
+    'Cresci colhendo café e algodão com a vó Francisca, que criou 8 filhos ' +
+    'sozinha na roça. Virei assistente social, fundei a APAE de Jundiaí do Sul ' +
+    'e hoje quero escrever a lei com quem viveu o problema.',
 
   // Contatos
   contacts: {
@@ -52,10 +62,10 @@ export const SITE = {
 
   // Identificação legal obrigatória (Res. TSE 23.732/2024)
   legal: {
-    cnpjCampanha: '00.000.000/0001-00',
+    cnpjCampanha: '68.464.614/0001-68',
     cnpjPartido: '00.000.000/0001-00',
     partidoUf: 'PT - Paraná',
-    autorizadoPor: 'PT - Diretório Estadual do Paraná',
+    autorizadoPor: 'Federação Brasil da Esperança (PT, PV e PC do B)',
     enderecoSiteComunicado: true,
   },
 
@@ -74,10 +84,10 @@ export const SITE = {
 
   // Meta/SEO
   seo: {
-    title: 'Elisângela Tomba — Candidata a Deputada Estadual pelo Paraná',
+    title: 'Elisangela Aparecida Tomba · 13579 · Candidata a Deputada Estadual',
     description:
-      'Assistente social, neta da vó Francisca e fundadora da APAE de Jundiaí do Sul. ' +
-      'Elisângela Tomba (PT) quer levar a força das mulheres do Paraná pra Assembleia Legislativa.',
+      'Assistente social, neta da vó Francisca, fundadora da APAE de Jundiaí do Sul. ' +
+      'Candidata a Deputada Estadual pelo Paraná em 2026 pelo PT 13579.',
     ogImage: '/og-image.jpg',
     twitterCard: 'summary_large_image',
   },
@@ -245,6 +255,46 @@ export const PROPOSALS = [
       'Equipamentos culturais e esportivos nos municípios menores — com manutenção',
       'Apoio a pontos de cultura, coletivos e festas regionais',
     ],
+  },
+];
+
+// Galeria — fotos profissionais da campanha. Ordem = destaque na home.
+export const GALLERY = [
+  {
+    src: '/images/elisangela-apontando.jpg',
+    alt: 'Elisângela Tomba de blazer vermelho, apontando para o espectador — chamando pra dentro.',
+    caption: 'Pra dentro.',
+    thumb: '/images/elisangela-apontando-thumb.jpg',
+  },
+  {
+    src: '/images/elisangela-punho.jpg',
+    alt: 'Elisângela Tomba de blazer vermelho com punho erguido, em pé de luta.',
+    caption: 'Levanta.',
+    thumb: '/images/elisangela-punho-thumb.jpg',
+  },
+  {
+    src: '/images/elisangela-chamando.jpg',
+    alt: 'Elisângela Tomba de blazer vermelho aberto, mão estendida chamando o espectador pra perto.',
+    caption: 'Vem.',
+    thumb: '/images/elisangela-chamando-thumb.jpg',
+  },
+  {
+    src: '/images/elisangela-paz.jpg',
+    alt: 'Elisângela Tomba de blazer vermelho, sorrindo, mãos dadas na frente.',
+    caption: 'Sossega.',
+    thumb: '/images/elisangela-paz-thumb.jpg',
+  },
+  {
+    src: '/images/elisangela-riso.jpg',
+    alt: 'Elisângela Tomba de blazer preto, sorrindo com as mãos juntas.',
+    caption: 'Comemoração.',
+    thumb: '/images/elisangela-riso-thumb.jpg',
+  },
+  {
+    src: '/images/elisangela-sentada.jpg',
+    alt: 'Elisângela Tomba sentada numa poltrona de casa, blazer vermelho fechado.',
+    caption: 'Casa.',
+    thumb: '/images/elisangela-sentada-thumb.jpg',
   },
 ];
 

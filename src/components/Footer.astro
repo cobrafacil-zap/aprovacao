@@ -23,9 +23,15 @@ const year = new Date().getFullYear();
         </svg>
       </span>
       <div>
-        <p class="footer__name">Elisângela Tomba</p>
+        <p class="footer__name">{SITE.name}</p>
         <p class="footer__role">Candidata a Deputada Estadual pelo Paraná</p>
-        <p class="footer__party">{SITE.party} — Partido dos Trabalhadores</p>
+        <p class="footer__party">{SITE.coalition} — PT · PV · PC do B</p>
+        {SITE.number && (
+          <p class="footer__number">
+            <span>Vote</span>
+            <strong>{SITE.number}</strong>
+          </p>
+        )}
       </div>
     </div>
 
@@ -135,6 +141,32 @@ const year = new Date().getFullYear();
     font-size: var(--text-sm);
     color: var(--carvao-claro);
     margin: 0;
+  }
+
+  .footer__number {
+    margin-top: var(--space-2);
+    display: inline-flex;
+    align-items: baseline;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-3);
+    background: var(--carmin);
+    color: var(--papel);
+    border: var(--border-media) solid var(--carvao);
+    font-family: var(--font-impacto);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-pancada);
+  }
+
+  .footer__number span {
+    font-size: var(--text-xs);
+    color: var(--estrela);
+  }
+
+  .footer__number strong {
+    font-size: var(--text-lg);
+    font-weight: var(--weight-regular);
+    color: var(--papel);
+    letter-spacing: 0.05em;
   }
 
   .footer__columns {
