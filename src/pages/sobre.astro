@@ -1,0 +1,330 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Button from '../components/Button.astro';
+import { SITE, TIMELINE } from '../site.config.js';
+---
+
+<Layout
+  title={`Sobre ${SITE.name} — História e trajetória`}
+  description={`Conheça a história de ${SITE.name}: assistente social, liderança popular, neta da Francisca, fundadora da APAE de Jundiaí do Sul. Candidata a Deputada Estadual pelo Paraná.`}
+  pageType="profile"
+>
+  <!-- Hero pequeno -->
+  <section class="page-hero" aria-labelledby="page-title">
+    <div class="container">
+      <span class="eyebrow">Quem é</span>
+      <h1 id="page-title" class="page-hero__title">A neta da Francisca<br />que decidiu <em>representar</em></h1>
+      <p class="page-hero__lede">
+        Elisângela Tomba cresceu colhendo café e algodão com a avó no interior do Paraná. Virou assistente social. Fundou a APAE de Jundiaí do Sul. Agora quer levar a força das comunidades para a Assembleia Legislativa.
+      </p>
+    </div>
+  </section>
+
+  <!-- Biografia + foto -->
+  <section class="section bio">
+    <div class="container bio__grid">
+      <div class="bio__portrait">
+        <img
+          src="/images/sobre-original.jpg"
+          alt="Elisângela Tomba sentada em uma poltrona terracota com planta ao fundo, vestindo blazer vermelho, calça branca e tênis — cenário acolhedor"
+          width="800"
+          height="1000"
+          loading="lazy"
+        />
+        <div class="bio__quote">
+          <p>"Política pública só faz sentido quando melhora concretamente a vida das pessoas."</p>
+        </div>
+      </div>
+
+      <div class="bio__text">
+        <h2>De onde ela vem</h2>
+        <p>
+          Neta da avó Francisca, Elisângela cresceu na área rural do Paraná. Trabalhou desde cedo na colheita de café e algodão — uma experiência que moldou sua visão sobre trabalho, dignidade e solidariedade.
+        </p>
+        <p>
+          Ainda muito jovem, compreendeu que <strong>problemas coletivos exigem soluções coletivas</strong> e passou a atuar na organização de comunidades e na defesa de direitos.
+        </p>
+
+        <h2>O que ela faz</h2>
+        <p>
+          Foi protagonista da <strong>fundação da APAE de Jundiaí do Sul</strong>, mobilizando famílias, voluntários e poder público para garantir atendimento às pessoas com deficiência do município.
+        </p>
+        <p>
+          Mais tarde, aprofundou sua atuação por meio do <strong>Serviço Social</strong>, dedicando sua vida à defesa dos direitos da criança e do adolescente, da juventude, das mulheres, das famílias e das pessoas idosas.
+        </p>
+
+        <h2>Como ela se posiciona</h2>
+        <p>
+          Como mãe, mulher trabalhadora e profissional da área social, conhece de perto os desafios enfrentados por quem precisa conciliar trabalho, estudo, cuidado e sobrevivência.
+        </p>
+        <p>
+          Sua história é marcada por uma característica constante: <em>diante de uma necessidade coletiva, ela organiza pessoas, constrói soluções e transforma participação em resultado</em>.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Timeline completa -->
+  <section class="section section--alt" aria-labelledby="timeline-title">
+    <div class="container">
+      <header class="section-header section-header--center">
+        <span class="eyebrow">Linha do tempo</span>
+        <h2 id="timeline-title" class="section-title">
+          Cinco marcos de uma <em>vida dedicada</em> ao coletivo
+        </h2>
+      </header>
+
+      <ol class="timeline timeline--full">
+        {TIMELINE.map((item) => (
+          <li class="timeline__item">
+            <div class="timeline__year">{item.year}</div>
+            <div class="timeline__body">
+              <h3 class="timeline__title">{item.title}</h3>
+              <p class="timeline__text">{item.body}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- O que defende / luta -->
+  <section class="section" aria-labelledby="defend-title">
+    <div class="container">
+      <header class="section-header section-header--center">
+        <span class="eyebrow">O que ela defende</span>
+        <h2 id="defend-title" class="section-title">
+          Política construída a partir da <em>vida real</em>
+        </h2>
+      </header>
+
+      <div class="defends-grid">
+        <article class="defend-card">
+          <h3>Igualdade de oportunidades</h3>
+          <p>
+            Nenhuma criança, jovem, mulher, trabalhador ou pessoa idosa deve ter seus sonhos limitados pela falta de acesso a direitos.
+          </p>
+        </article>
+
+        <article class="defend-card">
+          <h3>Raízes, experiência e futuro</h3>
+          <p>
+            Uma sociedade que honra suas raízes, valoriza a experiência das pessoas idosas e investe nas novas gerações.
+          </p>
+        </article>
+
+        <article class="defend-card">
+          <h3>Políticas públicas eficazes</h3>
+          <p>
+            Educação, esporte, cultura, profissionalização, assistência social e participação cidadã como ferramentas reais de transformação.
+          </p>
+        </article>
+
+        <article class="defend-card">
+          <h3>Mulheres, juventude, idosos e comunidades</h3>
+          <p>
+            Mulheres ocupando espaços de decisão, juventudes com perspectivas, pessoas idosas com autonomia e comunidades protagonistas.
+          </p>
+        </article>
+      </div>
+
+      <div class="defends-cta">
+        <Button href="/propostas/" variant="primary" size="lg">
+          Ver todas as propostas
+        </Button>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA final -->
+  <section class="section section--dark" aria-labelledby="join-title">
+    <div class="container container-text">
+      <h2 id="join-title" class="section-title">
+        <em>Quer somar nessa história?</em>
+      </h2>
+      <p class="section-lede">
+        A campanha é construída com quem acredita. Tem três formas de caminhar junto com a Elisângela.
+      </p>
+      <div class="final-actions">
+        <Button href="/apoie/" variant="primary" size="lg">Quero apoiar</Button>
+        <Button
+          href={`https://wa.me/${SITE.contacts.whatsapp}?text=Ol%C3%A1%20Elis%C3%A2ngela%2C%20quero%20conversar`}
+          variant="secondary"
+          size="lg"
+          external
+        >
+          Falar no WhatsApp
+        </Button>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .page-hero {
+    padding-block: var(--space-20) var(--space-12);
+    background: linear-gradient(180deg, var(--color-rose-100) 0%, var(--color-sand-50) 100%);
+    text-align: center;
+  }
+
+  .page-hero .eyebrow {
+    text-align: center;
+    display: block;
+  }
+
+  .page-hero__title {
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    margin: 0 auto var(--space-6);
+    max-width: 32ch;
+    line-height: var(--leading-tight);
+  }
+
+  .page-hero__title em {
+    font-style: italic;
+    color: var(--color-red-600);
+  }
+
+  .page-hero__lede {
+    font-size: var(--text-md);
+    line-height: var(--leading-relaxed);
+    color: var(--color-brown-700);
+    max-width: 48rem;
+    margin: 0 auto;
+  }
+
+  /* Bio grid */
+  .bio__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-12);
+    align-items: start;
+  }
+
+  @media (min-width: 880px) {
+    .bio__grid {
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: var(--space-16);
+    }
+  }
+
+  .bio__portrait {
+    position: relative;
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    box-shadow: var(--shadow-xl);
+  }
+
+  .bio__portrait img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .bio__quote {
+    position: absolute;
+    left: var(--space-6);
+    right: var(--space-6);
+    bottom: var(--space-6);
+    background: rgba(250, 246, 241, 0.96);
+    backdrop-filter: blur(8px);
+    border-radius: var(--radius-lg);
+    padding: var(--space-5) var(--space-6);
+    border-left: 4px solid var(--color-red-500);
+  }
+
+  .bio__quote p {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: var(--text-md);
+    color: var(--color-brown-900);
+    margin: 0;
+    line-height: var(--leading-snug);
+  }
+
+  .bio__text h2 {
+    font-size: var(--text-2xl);
+    margin: var(--space-8) 0 var(--space-3);
+    color: var(--color-red-700);
+  }
+
+  .bio__text h2:first-child {
+    margin-top: 0;
+  }
+
+  .bio__text p {
+    color: var(--color-brown-800);
+    line-height: var(--leading-relaxed);
+    margin-bottom: var(--space-4);
+  }
+
+  .bio__text strong {
+    color: var(--color-brown-900);
+  }
+
+  /* Timeline (reuso) */
+  .timeline--full {
+    max-width: 56rem;
+    margin-inline: auto;
+  }
+
+  /* Defends */
+  .defends-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+    margin-bottom: var(--space-12);
+  }
+
+  @media (min-width: 640px) {
+    .defends-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  .defend-card {
+    background: var(--color-white);
+    border: 1px solid var(--color-sand-200);
+    border-radius: var(--radius-lg);
+    padding: var(--space-6);
+    transition: all var(--duration-normal) var(--ease-out);
+  }
+
+  .defend-card:hover {
+    border-color: var(--color-red-500);
+    transform: translateY(-2px);
+  }
+
+  .defend-card h3 {
+    font-size: var(--text-lg);
+    margin: 0 0 var(--space-2);
+    color: var(--color-red-700);
+  }
+
+  .defend-card p {
+    color: var(--color-brown-700);
+    margin: 0;
+    line-height: var(--leading-relaxed);
+    font-size: var(--text-sm);
+  }
+
+  .defends-cta {
+    text-align: center;
+  }
+
+  .final-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-top: var(--space-8);
+  }
+
+  .section--dark .section-title {
+    color: var(--color-sand-50);
+  }
+
+  .section--dark .section-title em {
+    color: var(--color-rose-300);
+  }
+
+  .section--dark .section-lede {
+    color: var(--color-sand-200);
+  }
+</style>

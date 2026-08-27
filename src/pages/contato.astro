@@ -1,0 +1,255 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Button from '../components/Button.astro';
+import { SITE } from '../site.config.js';
+---
+
+<Layout
+  title="Contato — Elisângela Tomba"
+  description="Fale com a campanha de Elisângela Tomba. WhatsApp, e-mail para imprensa, redes sociais e endereço do comitê."
+  pageType="website"
+>
+  <section class="page-hero" aria-labelledby="page-title">
+    <div class="container">
+      <span class="eyebrow">Fale com a campanha</span>
+      <h1 id="page-title" class="page-hero__title">
+        Toda <em>conversa</em> começa aqui
+      </h1>
+      <p class="page-hero__lede">
+        Imprensa, apoiadores, voluntários, cidadãos e quem quiser acompanhar — tem um canal certo para cada um.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+
+      <div class="contact-grid">
+        <!-- WhatsApp -->
+        <article class="contact-card contact-card--featured">
+          <div class="contact-card__icon" aria-hidden="true">📲</div>
+          <h2>WhatsApp da campanha</h2>
+          <p>O jeito mais rápido de falar com a equipe. Resposta em até 24h.</p>
+          <a
+            class="contact-cta"
+            href={`https://wa.me/${SITE.contacts.whatsapp}?text=Ol%C3%A1%2C%20vim%20pelo%20site`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+            </svg>
+            {SITE.contacts.whatsappDisplay}
+          </a>
+        </article>
+
+        <!-- E-mail imprensa -->
+        <article class="contact-card">
+          <div class="contact-card__icon" aria-hidden="true">📰</div>
+          <h2>Imprensa</h2>
+          <p>Releases, entrevistas, fotos em alta resolução, fala oficial da campanha.</p>
+          <a class="contact-cta contact-cta--secondary" href={`mailto:${SITE.contacts.press}`}>
+            {SITE.contacts.press}
+          </a>
+        </article>
+
+        <!-- E-mail geral -->
+        <article class="contact-card">
+          <div class="contact-card__icon" aria-hidden="true">📧</div>
+          <h2>Contato geral</h2>
+          <p>Propostas, parcerias, dúvidas em geral.</p>
+          <a class="contact-cta contact-cta--secondary" href={`mailto:${SITE.contacts.email}`}>
+            {SITE.contacts.email}
+          </a>
+        </article>
+
+        <!-- DPO -->
+        <article class="contact-card">
+          <div class="contact-card__icon" aria-hidden="true">🔒</div>
+          <h2>Encarregado de Dados (DPO)</h2>
+          <p>Para exercer seus direitos previstos na LGPD (acesso, correção, eliminação, portabilidade).</p>
+          <a class="contact-cta contact-cta--secondary" href="mailto:dpo@elisangelatomba.com.br">
+            dpo@elisangelatomba.com.br
+          </a>
+        </article>
+
+        <!-- Redes sociais -->
+        <article class="contact-card">
+          <div class="contact-card__icon" aria-hidden="true">📱</div>
+          <h2>Redes sociais</h2>
+          <p>Acompanhe a campanha no dia a dia.</p>
+          <ul class="contact-social">
+            <li>
+              <a href={SITE.contacts.instagram} target="_blank" rel="noopener noreferrer">
+                @elisangelatomba (Instagram)
+              </a>
+            </li>
+            {SITE.contacts.facebook && (
+              <li>
+                <a href={SITE.contacts.facebook} target="_blank" rel="noopener noreferrer">
+                  Facebook
+                </a>
+              </li>
+            )}
+            {SITE.contacts.tiktok && (
+              <li>
+                <a href={SITE.contacts.tiktok} target="_blank" rel="noopener noreferrer">
+                  TikTok
+                </a>
+              </li>
+            )}
+            {SITE.contacts.youtube && (
+              <li>
+                <a href={SITE.contacts.youtube} target="_blank" rel="noopener noreferrer">
+                  YouTube
+                </a>
+              </li>
+            )}
+          </ul>
+        </article>
+
+        <!-- Comitê (placeholder) -->
+        <article class="contact-card contact-card--placeholder">
+          <div class="contact-card__icon" aria-hidden="true">🏢</div>
+          <h2>Comitê</h2>
+          <p>
+            Em breve, o endereço do comitê de campanha será divulgado aqui. Para visitas, eventos e reuniões, entre em contato pelo WhatsApp.
+          </p>
+        </article>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .page-hero {
+    padding-block: var(--space-20) var(--space-12);
+    background: linear-gradient(180deg, var(--color-rose-100) 0%, var(--color-sand-50) 100%);
+    text-align: center;
+  }
+
+  .page-hero__title {
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    margin: 0 auto var(--space-6);
+    max-width: 32ch;
+    line-height: var(--leading-tight);
+  }
+
+  .page-hero__title em {
+    font-style: italic;
+    color: var(--color-red-600);
+  }
+
+  .page-hero__lede {
+    font-size: var(--text-md);
+    color: var(--color-brown-700);
+    max-width: 48rem;
+    margin: 0 auto;
+    line-height: var(--leading-relaxed);
+  }
+
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-5);
+    max-width: 64rem;
+    margin-inline: auto;
+  }
+
+  @media (min-width: 640px) {
+    .contact-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (min-width: 960px) {
+    .contact-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+
+  .contact-card {
+    background: var(--color-white);
+    border: 1px solid var(--color-sand-200);
+    border-radius: var(--radius-xl);
+    padding: var(--space-7);
+    transition: all var(--duration-normal) var(--ease-out);
+  }
+
+  .contact-card:hover {
+    border-color: var(--color-red-500);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+  }
+
+  .contact-card--featured {
+    background: linear-gradient(135deg, var(--color-red-500), var(--color-red-600));
+    color: var(--color-white);
+    border-color: var(--color-red-600);
+  }
+
+  .contact-card--featured h2,
+  .contact-card--featured p {
+    color: var(--color-white);
+  }
+
+  .contact-card--placeholder {
+    background: var(--color-sand-100);
+    border-style: dashed;
+  }
+
+  .contact-card__icon {
+    font-size: 2rem;
+    margin-bottom: var(--space-3);
+  }
+
+  .contact-card h2 {
+    font-size: var(--text-xl);
+    margin: 0 0 var(--space-2);
+    color: var(--color-brown-900);
+  }
+
+  .contact-card p {
+    color: var(--color-brown-700);
+    margin: 0 0 var(--space-4);
+    line-height: var(--leading-relaxed);
+    font-size: var(--text-sm);
+  }
+
+  .contact-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-3) var(--space-5);
+    background: rgba(255, 255, 255, 0.95);
+    color: var(--color-red-700);
+    font-weight: var(--weight-semibold);
+    border-radius: var(--radius-full);
+    text-decoration: none;
+    transition: all var(--duration-fast);
+  }
+
+  .contact-cta:hover {
+    background: var(--color-white);
+    transform: translateY(-1px);
+  }
+
+  .contact-cta--secondary {
+    background: var(--color-sand-100);
+    color: var(--color-red-700);
+    font-size: var(--text-sm);
+  }
+
+  .contact-cta--secondary:hover {
+    background: var(--color-rose-100);
+  }
+
+  .contact-social {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .contact-social a {
+    color: var(--color-red-600);
+    font-size: var(--text-sm);
+    font-weight: var(--weight-semibold);
+    text-decoration: underline;
+  }
+</style>

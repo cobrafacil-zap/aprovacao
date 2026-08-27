@@ -1,0 +1,268 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { SITE } from '../site.config.js';
+
+const lastUpdated = '2026-08-26';
+---
+
+<Layout
+  title="Política de Privacidade — Elisângela Tomba"
+  description="Política de Privacidade e Cookies do site da campanha de Elisângela Tomba, conforme a Lei Geral de Proteção de Dados (LGPD) e a Resolução TSE nº 23.732/2024."
+  pageType="website"
+>
+  <section class="page-hero" aria-labelledby="page-title">
+    <div class="container">
+      <span class="eyebrow">LGPD e Privacidade</span>
+      <h1 id="page-title" class="page-hero__title">Política de <em>Privacidade</em></h1>
+      <p class="page-hero__lede">
+        Esta página descreve como o site da campanha de Elisângela Tomba coleta, usa, armazena e protege seus dados pessoais. Em conformidade com a <strong>LGPD</strong> (Lei 13.709/2018) e a <strong>Resolução TSE nº 23.732/2024</strong>.
+      </p>
+      <p class="page-hero__updated">Última atualização: {lastUpdated}</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container container-narrow">
+
+      <div class="legal-content">
+
+        <h2 id="controlador">1. Quem é o controlador dos dados?</h2>
+        <p>
+          O controlador dos seus dados pessoais é a <strong>campanha eleitoral de Elisângela Tomba</strong> (CNPJ {SITE.legal.cnpjCampanha}), autorizada por {SITE.legal.autorizadoPor}.
+        </p>
+        <p>
+          <strong>Encarregado de Dados (DPO):</strong> <a href="mailto:dpo@elisangelatomba.com.br">dpo@elisangelatomba.com.br</a>
+        </p>
+
+        <h2 id="dados-coletados">2. Que dados coletamos?</h2>
+        <ul>
+          <li><strong>Dados de navegação</strong>: endereço IP, tipo de navegador, páginas visitadas, tempo de permanência, cookies.</li>
+          <li><strong>Dados de formulário</strong>: nome, WhatsApp, e-mail, cidade, quando você se cadastra como voluntário ou para receber novidades.</li>
+          <li><strong>Dados de opinião política</strong> (sensíveis, art. 11 LGPD): a decisão de apoiar uma candidata é, por si, dado sensível. Coletamos somente com consentimento explícito.</li>
+        </ul>
+
+        <h2 id="finalidades">3. Para que usamos seus dados?</h2>
+        <ul>
+          <li>Responder a mensagens enviadas pelo WhatsApp ou formulário de contato.</li>
+          <li>Cadastrar você como voluntário(a) da campanha e organizar a mobilização.</li>
+          <li>Enviar novidades da campanha (apenas para quem optou por receber).</li>
+          <li>Medir o alcance das nossas campanhas de impulsionamento (Meta Pixel).</li>
+          <li>Cumprir obrigações legais com a Justiça Eleitoral (Res. TSE 23.732/2024).</li>
+        </ul>
+
+        <h2 id="bases-legais">4. Com que base legal tratamos seus dados?</h2>
+        <ul>
+          <li><strong>Consentimento (art. 7º, I, LGPD)</strong>: para newsletters, formulários, cookies de marketing.</li>
+          <li><strong>Legítimo interesse (art. 7º, IX)</strong>: para análise agregada de tráfego, segurança do site.</li>
+          <li><strong>Cumprimento de obrigação legal (art. 7º, II e III)</strong>: para registro de doadores junto à Justiça Eleitoral.</li>
+          <li><strong>Execução de contrato (art. 7º, V)</strong>: para responder a pedidos via WhatsApp.</li>
+        </ul>
+
+        <h2 id="compartilhamento">5. Com quem compartilhamos?</h2>
+        <p>Não vendemos seus dados. Compartilhamos apenas com:</p>
+        <ul>
+          <li><strong>Meta (Facebook/Instagram)</strong>: para mensuração de campanhas. Conforme <a href="https://www.facebook.com/privacy/policy/" target="_blank" rel="noopener">política do Meta</a>.</li>
+          <li><strong>Google Analytics 4</strong>: para análise agregada de tráfego. Conforme <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">política do Google</a>.</li>
+          <li><strong>Plataformas de doação autorizadas pelo TSE</strong>: caso você faça uma doação.</li>
+          <li><strong>Justiça Eleitoral</strong>: em cumprimento a obrigações legais.</li>
+        </ul>
+
+        <h2 id="cookies">6. Cookies</h2>
+        <p>
+          Usamos cookies para o site funcionar e, com seu consentimento, para análise e marketing. Você pode aceitar, recusar ou configurar quais cookies quer permitir pelo banner exibido na primeira visita. Também pode revogar a qualquer momento no link <a href="#" onclick="event.preventDefault(); window.reabrirPreferenciasCookies && window.reabrirPreferenciasCookies();">Reabrir preferências de cookies</a> no rodapé.
+        </p>
+        <table class="cookies-table">
+          <thead>
+            <tr><th>Tipo</th><th>Finalidade</th><th>Duração</th><th>Obrigatório?</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Essenciais</td>
+              <td>Funcionamento do site (sessão, segurança, preferências de cookies)</td>
+              <td>Sessão</td>
+              <td>Sim</td>
+            </tr>
+            <tr>
+              <td>Análise (Google Analytics 4)</td>
+              <td>Entender a navegação dos visitantes de forma agregada</td>
+              <td>14 meses</td>
+              <td>Não</td>
+            </tr>
+            <tr>
+              <td>Marketing (Meta Pixel)</td>
+              <td>Medir alcance de campanhas no Facebook/Instagram</td>
+              <td>90 dias</td>
+              <td>Não</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h2 id="seguranca">7. Segurança dos dados</h2>
+        <p>
+          Adotamos medidas técnicas e organizacionais razoáveis para proteger seus dados: HTTPS em todo o site, controle de acesso ao painel administrativo, 2FA no servidor, backups regulares. Nenhuma transmissão pela internet é 100% segura, mas buscamos reduzir riscos ao mínimo.
+        </p>
+
+        <h2 id="retencao">8. Por quanto tempo guardamos?</h2>
+        <ul>
+          <li>Dados de campanha e contato: até o fim do ciclo eleitoral + 5 anos (Res. TSE 23.732/2024).</li>
+          <li>Cookies: até 14 meses (Google Analytics) ou sessão.</li>
+          <li>E-mails de newsletter: até você cancelar a inscrição (link em todos os e-mails).</li>
+        </ul>
+
+        <h2 id="direitos">9. Seus direitos (art. 18 LGPD)</h2>
+        <p>Você tem direito a:</p>
+        <ul>
+          <li><strong>Confirmação</strong> da existência de tratamento</li>
+          <li><strong>Acesso</strong> aos seus dados</li>
+          <li><strong>Correção</strong> de dados incompletos ou desatualizados</li>
+          <li><strong>Anonimização, bloqueio ou eliminação</strong> de dados desnecessários</li>
+          <li><strong>Portabilidade</strong></li>
+          <li><strong>Eliminação</strong> dos dados tratados com consentimento</li>
+          <li><strong>Revogação do consentimento</strong></li>
+          <li><strong>Oposição</strong> a tratamento</li>
+        </ul>
+        <p>
+          Para exercer qualquer desses direitos, escreva para <a href="mailto:dpo@elisangelatomba.com.br">dpo@elisangelatomba.com.br</a>. Resposta em até 15 dias.
+        </p>
+
+        <h2 id="menores">10. Menores de idade</h2>
+        <p>
+          Este site não é direcionado a menores de 16 anos. Caso identifiquemos dados coletados sem o consentimento dos responsáveis, removeremos imediatamente.
+        </p>
+
+        <h2 id="mudancas">11. Mudanças nesta política</h2>
+        <p>
+          Esta política pode ser atualizada para refletir mudanças legais ou operacionais. Avisaremos alterações significativas por e-mail (se você for inscrito) ou por aviso no site.
+        </p>
+
+        <h2 id="reclamacao">12. Reclamação à ANPD</h2>
+        <p>
+          Se considerar que seus direitos não foram respeitados, você pode reclamar à Autoridade Nacional de Proteção de Dados em <a href="https://www.gov.br/anpd" target="_blank" rel="noopener">gov.br/anpd</a>.
+        </p>
+
+        <h2 id="legislacao">13. Base legal aplicável</h2>
+        <ul>
+          <li>Lei 13.709/2018 (LGPD)</li>
+          <li>Lei 9.504/1997 (Lei das Eleições)</li>
+          <li>Resolução TSE nº 23.732/2024</li>
+          <li>Resolução CD/ANPD nº 4/2023 (cookies)</li>
+        </ul>
+
+        <div class="legal-contact">
+          <p><strong>Contato do DPO:</strong> <a href="mailto:dpo@elisangelatomba.com.br">dpo@elisangelatomba.com.br</a></p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .page-hero {
+    padding-block: var(--space-16) var(--space-10);
+    background: linear-gradient(180deg, var(--color-rose-100) 0%, var(--color-sand-50) 100%);
+    text-align: center;
+  }
+
+  .page-hero__title {
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    margin: 0 auto var(--space-6);
+    max-width: 32ch;
+    line-height: var(--leading-tight);
+  }
+
+  .page-hero__title em {
+    font-style: italic;
+    color: var(--color-red-600);
+  }
+
+  .page-hero__lede {
+    font-size: var(--text-md);
+    color: var(--color-brown-700);
+    max-width: 48rem;
+    margin: 0 auto;
+    line-height: var(--leading-relaxed);
+  }
+
+  .page-hero__updated {
+    margin-top: var(--space-4);
+    font-size: var(--text-sm);
+    color: var(--color-brown-600);
+  }
+
+  .legal-content h2 {
+    font-size: var(--text-2xl);
+    margin: var(--space-10) 0 var(--space-3);
+    color: var(--color-red-700);
+    scroll-margin-top: 5rem;
+  }
+
+  .legal-content h2:first-of-type {
+    margin-top: var(--space-2);
+  }
+
+  .legal-content p {
+    color: var(--color-brown-800);
+    line-height: var(--leading-relaxed);
+    margin: 0 0 var(--space-4);
+  }
+
+  .legal-content ul {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    margin: 0 0 var(--space-4) var(--space-4);
+    list-style: disc;
+  }
+
+  .legal-content ul li {
+    color: var(--color-brown-800);
+    line-height: var(--leading-relaxed);
+  }
+
+  .legal-content strong {
+    color: var(--color-brown-900);
+  }
+
+  .legal-content a {
+    color: var(--color-red-600);
+    text-decoration: underline;
+  }
+
+  .cookies-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: var(--space-4) 0;
+    font-size: var(--text-sm);
+  }
+
+  .cookies-table th,
+  .cookies-table td {
+    padding: var(--space-3);
+    text-align: left;
+    border-bottom: 1px solid var(--color-sand-200);
+  }
+
+  .cookies-table th {
+    background: var(--color-sand-100);
+    font-weight: var(--weight-bold);
+    color: var(--color-brown-900);
+  }
+
+  .cookies-table td {
+    color: var(--color-brown-700);
+  }
+
+  @media (max-width: 600px) {
+    .cookies-table { font-size: var(--text-xs); }
+    .cookies-table th, .cookies-table td { padding: var(--space-2); }
+  }
+
+  .legal-contact {
+    background: var(--color-sand-100);
+    padding: var(--space-5) var(--space-6);
+    border-radius: var(--radius-lg);
+    border-left: 4px solid var(--color-red-500);
+    margin-top: var(--space-8);
+  }
+</style>

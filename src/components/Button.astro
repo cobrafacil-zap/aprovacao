@@ -1,0 +1,155 @@
+---
+/**
+ * Botão reutilizável
+ * Variantes: primary (vermelho), secondary (outline), ghost
+ * Tamanhos: sm, md, lg
+ *
+ * Uso:
+ *   <Button href="/propostas/" variant="primary" size="lg">Conheça</Button>
+ *   <Button href="https://wa.me/..." variant="secondary" external>Falar</Button>
+ */
+
+interface Props {
+  href?: string;
+  variant?: 'primary' | 'secondary' | 'ghost' | 'dark';
+  size?: 'sm' | 'md' | 'lg';
+  type?: 'button' | 'submit';
+  external?: boolean;
+  ariaLabel?: string;
+  disabled?: boolean;
+  class?: string;
+}
+
+const {
+  href,
+  variant = 'primary',
+  size = 'md',
+  type = 'button',
+  external = false,
+  ariaLabel,
+  disabled = false,
+  class: className = '',
+} = Astro.props;
+
+const tag = href ? 'a' : 'button';
+const target = external ? '_blank' : undefined;
+const rel = external ? 'noopener noreferrer' : undefined;
+
+const classes = ['btn', `btn--${variant}`, `btn--${size}`, className].filter(Boolean).join(' ');
+---
+
+<tag
+  class={classes}
+  href={href}
+  type={!href ? type : undefined}
+  target={target}
+  rel={rel}
+  aria-label={ariaLabel}
+  disabled={disabled}
+>
+  <slot />
+  {external && (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+      <path d="M7 17L17 7M17 7H7M17 7V17" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  )}
+</tag>
+
+<style>
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    font-family: var(--font-sans);
+    font-weight: var(--weight-semibold);
+    text-align: center;
+    text-decoration: none;
+    border: var(--border-2) solid transparent;
+    border-radius: var(--radius-full);
+    cursor: pointer;
+    transition: all var(--duration-normal) var(--ease-out);
+    white-space: nowrap;
+    line-height: 1;
+  }
+
+  .btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  /* Tamanhos */
+  .btn--sm {
+    padding: var(--space-2) var(--space-4);
+    font-size: var(--text-sm);
+    min-height: 36px;
+  }
+
+  .btn--md {
+    padding: var(--space-3) var(--space-6);
+    font-size: var(--text-base);
+    min-height: 44px;
+  }
+
+  .btn--lg {
+    padding: var(--space-4) var(--space-8);
+    font-size: var(--text-md);
+    min-height: 52px;
+  }
+
+  /* Variante primária — vermelho PT */
+  .btn--primary {
+    background: var(--color-red-500);
+    color: var(--color-white);
+    border-color: var(--color-red-500);
+    box-shadow: var(--shadow-red);
+  }
+
+  .btn--primary:hover:not(:disabled) {
+    background: var(--color-red-600);
+    border-color: var(--color-red-600);
+    transform: translateY(-1px);
+    box-shadow: 0 12px 28px -4px rgb(217 39 39 / 0.40);
+  }
+
+  .btn--primary:active {
+    transform: translateY(0);
+  }
+
+  /* Variante secundária — outline */
+  .btn--secondary {
+    background: transparent;
+    color: var(--color-red-600);
+    border-color: var(--color-red-500);
+  }
+
+  .btn--secondary:hover:not(:disabled) {
+    background: var(--color-red-500);
+    color: var(--color-white);
+  }
+
+  /* Variante ghost — só texto */
+  .btn--ghost {
+    background: transparent;
+    color: var(--color-brown-800);
+    border-color: transparent;
+    padding-left: var(--space-3);
+    padding-right: var(--space-3);
+  }
+
+  .btn--ghost:hover:not(:disabled) {
+    background: var(--color-sand-100);
+    color: var(--color-red-600);
+  }
+
+  /* Variante dark — sobre fundo escuro */
+  .btn--dark {
+    background: var(--color-brown-900);
+    color: var(--color-sand-50);
+    border-color: var(--color-brown-900);
+  }
+
+  .btn--dark:hover:not(:disabled) {
+    background: var(--color-brown-800);
+  }
+</style>

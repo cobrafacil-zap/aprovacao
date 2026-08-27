@@ -1,0 +1,71 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Button from '../components/Button.astro';
+---
+
+<Layout
+  title="Página não encontrada — Elisângela Tomba"
+  description="A página que você procura não foi encontrada. Volte para a home ou veja as propostas."
+  noindex={true}
+>
+  <section class="error-page">
+    <div class="container">
+      <p class="error-page__code" aria-hidden="true">404</p>
+      <h1 class="error-page__title">A página que você procura <em>não está aqui</em>.</h1>
+      <p class="error-page__body">
+        Talvez o link tenha mudado ou a página foi removida. Mas a campanha continua firme — volta pra home e conheça a história da Elisângela.
+      </p>
+      <div class="error-page__actions">
+        <Button href="/" variant="primary" size="lg">Voltar para a home</Button>
+        <Button href="/propostas/" variant="secondary" size="lg">Ver propostas</Button>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .error-page {
+    min-height: 70vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: var(--space-20) var(--space-6);
+  }
+
+  .error-page__code {
+    font-family: var(--font-serif);
+    font-size: clamp(5rem, 20vw, 12rem);
+    font-weight: var(--weight-black);
+    line-height: 1;
+    color: var(--color-red-500);
+    opacity: 0.2;
+    margin-bottom: var(--space-6);
+  }
+
+  .error-page__title {
+    font-size: clamp(1.75rem, 4vw, 3rem);
+    margin: 0 auto var(--space-4);
+    max-width: 28ch;
+  }
+
+  .error-page__title em {
+    font-style: italic;
+    color: var(--color-red-600);
+  }
+
+  .error-page__body {
+    font-size: var(--text-md);
+    color: var(--color-brown-700);
+    max-width: 36rem;
+    margin: 0 auto var(--space-8);
+    line-height: var(--leading-relaxed);
+  }
+
+  .error-page__actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-3);
+  }
+</style>
