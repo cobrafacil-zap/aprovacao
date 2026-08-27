@@ -5,155 +5,173 @@ import { SITE, TIMELINE } from '../site.config.js';
 ---
 
 <Layout
-  title={`Sobre ${SITE.name} — História e trajetória`}
-  description={`Conheça a história de ${SITE.name}: assistente social, liderança popular, neta da Francisca, fundadora da APAE de Jundiaí do Sul. Candidata a Deputada Estadual pelo Paraná.`}
+  title={`Sobre ${SITE.name} — A neta da Francisca`}
+  description={`A história de ${SITE.name}: nasceu colhendo café com a vó Francisca no norte pioneiro do Paraná, virou assistente social e fundou a APAE de Jundiaí do Sul. Hoje é candidata a Deputada Estadual pelo PT.`}
   pageType="profile"
 >
-  <!-- Hero pequeno -->
-  <section class="page-hero" aria-labelledby="page-title">
-    <div class="container">
-      <span class="eyebrow">Quem é</span>
-      <h1 id="page-title" class="page-hero__title">A neta da Francisca<br />que decidiu <em>representar</em></h1>
-      <p class="page-hero__lede">
-        Elisângela Tomba cresceu colhendo café e algodão com a avó no interior do Paraná. Virou assistente social. Fundou a APAE de Jundiaí do Sul. Agora quer levar a força das comunidades para a Assembleia Legislativa.
-      </p>
-    </div>
-  </section>
-
-  <!-- Biografia + foto -->
-  <section class="section bio">
-    <div class="container bio__grid">
-      <div class="bio__portrait">
+  <!-- ============ HERO: foto preto-e-branco com citação grande ============ -->
+  <section class="hero" aria-labelledby="hero-titulo">
+    <div class="hero__container container">
+      <figure class="hero__retrato">
         <img
           src="/images/sobre-original.jpg"
-          alt="Elisângela Tomba sentada em uma poltrona terracota com planta ao fundo, vestindo blazer vermelho, calça branca e tênis — cenário acolhedor"
-          width="800"
-          height="1000"
-          loading="lazy"
+          alt="Elisângela Tomba sentada, com blazer vermelho, cara séria e olho no horizonte."
+          width="1000"
+          height="1250"
+          fetchpriority="high"
+          loading="eager"
         />
-        <div class="bio__quote">
-          <p>"Política pública só faz sentido quando melhora concretamente a vida das pessoas."</p>
-        </div>
-      </div>
+        <figcaption class="hero__legenda">
+          Elisângela Tomba · Foto: Karine Gehlen · Jundiaí do Sul/PR
+        </figcaption>
+      </figure>
 
-      <div class="bio__text">
-        <h2>De onde ela vem</h2>
-        <p>
-          Neta da avó Francisca, Elisângela cresceu na área rural do Paraná. Trabalhou desde cedo na colheita de café e algodão — uma experiência que moldou sua visão sobre trabalho, dignidade e solidariedade.
-        </p>
-        <p>
-          Ainda muito jovem, compreendeu que <strong>problemas coletivos exigem soluções coletivas</strong> e passou a atuar na organização de comunidades e na defesa de direitos.
-        </p>
+      <div class="hero__intro">
+        <p class="hero__eyebrow">Sobre · Quem é essa candidata</p>
+        <h1 id="hero-titulo" class="hero__titulo">
+          Neta da vó Francisca. <span class="hero__strike">Assistente social.</span> Candidata.
+        </h1>
 
-        <h2>O que ela faz</h2>
-        <p>
-          Foi protagonista da <strong>fundação da APAE de Jundiaí do Sul</strong>, mobilizando famílias, voluntários e poder público para garantir atendimento às pessoas com deficiência do município.
-        </p>
-        <p>
-          Mais tarde, aprofundou sua atuação por meio do <strong>Serviço Social</strong>, dedicando sua vida à defesa dos direitos da criança e do adolescente, da juventude, das mulheres, das famílias e das pessoas idosas.
-        </p>
-
-        <h2>Como ela se posiciona</h2>
-        <p>
-          Como mãe, mulher trabalhadora e profissional da área social, conhece de perto os desafios enfrentados por quem precisa conciliar trabalho, estudo, cuidado e sobrevivência.
-        </p>
-        <p>
-          Sua história é marcada por uma característica constante: <em>diante de uma necessidade coletiva, ela organiza pessoas, constrói soluções e transforma participação em resultado</em>.
-        </p>
+        <blockquote class="hero__citacao">
+          <p>
+            "A vó criou 8 filhos sozinha. Minha mãe criou a gente sozinha. <br />
+            Eu sei como é mulher segurando tudo. Por isso quero essa cadeira: <br />
+            pra mulher do interior parar de esperar calada."
+          </p>
+          <cite>— Elisângela Tomba</cite>
+        </blockquote>
       </div>
     </div>
   </section>
 
-  <!-- Timeline completa -->
-  <section class="section section--alt" aria-labelledby="timeline-title">
-    <div class="container">
-      <header class="section-header section-header--center">
-        <span class="eyebrow">Linha do tempo</span>
-        <h2 id="timeline-title" class="section-title">
-          Cinco marcos de uma <em>vida dedicada</em> ao coletivo
-        </h2>
-      </header>
-
-      <ol class="timeline timeline--full">
-        {TIMELINE.map((item) => (
-          <li class="timeline__item">
-            <div class="timeline__year">{item.year}</div>
-            <div class="timeline__body">
-              <h3 class="timeline__title">{item.title}</h3>
-              <p class="timeline__text">{item.body}</p>
-            </div>
-          </li>
-        ))}
-      </ol>
-    </div>
-  </section>
-
-  <!-- O que defende / luta -->
-  <section class="section" aria-labelledby="defend-title">
-    <div class="container">
-      <header class="section-header section-header--center">
-        <span class="eyebrow">O que ela defende</span>
-        <h2 id="defend-title" class="section-title">
-          Política construída a partir da <em>vida real</em>
-        </h2>
-      </header>
-
-      <div class="defends-grid">
-        <article class="defend-card">
-          <h3>Igualdade de oportunidades</h3>
-          <p>
-            Nenhuma criança, jovem, mulher, trabalhador ou pessoa idosa deve ter seus sonhos limitados pela falta de acesso a direitos.
-          </p>
-        </article>
-
-        <article class="defend-card">
-          <h3>Raízes, experiência e futuro</h3>
-          <p>
-            Uma sociedade que honra suas raízes, valoriza a experiência das pessoas idosas e investe nas novas gerações.
-          </p>
-        </article>
-
-        <article class="defend-card">
-          <h3>Políticas públicas eficazes</h3>
-          <p>
-            Educação, esporte, cultura, profissionalização, assistência social e participação cidadã como ferramentas reais de transformação.
-          </p>
-        </article>
-
-        <article class="defend-card">
-          <h3>Mulheres, juventude, idosos e comunidades</h3>
-          <p>
-            Mulheres ocupando espaços de decisão, juventudes com perspectivas, pessoas idosas com autonomia e comunidades protagonistas.
-          </p>
-        </article>
-      </div>
-
-      <div class="defends-cta">
-        <Button href="/propostas/" variant="primary" size="lg">
-          Ver todas as propostas
-        </Button>
-      </div>
-    </div>
-  </section>
-
-  <!-- CTA final -->
-  <section class="section section--dark" aria-labelledby="join-title">
+  <!-- ============ HISTÓRIA EM PRIMEIRA PESSOA (texto largo) ============ -->
+  <section class="historia" aria-labelledby="historia-titulo">
     <div class="container container-text">
-      <h2 id="join-title" class="section-title">
-        <em>Quer somar nessa história?</em>
-      </h2>
-      <p class="section-lede">
-        A campanha é construída com quem acredita. Tem três formas de caminhar junto com a Elisângela.
+      <p class="bio__eyebrow">Minha história</p>
+      <h2 id="historia-titulo" class="historia__titulo">Eu vim da roça. Voltei pra ficar.</h2>
+
+      <p class="historia__lead">
+        Nasci em 1976, em <strong>Jundiaí do Sul</strong>, cidade pequena do norte
+        pioneiro do Paraná. Meu pai morreu cedo. Minha mãe saiu pra cidade pra
+        trabalhar e me deixou com a <strong>vó Francisca</strong>, que criou 8 filhos
+        sozinha e me criou também. Eu cresci colhendo café e algodão do lado dela,
+        tomando café com farinha, dormindo em rede com 5 irmãs.
       </p>
-      <div class="final-actions">
-        <Button href="/apoie/" variant="primary" size="lg">Quero apoiar</Button>
-        <Button
-          href={`https://wa.me/${SITE.contacts.whatsapp}?text=Ol%C3%A1%20Elis%C3%A2ngela%2C%20quero%20conversar`}
-          variant="secondary"
-          size="lg"
-          external
+
+      <p>
+        Foi a vó que me ensinou que <em>trabalho e dignidade andam juntos</em>.
+        Foi a vó que me ensinou a ler o povo. Foi a vó que me ensinou a
+        nunca pedir coisa que eu não pudesse fazer.
+      </p>
+
+      <p>
+        Aos 14 anos voltei pra cidade pra terminar o ensino médio. Engravidei
+        cedo. Casei. Separei. Tive que estudar à noite com criança pequena
+        pra dentro de casa — porque a única saída pra quem nasce mulher
+        sem pai na roça é <strong>estudar até doer</strong>.
+      </p>
+
+      <p>
+        Em <strong>2003</strong> me formei assistente social pela Unespar. Foi
+        quando entendi: o problema nunca tinha sido falta de força — tinha sido
+        falta de <em>quem escrevesse a lei certa pra proteger quem tinha força</em>.
+      </p>
+
+      <p>
+        Ano de <strong>1996</strong>: Jundiaí do Sul tinha 4 crianças com
+        deficiência sem nenhum atendimento. Reuni família, voluntários, padaria
+        do bairro, comércio, prefeitura. Bati em porta até abrir a primeira
+        sala da <strong>APAE de Jundiaí do Sul</strong> — com fonoaudióloga,
+        fisioterapeuta e psicopedagoga. Foi a primeira vez que vi política
+        popular fazer o que promete.
+      </p>
+
+      <p>
+        Em <strong>2026</strong> decidi largar o confortável. A vó Francisca
+        morreu em 2018 com quase 90 anos, segurando a mão da minha mãe.
+        Antes de ir, ela me pediu pra <em>não deixar ninguém esquecer dela</em>.
+        É isso que eu tô fazendo. Carrego o nome dela e o nome de cada
+        mulher do interior que chegou onde eu cheguei.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ MARCOS — sem bolinhas, texto corrido com data em vermelho ============ -->
+  <section class="marcos" aria-labelledby="marcos-titulo">
+    <div class="container">
+      <p class="bio__eyebrow">Marcos</p>
+      <h2 id="marcos-titulo" class="marcos__titulo">A linha do tempo não é carreira: é acumulado de lutas.</h2>
+
+      <div class="marcos__lista">
+        {TIMELINE.map((m) => (
+          <article class="marco">
+            <p class="marco__ano">{m.ano}</p>
+            <div class="marco__corpo">
+              <h3>{m.titulo}</h3>
+              <p>{m.corpo}</p>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ O QUE MOVE (tarja preta, sem cards) ============ -->
+  <section class="move" aria-labelledby="move-titulo">
+    <div class="container">
+      <p class="move__eyebrow">O que me move</p>
+      <h2 id="move-titulo" class="move__titulo">Três coisas que eu não nego.</h2>
+
+      <ul class="move__lista">
+        <li>
+          <span class="move__num">01</span>
+          <div>
+            <h3>Mulher na decisão</h3>
+            <p>Quem cuida não pode ser só quem pede — tem que ser quem decide. Mulher não pode ser só estatística, tem que ser cabeceira de mesa.</p>
+          </div>
+        </li>
+        <li>
+          <span class="move__num">02</span>
+          <div>
+            <h3>Interior no orçamento</h3>
+            <p>O Paraná que produz café, leite, soja, erva-mate não pode ser o Paraná que não tem hospital, escola em tempo integral nem transporte.</p>
+          </div>
+        </li>
+        <li>
+          <span class="move__num">03</span>
+          <div>
+            <h3>Defesa pública</h3>
+            <p>APAE, CRAS, hospital público, escola pública, SUS — tudo que cuida do povo do interior sem cobrar. Por essas estruturas eu vou brigar.</p>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ CTA final — WhatsApp grande ============ -->
+  <section class="cta-final" aria-labelledby="cta-titulo">
+    <div class="container">
+      <h2 id="cta-titulo" class="cta-final__titulo">
+        Quer conversar comigo?
+      </h2>
+      <p class="cta-final__subtitulo">
+        Manda mensagem no WhatsApp. Eu mesma respondo quando dá.
+        Se a história é sua também, a campanha é sua também.
+      </p>
+      <div class="cta-final__acoes">
+        <a
+          class="wa-cta"
+          href={`https://wa.me/${SITE.contacts.whatsapp}?text=${encodeURIComponent('Elisângela, quero conversar. Vim pelo site.')}`}
+          target="_blank"
+          rel="noopener noreferrer"
         >
-          Falar no WhatsApp
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+          </svg>
+          Fala comigo no WhatsApp
+        </a>
+        <Button href="/propostas/" variant="secondary" size="lg">
+          Ler minhas propostas
         </Button>
       </div>
     </div>
@@ -161,170 +179,349 @@ import { SITE, TIMELINE } from '../site.config.js';
 </Layout>
 
 <style>
-  .page-hero {
-    padding-block: var(--space-20) var(--space-12);
-    background: linear-gradient(180deg, var(--color-rose-100) 0%, var(--color-sand-50) 100%);
-    text-align: center;
+  /* ============ HERO ============ */
+  .hero {
+    background: var(--papel);
+    padding-block: var(--space-12) var(--space-16);
+    border-bottom: var(--border-grossa) solid var(--carvao);
   }
 
-  .page-hero .eyebrow {
-    text-align: center;
-    display: block;
-  }
-
-  .page-hero__title {
-    font-size: clamp(2.5rem, 6vw, 4.5rem);
-    margin: 0 auto var(--space-6);
-    max-width: 32ch;
-    line-height: var(--leading-tight);
-  }
-
-  .page-hero__title em {
-    font-style: italic;
-    color: var(--color-red-600);
-  }
-
-  .page-hero__lede {
-    font-size: var(--text-md);
-    line-height: var(--leading-relaxed);
-    color: var(--color-brown-700);
-    max-width: 48rem;
-    margin: 0 auto;
-  }
-
-  /* Bio grid */
-  .bio__grid {
+  .hero__container {
     display: grid;
     grid-template-columns: 1fr;
-    gap: var(--space-12);
-    align-items: start;
+    gap: var(--space-10);
+    align-items: center;
   }
 
   @media (min-width: 880px) {
-    .bio__grid {
-      grid-template-columns: 0.9fr 1.1fr;
-      gap: var(--space-16);
+    .hero__container {
+      grid-template-columns: 1fr 1.2fr;
+      gap: var(--space-12);
     }
   }
 
-  .bio__portrait {
-    position: relative;
-    border-radius: var(--radius-xl);
-    overflow: hidden;
-    box-shadow: var(--shadow-xl);
-  }
-
-  .bio__portrait img {
-    width: 100%;
-    height: auto;
-    display: block;
-  }
-
-  .bio__quote {
-    position: absolute;
-    left: var(--space-6);
-    right: var(--space-6);
-    bottom: var(--space-6);
-    background: rgba(250, 246, 241, 0.96);
-    backdrop-filter: blur(8px);
-    border-radius: var(--radius-lg);
-    padding: var(--space-5) var(--space-6);
-    border-left: 4px solid var(--color-red-500);
-  }
-
-  .bio__quote p {
-    font-family: var(--font-serif);
-    font-style: italic;
-    font-size: var(--text-md);
-    color: var(--color-brown-900);
+  .hero__retrato {
     margin: 0;
-    line-height: var(--leading-snug);
+    border: var(--border-grossa) solid var(--carvao);
+    background: var(--carvao-medio);
+    overflow: hidden;
+    aspect-ratio: 4/5;
   }
 
-  .bio__text h2 {
-    font-size: var(--text-2xl);
-    margin: var(--space-8) 0 var(--space-3);
-    color: var(--color-red-700);
+  .hero__retrato img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(100%) contrast(1.05);
   }
 
-  .bio__text h2:first-child {
-    margin-top: 0;
+  .hero__legenda {
+    padding: var(--space-2) var(--space-3);
+    background: var(--preto);
+    color: var(--papel);
+    font-family: var(--font-impacto);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-pancada);
   }
 
-  .bio__text p {
-    color: var(--color-brown-800);
-    line-height: var(--leading-relaxed);
+  .hero__eyebrow {
+    font-family: var(--font-impacto);
+    font-size: var(--text-xs);
+    color: var(--carmin);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-pancada);
+    border-left: var(--border-grossa) solid var(--carmin);
+    padding-left: var(--space-3);
     margin-bottom: var(--space-4);
   }
 
-  .bio__text strong {
-    color: var(--color-brown-900);
+  .hero__titulo {
+    font-family: var(--font-impacto);
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    line-height: 0.95;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-pancada);
+    color: var(--carvao);
+    margin: 0 0 var(--space-7);
   }
 
-  /* Timeline (reuso) */
-  .timeline--full {
+  .hero__strike {
+    color: var(--papel);
+    background: var(--carmin);
+    padding-inline: 6px;
+  }
+
+  .hero__citacao {
+    margin: 0;
+    padding: var(--space-5) var(--space-6);
+    border-left: var(--border-grossa) solid var(--carmin);
+    background: var(--papel-velho);
+  }
+
+  .hero__citacao p {
+    font-family: var(--font-manuscrita);
+    font-style: italic;
+    font-size: clamp(1.0625rem, 2vw, 1.25rem);
+    line-height: var(--leading-relaxed);
+    color: var(--carvao);
+    margin: 0 0 var(--space-3);
+  }
+
+  .hero__citacao cite {
+    font-family: var(--font-impacto);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-pancada);
+    color: var(--carmin);
+    font-style: normal;
+    font-weight: var(--weight-bold);
+  }
+
+  /* ============ HISTÓRIA ============ */
+  .historia {
+    padding-block: var(--space-16);
+    background: var(--papel-velho);
+    border-bottom: var(--border-grossa) solid var(--carvao);
+  }
+
+  .container-text {
+    max-width: 48rem;
+  }
+
+  .bio__eyebrow {
+    font-family: var(--font-impacto);
+    font-size: var(--text-xs);
+    color: var(--carmin);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-pancada);
+    margin-bottom: var(--space-3);
+  }
+
+  .historia__titulo {
+    font-family: var(--font-impacto);
+    font-size: clamp(2rem, 4vw, 3rem);
+    line-height: 1;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-pancada);
+    color: var(--carvao);
+    margin: 0 0 var(--space-7);
+  }
+
+  .historia__lead {
+    font-family: var(--font-manuscrita);
+    font-style: italic;
+    font-size: clamp(1.125rem, 2vw, 1.375rem);
+    line-height: var(--leading-relaxed);
+    color: var(--carvao);
+    margin: 0 0 var(--space-5);
+  }
+
+  .historia p {
+    font-family: var(--font-corpo);
+    font-size: var(--text-base);
+    line-height: var(--leading-relaxed);
+    color: var(--carvao-claro);
+    margin: 0 0 var(--space-4);
+  }
+
+  .historia strong { color: var(--carvao); font-weight: var(--weight-bold); }
+  .historia em { color: var(--carmin); font-style: italic; }
+
+  /* ============ MARCOS ============ */
+  .marcos {
+    padding-block: var(--space-16);
+    background: var(--papel);
+    border-bottom: var(--border-grossa) solid var(--carvao);
+  }
+
+  .marcos__titulo {
+    font-family: var(--font-impacto);
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-pancada);
+    color: var(--carvao);
+    margin: 0 0 var(--space-10);
+    border-bottom: var(--border-grossa) solid var(--carvao);
+    padding-bottom: var(--space-5);
+    max-width: 38rem;
+  }
+
+  .marcos__lista {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-7);
     max-width: 56rem;
-    margin-inline: auto;
   }
 
-  /* Defends */
-  .defends-grid {
+  .marco {
     display: grid;
     grid-template-columns: 1fr;
-    gap: var(--space-4);
-    margin-bottom: var(--space-12);
+    gap: var(--space-3);
+    padding-block: var(--space-5);
+    border-top: var(--border-fina) solid var(--carvao-medio);
   }
 
-  @media (min-width: 640px) {
-    .defends-grid { grid-template-columns: repeat(2, 1fr); }
+  .marco:first-child { border-top: 0; padding-top: 0; }
+
+  @media (min-width: 600px) {
+    .marco {
+      grid-template-columns: 8rem 1fr;
+      gap: var(--space-6);
+    }
   }
 
-  .defend-card {
-    background: var(--color-white);
-    border: 1px solid var(--color-sand-200);
-    border-radius: var(--radius-lg);
-    padding: var(--space-6);
-    transition: all var(--duration-normal) var(--ease-out);
-  }
-
-  .defend-card:hover {
-    border-color: var(--color-red-500);
-    transform: translateY(-2px);
-  }
-
-  .defend-card h3 {
+  .marco__ano {
+    font-family: var(--font-impacto);
     font-size: var(--text-lg);
-    margin: 0 0 var(--space-2);
-    color: var(--color-red-700);
-  }
-
-  .defend-card p {
-    color: var(--color-brown-700);
+    color: var(--carmin);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-pancada);
     margin: 0;
+  }
+
+  .marco__corpo h3 {
+    font-family: var(--font-impacto);
+    font-size: var(--text-md);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-pancada);
+    color: var(--carvao);
+    margin: 0 0 var(--space-2);
+  }
+
+  .marco__corpo p {
+    font-family: var(--font-corpo);
+    font-size: var(--text-base);
     line-height: var(--leading-relaxed);
-    font-size: var(--text-sm);
+    color: var(--carvao-claro);
+    margin: 0;
   }
 
-  .defends-cta {
-    text-align: center;
+  /* ============ O QUE MOVE ============ */
+  .move {
+    padding-block: var(--space-16);
+    background: var(--preto);
+    color: var(--papel);
   }
 
-  .final-actions {
+  .move__eyebrow {
+    font-family: var(--font-impacto);
+    font-size: var(--text-xs);
+    color: var(--estrela);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-pancada);
+    margin-bottom: var(--space-3);
+  }
+
+  .move__titulo {
+    font-family: var(--font-impacto);
+    font-size: clamp(2rem, 5vw, 3rem);
+    line-height: 1;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-pancada);
+    color: var(--papel);
+    margin: 0 0 var(--space-10);
+    max-width: 22ch;
+  }
+
+  .move__lista {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+  }
+
+  .move__lista > li {
+    display: grid;
+    grid-template-columns: 5rem 1fr;
+    gap: var(--space-4);
+    padding-block: var(--space-4);
+    border-top: var(--border-fina) solid var(--carvao-medio);
+    align-items: start;
+  }
+
+  .move__num {
+    font-family: var(--font-impacto);
+    font-size: var(--text-xl);
+    color: var(--estrela);
+  }
+
+  .move__lista h3 {
+    font-family: var(--font-impacto);
+    font-size: var(--text-lg);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-pancada);
+    color: var(--papel);
+    margin: 0 0 var(--space-2);
+  }
+
+  .move__lista p {
+    font-family: var(--font-corpo);
+    font-size: var(--text-base);
+    line-height: var(--leading-relaxed);
+    color: var(--papel-saco);
+    margin: 0;
+  }
+
+  /* ============ CTA FINAL ============ */
+  .cta-final {
+    padding-block: var(--space-16);
+    background: var(--carmin);
+    color: var(--papel);
+    border-top: var(--border-grossa) solid var(--carvao);
+  }
+
+  .cta-final__titulo {
+    font-family: var(--font-impacto);
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    line-height: 1;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-pancada);
+    color: var(--papel);
+    margin: 0 0 var(--space-4);
+  }
+
+  .cta-final__subtitulo {
+    font-family: var(--font-manuscrita);
+    font-style: italic;
+    font-size: clamp(1.0625rem, 2vw, 1.25rem);
+    line-height: var(--leading-relaxed);
+    color: var(--papel);
+    margin: 0 0 var(--space-7);
+    max-width: 38rem;
+  }
+
+  .cta-final__acoes {
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-3);
-    margin-top: var(--space-8);
   }
 
-  .section--dark .section-title {
-    color: var(--color-sand-50);
+  .wa-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-4) var(--space-6);
+    background: var(--papel);
+    color: var(--carmin);
+    border: var(--border-grossa) solid var(--papel);
+    font-family: var(--font-impacto);
+    font-size: var(--text-md);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-pancada);
+    text-decoration: none;
+    min-height: 56px;
   }
 
-  .section--dark .section-title em {
-    color: var(--color-rose-300);
-  }
+  .wa-cta:hover { background: var(--estrela); border-color: var(--estrela); }
 
-  .section--dark .section-lede {
-    color: var(--color-sand-200);
+  .cta-final :global(.btn--secondary) {
+    color: var(--papel);
+    background: var(--carmin-escuro);
+    border-color: var(--papel);
+  }
+  .cta-final :global(.btn--secondary:hover) {
+    background: var(--papel);
+    color: var(--carmin);
+    border-color: var(--papel);
   }
 </style>

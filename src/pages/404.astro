@@ -5,67 +5,74 @@ import Button from '../components/Button.astro';
 
 <Layout
   title="Página não encontrada — Elisângela Tomba"
-  description="A página que você procura não foi encontrada. Volte para a home ou veja as propostas."
+  description="A página que você procura não foi encontrada. Volta pra home que tá tudo certo."
   noindex={true}
 >
-  <section class="error-page">
-    <div class="container">
-      <p class="error-page__code" aria-hidden="true">404</p>
-      <h1 class="error-page__title">A página que você procura <em>não está aqui</em>.</h1>
-      <p class="error-page__body">
-        Talvez o link tenha mudado ou a página foi removida. Mas a campanha continua firme — volta pra home e conheça a história da Elisângela.
+  <section class="erro">
+    <div class="erro__container container">
+      <p class="erro__code">404</p>
+      <h1 class="erro__titulo">Pareci que perdi o caminho.</h1>
+      <p class="erro__corpo">
+        A página que você procura não tá aqui. Talvez o link mudou, ou então
+        a vó Francisca guardou errado. Volta pra home que tem tudo no lugar.
       </p>
-      <div class="error-page__actions">
-        <Button href="/" variant="primary" size="lg">Voltar para a home</Button>
-        <Button href="/propostas/" variant="secondary" size="lg">Ver propostas</Button>
+      <div class="erro__acoes">
+        <Button href="/" variant="primary" size="lg">Voltar pra home</Button>
+        <Button href="/propostas/" variant="secondary" size="lg">Ler as 7 propostas</Button>
       </div>
     </div>
   </section>
 </Layout>
 
 <style>
-  .error-page {
-    min-height: 70vh;
+  .erro {
+    min-height: 80vh;
     display: flex;
     align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: var(--space-20) var(--space-6);
+    background: var(--papel);
+    padding-block: var(--space-16);
+    border-bottom: var(--border-grossa) solid var(--carvao);
   }
 
-  .error-page__code {
-    font-family: var(--font-serif);
-    font-size: clamp(5rem, 20vw, 12rem);
-    font-weight: var(--weight-black);
+  .erro__container {
+    text-align: left;
+    max-width: 48rem;
+  }
+
+  .erro__code {
+    font-family: var(--font-impacto);
+    font-size: clamp(7rem, 25vw, 16rem);
+    line-height: 0.85;
+    color: var(--carmin);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-pancada);
+    margin: 0 0 var(--space-5);
+  }
+
+  .erro__titulo {
+    font-family: var(--font-impacto);
+    font-size: clamp(2rem, 5vw, 3.5rem);
     line-height: 1;
-    color: var(--color-red-500);
-    opacity: 0.2;
-    margin-bottom: var(--space-6);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-pancada);
+    color: var(--carvao);
+    margin: 0 0 var(--space-5);
   }
 
-  .error-page__title {
-    font-size: clamp(1.75rem, 4vw, 3rem);
-    margin: 0 auto var(--space-4);
-    max-width: 28ch;
-  }
-
-  .error-page__title em {
+  .erro__corpo {
+    font-family: var(--font-manuscrita);
     font-style: italic;
-    color: var(--color-red-600);
-  }
-
-  .error-page__body {
-    font-size: var(--text-md);
-    color: var(--color-brown-700);
-    max-width: 36rem;
-    margin: 0 auto var(--space-8);
+    font-size: clamp(1.0625rem, 2vw, 1.25rem);
     line-height: var(--leading-relaxed);
+    color: var(--carvao-claro);
+    margin: 0 0 var(--space-7);
+    border-left: var(--border-grossa) solid var(--carmin);
+    padding-left: var(--space-4);
   }
 
-  .error-page__actions {
+  .erro__acoes {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
     gap: var(--space-3);
   }
 </style>

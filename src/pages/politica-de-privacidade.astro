@@ -10,18 +10,19 @@ const lastUpdated = '2026-08-26';
   description="Política de Privacidade e Cookies do site da campanha de Elisângela Tomba, conforme a Lei Geral de Proteção de Dados (LGPD) e a Resolução TSE nº 23.732/2024."
   pageType="website"
 >
-  <section class="page-hero" aria-labelledby="page-title">
+  <header class="topo">
     <div class="container">
-      <span class="eyebrow">LGPD e Privacidade</span>
-      <h1 id="page-title" class="page-hero__title">Política de <em>Privacidade</em></h1>
-      <p class="page-hero__lede">
-        Esta página descreve como o site da campanha de Elisângela Tomba coleta, usa, armazena e protege seus dados pessoais. Em conformidade com a <strong>LGPD</strong> (Lei 13.709/2018) e a <strong>Resolução TSE nº 23.732/2024</strong>.
+      <p class="topo__eyebrow">LGPD · TSE 23.732/2024</p>
+      <h1 class="topo__titulo">Política de <span class="topo__strike">Privacidade</span></h1>
+      <p class="topo__intro">
+        Como o site da campanha coleta, usa, armazena e protege seus dados pessoais.
+        Conforme a <strong>LGPD</strong> (Lei 13.709/2018) e a <strong>Resolução TSE nº 23.732/2024</strong>.
       </p>
-      <p class="page-hero__updated">Última atualização: {lastUpdated}</p>
+      <p class="topo__atualizacao">Última atualização: {lastUpdated}</p>
     </div>
-  </section>
+  </header>
 
-  <section class="section">
+  <section class="legal">
     <div class="container container-narrow">
 
       <div class="legal-content">
@@ -158,75 +159,126 @@ const lastUpdated = '2026-08-26';
 </Layout>
 
 <style>
-  .page-hero {
+  .topo {
+    background: var(--preto);
+    color: var(--papel);
     padding-block: var(--space-16) var(--space-10);
-    background: linear-gradient(180deg, var(--color-rose-100) 0%, var(--color-sand-50) 100%);
-    text-align: center;
+    border-bottom: var(--border-grossa) solid var(--carmin);
   }
 
-  .page-hero__title {
+  .topo__eyebrow {
+    font-family: var(--font-impacto);
+    font-size: var(--text-xs);
+    color: var(--estrela);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-pancada);
+    border-left: var(--border-grossa) solid var(--estrela);
+    padding-left: var(--space-3);
+    margin-bottom: var(--space-4);
+  }
+
+  .topo__titulo {
+    font-family: var(--font-impacto);
     font-size: clamp(2.5rem, 6vw, 4.5rem);
-    margin: 0 auto var(--space-6);
-    max-width: 32ch;
-    line-height: var(--leading-tight);
+    line-height: 1;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-pancada);
+    color: var(--papel);
+    margin: 0 0 var(--space-5);
+    max-width: 22ch;
   }
 
-  .page-hero__title em {
-    font-style: italic;
-    color: var(--color-red-600);
+  .topo__strike {
+    color: var(--preto);
+    background: var(--estrela);
+    padding-inline: 6px;
   }
 
-  .page-hero__lede {
-    font-size: var(--text-md);
-    color: var(--color-brown-700);
-    max-width: 48rem;
-    margin: 0 auto;
+  .topo__intro {
+    font-family: var(--font-corpo);
+    font-size: var(--text-base);
     line-height: var(--leading-relaxed);
+    color: var(--papel-saco);
+    max-width: 48rem;
+    margin: 0 0 var(--space-3);
   }
 
-  .page-hero__updated {
-    margin-top: var(--space-4);
-    font-size: var(--text-sm);
-    color: var(--color-brown-600);
+  .topo__intro strong { color: var(--papel); font-weight: var(--weight-bold); }
+
+  .topo__atualizacao {
+    font-family: var(--font-impacto);
+    font-size: var(--text-xs);
+    color: var(--papel-saco);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-pancada);
+    margin: 0;
+  }
+
+  .legal {
+    padding-block: var(--space-12) var(--space-16);
+    background: var(--papel);
+  }
+
+  .legal-content {
+    max-width: 48rem;
+    margin-inline: auto;
   }
 
   .legal-content h2 {
-    font-size: var(--text-2xl);
+    font-family: var(--font-impacto);
+    font-size: var(--text-md);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-pancada);
+    color: var(--carmin);
     margin: var(--space-10) 0 var(--space-3);
-    color: var(--color-red-700);
-    scroll-margin-top: 5rem;
+    padding-bottom: var(--space-2);
+    border-bottom: var(--border-media) solid var(--carvao);
+    scroll-margin-top: 6rem;
   }
 
   .legal-content h2:first-of-type {
-    margin-top: var(--space-2);
+    margin-top: 0;
   }
 
   .legal-content p {
-    color: var(--color-brown-800);
+    color: var(--carvao-claro);
     line-height: var(--leading-relaxed);
     margin: 0 0 var(--space-4);
+    font-family: var(--font-corpo);
+    font-size: var(--text-base);
   }
 
   .legal-content ul {
     display: flex;
     flex-direction: column;
     gap: var(--space-2);
-    margin: 0 0 var(--space-4) var(--space-4);
-    list-style: disc;
+    margin: 0 0 var(--space-5);
+    padding-left: var(--space-5);
+    list-style: none;
   }
 
   .legal-content ul li {
-    color: var(--color-brown-800);
+    color: var(--carvao-claro);
     line-height: var(--leading-relaxed);
+    font-family: var(--font-corpo);
+    font-size: var(--text-base);
+    position: relative;
   }
 
-  .legal-content strong {
-    color: var(--color-brown-900);
+  .legal-content ul li::before {
+    content: "→";
+    color: var(--carmin);
+    font-weight: var(--weight-bold);
+    position: absolute;
+    left: calc(-1 * var(--space-5));
   }
+
+  .legal-content strong { color: var(--carvao); font-weight: var(--weight-bold); }
 
   .legal-content a {
-    color: var(--color-red-600);
+    color: var(--carmin);
     text-decoration: underline;
+    text-decoration-thickness: 2px;
   }
 
   .cookies-table {
@@ -234,24 +286,27 @@ const lastUpdated = '2026-08-26';
     border-collapse: collapse;
     margin: var(--space-4) 0;
     font-size: var(--text-sm);
+    font-family: var(--font-corpo);
+    border: var(--border-media) solid var(--carvao);
   }
 
   .cookies-table th,
   .cookies-table td {
     padding: var(--space-3);
     text-align: left;
-    border-bottom: 1px solid var(--color-sand-200);
+    border-bottom: 1px solid var(--papel-velho);
   }
 
   .cookies-table th {
-    background: var(--color-sand-100);
-    font-weight: var(--weight-bold);
-    color: var(--color-brown-900);
+    background: var(--carvao);
+    color: var(--papel);
+    font-family: var(--font-impacto);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-pancada);
   }
 
-  .cookies-table td {
-    color: var(--color-brown-700);
-  }
+  .cookies-table td { color: var(--carvao-claro); }
 
   @media (max-width: 600px) {
     .cookies-table { font-size: var(--text-xs); }
@@ -259,10 +314,15 @@ const lastUpdated = '2026-08-26';
   }
 
   .legal-contact {
-    background: var(--color-sand-100);
+    background: var(--papel-velho);
     padding: var(--space-5) var(--space-6);
-    border-radius: var(--radius-lg);
-    border-left: 4px solid var(--color-red-500);
+    border-left: var(--border-grossa) solid var(--carmin);
     margin-top: var(--space-8);
+  }
+
+  .legal-contact p {
+    margin: 0;
+    font-family: var(--font-corpo);
+    color: var(--carvao);
   }
 </style>

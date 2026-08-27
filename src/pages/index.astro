@@ -1,228 +1,187 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Button from '../components/Button.astro';
-import { SITE, PILLARS, PROPOSALS, TIMELINE } from '../site.config.js';
-
-const year = 2026;
+import { SITE, PILLARS, TIMELINE } from '../site.config.js';
 ---
 
 <Layout
-  title={`${SITE.name} — ${SITE.slogan} Candidata a Deputada Estadual pelo Paraná`}
+  title={`${SITE.name} — ${SITE.slogan}`}
   description={SITE.shortBio}
   pageType="profile"
 >
-  <!-- ====== HERO ====== -->
+  <!-- ====== HERO assimétrico: foto à direita, texto à esquerda ====== -->
   <section class="hero" aria-labelledby="hero-title">
-    <div class="hero__bg" aria-hidden="true"></div>
     <div class="hero__container container">
       <div class="hero__copy">
-        <span class="hero__eyebrow">
-          <span class="hero__eyebrow-dot" aria-hidden="true"></span>
-          Eleições {year} · {SITE.party} · {SITE.state}
-        </span>
-        <h1 id="hero-title" class="hero__title">
-          <span class="hero__title-name">Elisângela</span>
-          <span class="hero__title-surname">Tomba</span>
-        </h1>
-        <p class="hero__role">Candidata a Deputada Estadual pelo Paraná</p>
-        <p class="hero__tagline">
-          Neta da Francisca. Filha da roça.<br />
-          Assistente social. Fundadora da APAE de Jundiaí do Sul.<br />
-          <strong>Agora é oficial — e essa história é de vocês.</strong>
+        <p class="hero__eyebrow">
+          Eleições 2026 · {SITE.party} · {SITE.state} · Deputada Estadual
         </p>
+        <h1 id="hero-title" class="hero__title">
+          Eu sou a neta da Francisca. <span class="hero__title-strike">Agora é a vez</span> das <span class="hero__title-mark">nossas comunidades</span> na Assembleia.
+        </h1>
+        <p class="hero__tagline">
+          Assistente social. Norte pioneiro do Paraná. Mãe da APAE de Jundiaí do Sul.
+          Tô na campanha pra levar a força de quem cuida, de quem produz, de quem
+          ainda não foi ouvida pra <strong>onde se escreve lei.</strong>
+        </p>
+
         <div class="hero__actions">
           <Button href="/propostas/" variant="primary" size="lg">
-            Conheça minhas propostas
+            {SITE.home.ctaPrimary}
           </Button>
           <Button
-            href={`https://wa.me/${SITE.contacts.whatsapp}?text=Ol%C3%A1%20Elis%C3%A2ngela%2C%20vim%20pelo%20site%20e%20quero%20conversar.`}
+            href={`https://wa.me/${SITE.contacts.whatsapp}?text=${encodeURIComponent('Olá Elisângela, vim pelo site e quero conversar.')}`}
             variant="secondary"
             size="lg"
             external
           >
-            Falar no WhatsApp
+            {SITE.home.ctaSecondary}
           </Button>
         </div>
+
         <ul class="hero__badges" aria-label="Identidade da campanha">
+          <li>Norte Pioneiro</li>
           <li>Assistente Social</li>
-            <li>Norte Pioneiro do Paraná</li>
-            <li>APAE Jundiaí do Sul</li>
+          <li>APAE Jundiaí do Sul</li>
+          <li>Mulher do Interior</li>
         </ul>
       </div>
 
       <div class="hero__visual">
-        <div class="hero__portrait">
+        <figure class="hero__portrait">
           <img
             src="/images/hero-chamado-original.jpg"
-            alt="Elisângela Tomba, de blazer vermelho, com a mão estendida em direção ao espectador, sorrindo — um chamado à ação"
-            width="2400"
-            height="3600"
+            alt="Elisângela Tomba, de blazer vermelho, com a mão estendida em direção ao espectador, sorrindo — chamando a pessoa à frente dela pra essa campanha."
+            width="1200"
+            height="1800"
             fetchpriority="high"
           />
-          <div class="hero__portrait-decor" aria-hidden="true"></div>
+          <figcaption class="hero__caption">
+            <span>Jundiaí do Sul · 2024</span>
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== FAIXA DIAGONAL — efeito de rua ====== -->
+  <aside class="street-banner" aria-hidden="true">
+    <div class="street-banner__track">
+      <span>AGORA É A VEZ DAS COMUNIDADES NA ASSEMBLEIA</span>
+      <span>★</span>
+      <span>NETA DA FRANCISCA · FILHA DA ROÇA · ASSISTENTE SOCIAL</span>
+      <span>★</span>
+      <span>AGENDA CHEIA EM JUNDIAÍ DO SUL · CAFÉ E ALGODÃO</span>
+      <span>★</span>
+      <span>AGENDA CHEIA EM JAGUAPITÃ · NORTE PIONEIRO</span>
+      <span>★</span>
+    </div>
+  </aside>
+
+  <!-- ====== QUEM É A ELISÂNGELA (bio em primeira pessoa, assimétrico) ====== -->
+  <section class="bio" aria-labelledby="bio-title">
+    <div class="bio__container container">
+      <div class="bio__text">
+        <p class="bio__eyebrow">Quem é</p>
+        <h2 id="bio-title" class="bio__title">Eu vim da roça. Voltei pra ficar.</h2>
+
+        <p class="bio__lead">
+          Nasci em Jundiaí do Sul, norte pioneiro do Paraná. Cresci colhendo café
+          e algodão do lado da <strong>vó Francisca</strong>, mulher que criou 8 filhos
+          sozinha e me ensinou cedo que trabalho e dignidade andam juntos.
+        </p>
+
+        <p>
+          Virei <strong>assistente social</strong> pra defender quem não tinha voz.
+          Em <strong>1996</strong>, juntei famílias, voluntários, padaria e prefeitura
+          pra abrir a primeira sala da <strong>APAE de Jundiaí do Sul</strong> — com
+          fono, fisio e psicopedagoga. Hoje a APAE atende centenas de famílias.
+        </p>
+
+        <p>
+          Em <strong>2026</strong> decidi levar essa história pra Assembleia Legislativa
+          do Paraná. Não pra fazer discurso bonito — pra <strong>escrever lei</strong>
+          com quem viveu o problema.
+        </p>
+
+        <Button href="/sobre/" variant="secondary" size="md">
+          Ler a história completa
+        </Button>
+      </div>
+
+      <aside class="bio__quote">
+        <blockquote>
+          <p class="bio__quote-text">
+            "Cresci vendo minha avó colher café sozinha. Hoje o que eu colho é
+            <em>possibilidade</em> pras filhas dela."
+          </p>
+          <footer>
+            <cite>Elisângela Tomba</cite>
+            <span>— Jundiaí do Sul, 2024</span>
+          </footer>
+        </blockquote>
+
+        <div class="bio__pillars">
+          {PILLARS.map((p) => (
+            <article class="bio__pillar">
+              <h3>{p.titulo}</h3>
+              <p>{p.resumo}</p>
+            </article>
+          ))}
         </div>
-      </div>
+      </aside>
     </div>
   </section>
 
-  <!-- ====== TRÊS PILARES ====== -->
-  <section class="section section--alt" aria-labelledby="pillars-title">
+  <!-- ====== DA HISTÓRIA À LUTA (texto corrido, sem timeline com bolinhas) ====== -->
+  <section class="historia" aria-labelledby="historia-title">
     <div class="container">
-      <header class="section-header">
-        <span class="eyebrow">Os três pilares</span>
-        <h2 id="pillars-title" class="section-title">
-          O que a Elisângela quer <em>representar</em>
-        </h2>
-        <p class="section-lede">
-          A identidade política da campanha é construída sobre três compromissos. Tudo que a Elisângela faz na Assembleia — e fora dela — volta a esses princípios.
-        </p>
+      <header class="historia__header">
+        <p class="bio__eyebrow">Da roça pra Assembleia</p>
+        <h2 id="historia-title" class="historia__title">5 marcos que me trouxeram até aqui</h2>
       </header>
 
-      <div class="pillars-grid">
-        {PILLARS.map((pillar, i) => (
-          <article class="pillar" data-pillar={pillar.id}>
-            <div class="pillar__number" aria-hidden="true">0{i + 1}</div>
-            <h3 class="pillar__title">{pillar.title}</h3>
-            <p class="pillar__summary">{pillar.summary}</p>
-            <p class="pillar__body">{pillar.body}</p>
-            <ul class="pillar__actions">
-              {pillar.actions.map((a) => (
-                <li>
-                  <span class="pillar__bullet" aria-hidden="true">→</span>
-                  <span>{a}</span>
-                </li>
-              ))}
-            </ul>
-          </article>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- ====== HISTÓRIA / TRAJETÓRIA ====== -->
-  <section class="section" aria-labelledby="history-title">
-    <div class="container">
-      <header class="section-header section-header--center">
-        <span class="eyebrow">De onde ela vem</span>
-        <h2 id="history-title" class="section-title">
-          Uma história feita de <em>café, algodão</em> e luta
-        </h2>
-      </header>
-
-      <ol class="timeline">
+      <div class="historia__list">
         {TIMELINE.map((item) => (
-          <li class="timeline__item">
-            <div class="timeline__year">{item.year}</div>
-            <div class="timeline__body">
-              <h3 class="timeline__title">{item.title}</h3>
-              <p class="timeline__text">{item.body}</p>
+          <article class="historia__item">
+            <p class="historia__ano">{item.ano}</p>
+            <div>
+              <h3>{item.titulo}</h3>
+              <p>{item.corpo}</p>
             </div>
-          </li>
-        ))}
-      </ol>
-
-      <div class="history-cta">
-        <Button href="/sobre/" variant="dark" size="md">
-          Leia a história completa
-        </Button>
-      </div>
-    </div>
-  </section>
-
-  <!-- ====== PROPOSTAS (preview) ====== -->
-  <section class="section section--alt" aria-labelledby="proposals-title">
-    <div class="container">
-      <header class="section-header">
-        <span class="eyebrow">O que ela defende</span>
-        <h2 id="proposals-title" class="section-title">
-          Propostas para um Paraná <em>de todas as gerações</em>
-        </h2>
-        <p class="section-lede">
-          Sete eixos que orientam o mandato. Cada proposta foi pensada a partir da vida real das pessoas — do interior às cidades, do bebê ao idoso.
-        </p>
-      </header>
-
-      <div class="proposals-grid">
-        {PROPOSALS.slice(0, 6).map((p) => (
-          <article class="proposal-card">
-            <h3 class="proposal-card__title">{p.title}</h3>
-            <p class="proposal-card__summary">{p.summary}</p>
-            <ul class="proposal-card__list">
-              {p.bullets.slice(0, 2).map((b) => (
-                <li>{b}</li>
-              ))}
-            </ul>
           </article>
         ))}
       </div>
 
-      <div class="section-cta">
-        <Button href="/propostas/" variant="primary" size="md">
-          Ver todas as propostas
+      <div class="historia__cta">
+        <Button href="/sobre/" variant="primary" size="md">
+          Ver tudo que eu já fiz
         </Button>
       </div>
     </div>
   </section>
 
-  <!-- ====== APOIE ====== -->
-  <section class="section section--dark" aria-labelledby="support-title">
+  <!-- ====== CTA FINAL: tarja vermelha — whatsapp + slogan ====== -->
+  <section class="cta-final" aria-labelledby="cta-title">
     <div class="container">
-      <header class="section-header">
-        <span class="eyebrow eyebrow--light">Como apoiar</span>
-        <h2 id="support-title" class="section-title">
-          Essa campanha é feita <em>com você</em>
-        </h2>
-        <p class="section-lede">
-          Para chegar à Assembleia Legislativa, a Elisângela precisa de gente que acredita nessa história. Tem três formas de caminhar junto.
-        </p>
-      </header>
-
-      <div class="support-grid">
-        <a href="/apoie/#voluntario" class="support-card">
-          <div class="support-card__icon" aria-hidden="true">🤝</div>
-          <h3>Seja voluntário(a)</h3>
-          <p>Ajude em panfletagem, eventos, redes sociais ou na articulação com sua comunidade. Cada pessoa faz diferença.</p>
-          <span class="support-card__cta">Quero ajudar →</span>
-        </a>
-
-        <a href={SITE.integrations.donationUrl} class="support-card" rel="noopener">
-          <div class="support-card__icon" aria-hidden="true">💚</div>
-          <h3>Faça uma doação</h3>
-          <p>Toda doação é registrada na Justiça Eleitoral. Sua contribuição ajuda a campanha a chegar nos 399 municípios do Paraná.</p>
-          <span class="support-card__cta">Doar agora →</span>
-        </a>
-
+      <p class="cta-final__eyebrow">Fala comigo</p>
+      <h2 id="cta-title" class="cta-final__title">
+        Se essa história é sua também, bora juntas.
+      </h2>
+      <div class="cta-final__actions">
         <a
-          href={`https://wa.me/${SITE.contacts.whatsapp}?text=Quero%20ajudar%20na%20campanha`}
-          class="support-card"
+          class="wa-cta"
+          href={`https://wa.me/${SITE.contacts.whatsapp}?text=${encodeURIComponent('Quero caminhar com você. Vim pelo site.')}`}
           target="_blank"
           rel="noopener noreferrer"
         >
-          <div class="support-card__icon" aria-hidden="true">📲</div>
-          <h3>Divulgue e converse</h3>
-          <p>Compartilhe o site, siga nas redes, mande esta história pra alguém que acredita. Boca a boca ainda é a melhor campanha.</p>
-          <span class="support-card__cta">Falar no WhatsApp →</span>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+          </svg>
+          Manda mensagem no WhatsApp
         </a>
-      </div>
-    </div>
-  </section>
-
-  <!-- ====== CTA FINAL ====== -->
-  <section class="section final-cta" aria-labelledby="final-cta-title">
-    <div class="container container-text">
-      <h2 id="final-cta-title" class="final-cta__title">
-        <span class="final-cta__eyebrow">Agora é oficial</span>
-        <em>Do Paraná que trabalha, com a força das mulheres, para quem mais precisa.</em>
-      </h2>
-      <p class="final-cta__body">
-        Vote em Elisângela Tomba. <strong>{SITE.number ? `Número ${SITE.number}` : 'Número em breve'}</strong> — Deputada Estadual — {SITE.party}.
-      </p>
-      <div class="final-cta__actions">
-        <Button href="/propostas/" variant="primary" size="lg">
-          Ver propostas
-        </Button>
-        <Button href="/sobre/" variant="secondary" size="lg">
-          Conhecer a história
+        <Button href="/apoie/" variant="secondary" size="lg">
+          Outras formas de apoiar
         </Button>
       </div>
     </div>
@@ -230,28 +189,17 @@ const year = 2026;
 </Layout>
 
 <style>
-  /* ====== HERO ====== */
+  /* ============ HERO ============ */
   .hero {
-    position: relative;
-    padding-block: var(--space-16) var(--space-20);
-    overflow: hidden;
-    isolation: isolate;
-  }
-
-  .hero__bg {
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    background:
-      radial-gradient(circle at 20% 0%, var(--color-rose-100) 0%, transparent 50%),
-      radial-gradient(circle at 80% 100%, var(--color-sand-200) 0%, transparent 60%),
-      var(--color-sand-50);
+    padding-block: var(--space-12) var(--space-16);
+    background: var(--papel);
+    border-bottom: var(--border-grossa) solid var(--carvao);
   }
 
   .hero__container {
     display: grid;
     grid-template-columns: 1fr;
-    gap: var(--space-12);
+    gap: var(--space-10);
     align-items: center;
   }
 
@@ -263,117 +211,91 @@ const year = 2026;
   }
 
   .hero__eyebrow {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-2);
-    padding: var(--space-2) var(--space-4);
-    background: var(--color-rose-100);
-    color: var(--color-red-700);
+    font-family: var(--font-impacto);
     font-size: var(--text-xs);
-    font-weight: var(--weight-bold);
+    color: var(--carmin);
     text-transform: uppercase;
-    letter-spacing: var(--tracking-widest);
-    border-radius: var(--radius-full);
-    margin-bottom: var(--space-6);
-  }
-
-  .hero__eyebrow-dot {
-    display: inline-block;
-    width: 8px;
-    height: 8px;
-    background: var(--color-red-500);
-    border-radius: 50%;
-    animation: pulse-dot 1.8s ease-in-out infinite;
-  }
-
-  @keyframes pulse-dot {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.4; }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .hero__eyebrow-dot { animation: none; }
-  }
-
-  .hero__title {
-    font-size: clamp(2.75rem, 8vw, 5.5rem);
-    line-height: 0.95;
-    margin: 0 0 var(--space-2);
-    color: var(--color-brown-900);
-  }
-
-  .hero__title-name {
-    display: block;
-    font-weight: var(--weight-regular);
-    font-style: italic;
-  }
-
-  .hero__title-surname {
-    display: block;
-    font-weight: var(--weight-black);
-    color: var(--color-red-600);
-  }
-
-  .hero__role {
-    font-family: var(--font-sans);
-    font-size: var(--text-md);
-    font-weight: var(--weight-semibold);
-    color: var(--color-brown-700);
-    text-transform: uppercase;
-    letter-spacing: var(--tracking-widest);
+    letter-spacing: var(--tracking-pancada);
+    border-left: var(--border-grossa) solid var(--carmin);
+    padding-left: var(--space-3);
     margin-bottom: var(--space-4);
   }
 
+  .hero__title {
+    font-family: var(--font-impacto);
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    line-height: 0.95;
+    letter-spacing: var(--tracking-pancada);
+    text-transform: uppercase;
+    color: var(--carvao);
+    margin: 0 0 var(--space-5);
+  }
+
+  .hero__title-strike {
+    color: var(--papel);
+    background: var(--carmin);
+    padding-inline: var(--space-1);
+  }
+
+  .hero__title-mark {
+    color: var(--carmin);
+  }
+
   .hero__tagline {
-    font-family: var(--font-sans);
-    font-size: var(--text-md);
+    font-family: var(--font-manuscrita);
+    font-style: italic;
+    font-size: clamp(1.0625rem, 2vw, 1.25rem);
     line-height: var(--leading-relaxed);
-    color: var(--color-brown-800);
-    margin: 0 0 var(--space-8);
-    max-width: 36rem;
+    color: var(--carvao-claro);
+    margin: 0 0 var(--space-7);
+    max-width: 32rem;
   }
 
   .hero__tagline strong {
-    color: var(--color-red-700);
+    color: var(--carvao);
     font-weight: var(--weight-bold);
+    background: var(--estrela);
+    padding-inline: 4px;
   }
 
   .hero__actions {
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-3);
-    margin-bottom: var(--space-8);
+    margin-bottom: var(--space-7);
   }
 
   .hero__badges {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--space-2);
+    gap: var(--space-2) var(--space-4);
+    border-top: var(--border-fina) solid var(--carvao-medio);
+    padding-top: var(--space-4);
   }
 
   .hero__badges li {
-    padding: var(--space-1) var(--space-3);
-    background: var(--color-sand-100);
-    color: var(--color-brown-700);
+    font-family: var(--font-impacto);
     font-size: var(--text-xs);
-    font-weight: var(--weight-semibold);
-    border-radius: var(--radius-full);
-    border: 1px solid var(--color-sand-200);
+    color: var(--carvao-claro);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-pancada);
+  }
+
+  .hero__badges li + li::before {
+    content: "·";
+    margin-right: var(--space-4);
+    color: var(--carvao-medio);
   }
 
   /* Portrait */
-  .hero__visual {
-    position: relative;
-  }
-
   .hero__portrait {
     position: relative;
-    aspect-ratio: 2 / 3;
+    margin: 0;
+    aspect-ratio: 2/3;
     max-height: 640px;
-    margin-left: auto;
-    border-radius: var(--radius-2xl);
+    border: var(--border-grossa) solid var(--carvao);
     overflow: hidden;
-    box-shadow: var(--shadow-xl);
+    background: var(--carvao-medio);
   }
 
   .hero__portrait img {
@@ -381,385 +303,317 @@ const year = 2026;
     height: 100%;
     object-fit: cover;
     object-position: center top;
+    filter: contrast(1.05) saturate(1.1);
   }
 
-  .hero__portrait-decor {
+  .hero__caption {
     position: absolute;
-    inset: -8px;
-    border: 2px solid var(--color-red-500);
-    border-radius: var(--radius-2xl);
-    z-index: -1;
-    transform: translate(-12px, 12px);
+    left: 0;
+    bottom: 0;
+    padding: var(--space-2) var(--space-3);
+    background: var(--preto);
+    color: var(--papel);
+    font-family: var(--font-impacto);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-pancada);
   }
 
-  /* ====== SECTION HEADERS ====== */
-  .section-header {
-    margin-bottom: var(--space-12);
-    max-width: 48rem;
+  /* ============ FAIXA DIAGONAL ============ */
+  .street-banner {
+    background: var(--carmin);
+    color: var(--papel);
+    border-block: var(--border-grossa) solid var(--carvao);
+    padding-block: var(--space-3);
+    transform: rotate(-2deg);
+    margin-block: var(--space-3);
+    overflow: hidden;
   }
 
-  .section-header--center {
-    margin-inline: auto;
-    text-align: center;
+  .street-banner__track {
+    display: flex;
+    align-items: center;
+    gap: var(--space-6);
+    white-space: nowrap;
+    animation: marquee 30s linear infinite;
   }
 
-  .section-title {
-    font-size: clamp(2rem, 5vw, 3rem);
-    line-height: var(--leading-tight);
-    margin: 0 0 var(--space-4);
-    color: var(--color-brown-900);
-  }
-
-  .section-title em {
-    font-style: italic;
-    color: var(--color-red-600);
-    font-weight: var(--weight-medium);
-  }
-
-  .section-lede {
+  .street-banner__track > * {
+    font-family: var(--font-impacto);
     font-size: var(--text-md);
-    line-height: var(--leading-relaxed);
-    color: var(--color-brown-700);
-    margin: 0;
-    max-width: 40rem;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-pancada);
   }
 
-  .section-header--center .section-lede {
-    margin-inline: auto;
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
   }
 
-  .eyebrow--light {
-    color: var(--color-red-300);
+  /* ============ BIO ============ */
+  .bio {
+    padding-block: var(--space-20);
+    background: var(--papel-velho);
+    border-bottom: var(--border-grossa) solid var(--carvao);
   }
 
-  /* ====== PILARES ====== */
-  .pillars-grid {
+  .bio__container {
     display: grid;
     grid-template-columns: 1fr;
-    gap: var(--space-6);
+    gap: var(--space-10);
+    align-items: start;
   }
 
-  @media (min-width: 720px) {
-    .pillars-grid {
-      grid-template-columns: repeat(3, 1fr);
-      gap: var(--space-6);
+  @media (min-width: 900px) {
+    .bio__container {
+      grid-template-columns: 1.3fr 1fr;
+      gap: var(--space-16);
     }
   }
 
-  .pillar {
-    position: relative;
-    background: var(--color-white);
-    border-radius: var(--radius-xl);
-    padding: var(--space-8) var(--space-6);
-    box-shadow: var(--shadow-sm);
-    transition: all var(--duration-normal) var(--ease-out);
-    border-top: 4px solid var(--color-red-500);
-  }
-
-  .pillar:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-lg);
-  }
-
-  .pillar:nth-child(2) { border-top-color: var(--color-rose-500); }
-  .pillar:nth-child(3) { border-top-color: var(--color-brown-600); }
-
-  .pillar__number {
-    font-family: var(--font-serif);
-    font-size: var(--text-3xl);
-    font-weight: var(--weight-black);
-    color: var(--color-red-500);
-    opacity: 0.3;
-    line-height: 1;
+  .bio__eyebrow {
+    font-family: var(--font-impacto);
+    font-size: var(--text-xs);
+    color: var(--carmin);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-pancada);
     margin-bottom: var(--space-3);
   }
 
-  .pillar__title {
-    font-size: var(--text-2xl);
-    margin: 0 0 var(--space-2);
-    color: var(--color-brown-900);
+  .bio__title {
+    font-family: var(--font-impacto);
+    font-size: clamp(2rem, 4vw, 3rem);
+    line-height: 1;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-pancada);
+    color: var(--carvao);
+    margin: 0 0 var(--space-5);
   }
 
-  .pillar__summary {
-    font-family: var(--font-serif);
+  .bio__lead {
+    font-family: var(--font-corpo);
+    font-size: var(--text-lg);
+    line-height: var(--leading-relaxed);
+    color: var(--carvao);
+    margin: 0 0 var(--space-4);
+  }
+
+  .bio__text p {
+    font-family: var(--font-corpo);
+    font-size: var(--text-base);
+    line-height: var(--leading-relaxed);
+    color: var(--carvao-claro);
+    margin: 0 0 var(--space-4);
+  }
+
+  .bio__text strong { color: var(--carvao); font-weight: var(--weight-bold); }
+
+  .bio__quote {
+    border: var(--border-grossa) solid var(--carvao);
+    background: var(--papel);
+    padding: var(--space-7);
+  }
+
+  .bio__quote blockquote {
+    margin: 0 0 var(--space-6);
+    padding: 0;
+    border-left: var(--border-grossa) solid var(--carmin);
+    padding-left: var(--space-4);
+  }
+
+  .bio__quote-text {
+    font-family: var(--font-manuscrita);
     font-style: italic;
     font-size: var(--text-md);
-    color: var(--color-red-600);
-    margin: 0 0 var(--space-4);
-    font-weight: var(--weight-medium);
-  }
-
-  .pillar__body {
-    color: var(--color-brown-800);
-    margin: 0 0 var(--space-4);
     line-height: var(--leading-relaxed);
+    color: var(--carvao);
+    margin: 0;
   }
 
-  .pillar__actions {
+  .bio__quote em {
+    color: var(--carmin);
+    font-style: italic;
+  }
+
+  .bio__quote footer {
+    margin-top: var(--space-3);
+    font-family: var(--font-impacto);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-pancada);
+    color: var(--carvao-claro);
+  }
+
+  .bio__quote cite {
+    color: var(--carvao);
+    font-style: normal;
+    font-weight: var(--weight-bold);
+    margin-right: var(--space-2);
+  }
+
+  .bio__pillars {
+    border-top: var(--border-fina) solid var(--carvao-medio);
+    padding-top: var(--space-5);
     display: flex;
     flex-direction: column;
-    gap: var(--space-2);
-    padding-top: var(--space-4);
-    border-top: 1px dashed var(--color-sand-200);
+    gap: var(--space-4);
   }
 
-  .pillar__actions li {
-    display: flex;
-    align-items: flex-start;
-    gap: var(--space-2);
-    font-size: var(--text-sm);
-    color: var(--color-brown-700);
-  }
-
-  .pillar__bullet {
-    color: var(--color-red-500);
-    font-weight: var(--weight-bold);
-    flex-shrink: 0;
-  }
-
-  /* ====== TIMELINE ====== */
-  .timeline {
-    position: relative;
-    max-width: 56rem;
-    margin-inline: auto;
-    padding-left: var(--space-8);
-  }
-
-  .timeline::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: var(--space-2);
-    bottom: var(--space-2);
-    width: 2px;
-    background: var(--color-sand-200);
-  }
-
-  .timeline__item {
-    position: relative;
-    padding-bottom: var(--space-8);
-  }
-
-  .timeline__item::before {
-    content: "";
-    position: absolute;
-    left: -2rem;
-    top: var(--space-2);
-    width: 14px;
-    height: 14px;
-    background: var(--color-red-500);
-    border: 3px solid var(--color-sand-50);
-    border-radius: 50%;
-    margin-left: -7px;
-    box-shadow: 0 0 0 2px var(--color-red-500);
-  }
-
-  .timeline__year {
-    font-family: var(--font-sans);
-    font-size: var(--text-xs);
-    font-weight: var(--weight-bold);
-    color: var(--color-red-500);
+  .bio__pillar h3 {
+    font-family: var(--font-impacto);
+    font-size: var(--text-base);
     text-transform: uppercase;
-    letter-spacing: var(--tracking-widest);
-    margin-bottom: var(--space-1);
+    letter-spacing: var(--tracking-pancada);
+    color: var(--carmin);
+    margin: 0 0 var(--space-1);
   }
 
-  .timeline__title {
-    font-size: var(--text-xl);
-    margin: 0 0 var(--space-2);
-    color: var(--color-brown-900);
-  }
-
-  .timeline__text {
-    color: var(--color-brown-700);
+  .bio__pillar p {
+    font-family: var(--font-corpo);
+    font-size: var(--text-sm);
+    color: var(--carvao-claro);
     margin: 0;
-    line-height: var(--leading-relaxed);
+    line-height: var(--leading-snug);
   }
 
-  .history-cta {
-    text-align: center;
+  /* ============ HISTÓRIA ============ */
+  .historia {
+    padding-block: var(--space-16);
+    background: var(--papel);
+    border-bottom: var(--border-grossa) solid var(--carvao);
+  }
+
+  .historia__header {
+    margin-bottom: var(--space-10);
+    border-bottom: var(--border-grossa) solid var(--carvao);
+    padding-bottom: var(--space-5);
+  }
+
+  .historia__title {
+    font-family: var(--font-impacto);
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-pancada);
+    color: var(--carvao);
+    margin: 0;
+  }
+
+  .historia__list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+    max-width: 56rem;
+  }
+
+  .historia__item {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-2);
+    padding-bottom: var(--space-5);
+    border-bottom: var(--border-fina) solid var(--carvao-medio);
+  }
+
+  @media (min-width: 600px) {
+    .historia__item {
+      grid-template-columns: 10rem 1fr;
+      gap: var(--space-7);
+      align-items: start;
+    }
+  }
+
+  .historia__ano {
+    font-family: var(--font-impacto);
+    font-size: var(--text-xl);
+    color: var(--carmin);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-pancada);
+    margin: 0;
+  }
+
+  .historia__item h3 {
+    font-family: var(--font-impacto);
+    font-size: var(--text-lg);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-pancada);
+    color: var(--carvao);
+    margin: 0 0 var(--space-2);
+  }
+
+  .historia__item p {
+    font-family: var(--font-corpo);
+    font-size: var(--text-base);
+    line-height: var(--leading-relaxed);
+    color: var(--carvao-claro);
+    margin: 0;
+  }
+
+  .historia__cta {
     margin-top: var(--space-8);
   }
 
-  /* ====== PROPOSALS PREVIEW ====== */
-  .proposals-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--space-4);
-    margin-bottom: var(--space-12);
+  /* ============ CTA FINAL ============ */
+  .cta-final {
+    padding-block: var(--space-16);
+    background: var(--carmin);
+    color: var(--papel);
+    border-top: var(--border-grossa) solid var(--carvao);
   }
 
-  @media (min-width: 640px) {
-    .proposals-grid { grid-template-columns: repeat(2, 1fr); }
-  }
-
-  @media (min-width: 960px) {
-    .proposals-grid { grid-template-columns: repeat(3, 1fr); }
-  }
-
-  .proposal-card {
-    background: var(--color-white);
-    border: 1px solid var(--color-sand-200);
-    border-radius: var(--radius-lg);
-    padding: var(--space-6);
-    transition: all var(--duration-normal) var(--ease-out);
-  }
-
-  .proposal-card:hover {
-    border-color: var(--color-red-500);
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
-  }
-
-  .proposal-card__title {
-    font-size: var(--text-lg);
-    margin: 0 0 var(--space-2);
-    color: var(--color-red-700);
-  }
-
-  .proposal-card__summary {
+  .cta-final__eyebrow {
+    font-family: var(--font-impacto);
     font-size: var(--text-sm);
-    color: var(--color-brown-700);
-    margin: 0 0 var(--space-3);
-    line-height: var(--leading-relaxed);
-  }
-
-  .proposal-card__list {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-1);
-    font-size: var(--text-xs);
-    color: var(--color-brown-600);
-  }
-
-  .proposal-card__list li {
-    padding-left: var(--space-4);
-    position: relative;
-  }
-
-  .proposal-card__list li::before {
-    content: "•";
-    position: absolute;
-    left: 0;
-    color: var(--color-red-500);
-    font-weight: var(--weight-bold);
-  }
-
-  .section-cta {
-    text-align: center;
-  }
-
-  /* ====== SUPORTE ====== */
-  .support-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--space-6);
-  }
-
-  @media (min-width: 720px) {
-    .support-grid { grid-template-columns: repeat(3, 1fr); }
-  }
-
-  .support-card {
-    display: flex;
-    flex-direction: column;
-    background: var(--color-brown-800);
-    border: 1px solid var(--color-brown-700);
-    border-radius: var(--radius-xl);
-    padding: var(--space-8) var(--space-6);
-    text-decoration: none;
-    color: var(--color-sand-50);
-    transition: all var(--duration-normal) var(--ease-out);
-  }
-
-  .support-card:hover {
-    background: var(--color-brown-700);
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-xl);
-  }
-
-  .support-card__icon {
-    font-size: 2.5rem;
-    margin-bottom: var(--space-3);
-  }
-
-  .support-card h3 {
-    font-size: var(--text-xl);
-    margin: 0 0 var(--space-3);
-    color: var(--color-sand-50);
-  }
-
-  .support-card p {
-    color: var(--color-sand-200);
-    font-size: var(--text-sm);
-    line-height: var(--leading-relaxed);
-    margin: 0 0 var(--space-4);
-    flex: 1;
-  }
-
-  .support-card__cta {
-    color: var(--color-red-300);
-    font-weight: var(--weight-bold);
-    font-size: var(--text-sm);
-  }
-
-  /* ====== CTA FINAL ====== */
-  .final-cta {
-    text-align: center;
-    background: linear-gradient(135deg, var(--color-red-700), var(--color-red-500));
-    color: var(--color-white);
-  }
-
-  .final-cta__title {
-    font-size: clamp(2rem, 5vw, 3.5rem);
-    color: var(--color-white);
-    line-height: var(--leading-tight);
-    margin: 0 0 var(--space-6);
-  }
-
-  .final-cta__eyebrow {
-    display: block;
-    font-family: var(--font-sans);
-    font-size: var(--text-sm);
-    font-weight: var(--weight-bold);
     text-transform: uppercase;
-    letter-spacing: var(--tracking-widest);
-    margin-bottom: var(--space-3);
-    opacity: 0.85;
+    letter-spacing: var(--tracking-pancada);
+    color: var(--estrela);
+    margin: 0 0 var(--space-3);
+    border-left: var(--border-grossa) solid var(--estrela);
+    padding-left: var(--space-3);
   }
 
-  .final-cta__title em {
-    font-style: italic;
-    color: var(--color-sand-200);
-    font-weight: var(--weight-medium);
-    display: block;
+  .cta-final__title {
+    font-family: var(--font-impacto);
+    font-size: clamp(2rem, 5vw, 3rem);
+    line-height: 1;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-pancada);
+    color: var(--papel);
+    margin: 0 0 var(--space-7);
+    max-width: 32rem;
   }
 
-  .final-cta__body {
-    color: var(--color-white);
-    font-size: var(--text-md);
-    margin: 0 auto var(--space-8);
-    max-width: 36rem;
-  }
-
-  .final-cta__body strong {
-    font-weight: var(--weight-bold);
-  }
-
-  .final-cta__actions {
+  .cta-final__actions {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
     gap: var(--space-3);
   }
 
-  .final-cta__actions :global(.btn--secondary) {
-    color: var(--color-white);
-    border-color: var(--color-white);
+  .wa-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-4) var(--space-6);
+    background: var(--papel);
+    color: var(--carmin);
+    border: var(--border-grossa) solid var(--papel);
+    font-family: var(--font-impacto);
+    font-size: var(--text-md);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-pancada);
+    text-decoration: none;
+    min-height: 56px;
   }
 
-  .final-cta__actions :global(.btn--secondary:hover) {
-    background: var(--color-white);
-    color: var(--color-red-700);
+  .wa-cta:hover { background: var(--estrela); border-color: var(--estrela); }
+
+  /* Botão "Outras formas de apoiar" no fundo vermelho precisa ser invertido */
+  .cta-final :global(.btn--secondary) {
+    color: var(--papel);
+    background: var(--carmin-escuro);
+    border-color: var(--papel);
+  }
+  .cta-final :global(.btn--secondary:hover) {
+    background: var(--papel);
+    color: var(--carmin);
+    border-color: var(--papel);
   }
 </style>

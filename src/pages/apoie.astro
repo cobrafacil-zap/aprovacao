@@ -5,491 +5,627 @@ import { SITE } from '../site.config.js';
 ---
 
 <Layout
-  title="Apoie a campanha — Elisângela Tomba"
-  description="Três formas de apoiar a campanha de Elisângela Tomba: seja voluntário, faça uma doação registrada na Justiça Eleitoral, ou divulgue."
+  title="Apoie — Elisângela Tomba"
+  description="Três formas de apoiar a campanha da Elisângela Tomba: voluntário, doação registrada na Justiça Eleitoral, ou divulgação da história."
   pageType="website"
 >
-  <section class="page-hero" aria-labelledby="page-title">
+  <!-- ============ TOPO (sem foto, sem emoji, sem page-hero) ============ -->
+  <header class="topo">
     <div class="container">
-      <span class="eyebrow">Como apoiar</span>
-      <h1 id="page-title" class="page-hero__title">
-        Essa campanha é <em>feita com você</em>
-      </h1>
-      <p class="page-hero__lede">
-        Para chegar à Assembleia Legislativa, a Elisângela precisa de gente que acredita nessa história. Três formas de caminhar junto — escolha a sua.
+      <p class="topo__eyebrow">Como apoiar</p>
+      <h1 class="topo__titulo">Tem 3 jeitos de caminhar comigo.</h1>
+      <p class="topo__intro">
+        Pra chegar na Assembleia, eu preciso de gente que acredita.
+        Escolha o jeito que faz sentido pra você.
+        <strong>Tudo que chega aqui é registrado na Justiça Eleitoral.</strong>
       </p>
+    </div>
+  </header>
+
+  <!-- ============ 1. VOLUNTÁRIO ============ -->
+  <section class="apoio" id="voluntario" aria-labelledby="vol-titulo">
+    <div class="container apoio__container">
+      <header class="apoio__cabecalho">
+        <p class="apoio__num">01</p>
+        <h2 id="vol-titulo">Quer ser voluntário(a)?</h2>
+        <p>
+          Tem trabalho pra quem prefere panfletar na rua, pra quem prefere
+          mexer com rede social, pra quem mora no interior e quer ajudar
+          de casa. A <strong>vó Francisca não criou 8 filhos sozinha</strong> —
+          essa campanha também não.
+        </p>
+      </header>
+
+      <form
+        class="form"
+        id="form-voluntario"
+        action="#"
+        method="post"
+        aria-label="Cadastro de voluntário"
+        data-form-type="voluntario"
+      >
+        <div class="form__linha">
+          <label class="form__campo">
+            <span>Nome completo *</span>
+            <input type="text" name="nome" required autocomplete="name" />
+          </label>
+          <label class="form__campo">
+            <span>Cidade/Região *</span>
+            <input type="text" name="cidade" required autocomplete="address-level2" />
+          </label>
+        </div>
+
+        <div class="form__linha">
+          <label class="form__campo">
+            <span>WhatsApp *</span>
+            <input type="tel" name="whatsapp" required inputmode="tel" autocomplete="tel" placeholder="(00) 00000-0000" />
+          </label>
+          <label class="form__campo">
+            <span>E-mail</span>
+            <input type="email" name="email" autocomplete="email" />
+          </label>
+        </div>
+
+        <fieldset class="form__grupo">
+          <legend>Como você quer ajudar? (marca o que fizer sentido)</legend>
+          <label class="form__check">
+            <input type="checkbox" name="tipo" value="panfletagem" />
+            <span>Panfletagem e materiais</span>
+          </label>
+          <label class="form__check">
+            <input type="checkbox" name="tipo" value="redes" />
+            <span>Redes sociais e comunicação</span>
+          </label>
+          <label class="form__check">
+            <input type="checkbox" name="tipo" value="eventos" />
+            <span>Eventos, comícios e caravanas</span>
+          </label>
+          <label class="form__check">
+            <input type="checkbox" name="tipo" value="conteudo" />
+            <span>Produção de texto, foto e vídeo</span>
+          </label>
+          <label class="form__check">
+            <input type="checkbox" name="tipo" value="comunidade" />
+            <span>Articulação com minha comunidade</span>
+          </label>
+        </fieldset>
+
+        <label class="form__consent">
+          <input type="checkbox" name="consentimento" required />
+          <span>
+            Li e concordo com a <a href="/politica-de-privacidade/">Política de Privacidade</a>.
+            Autorizo a campanha a me contatar pelo WhatsApp informado.
+          </span>
+        </label>
+
+        <Button type="submit" variant="primary" size="md">
+          Quero ser voluntário(a)
+        </Button>
+
+        <p class="form__mensagem" role="status" aria-live="polite"></p>
+      </form>
     </div>
   </section>
 
-  <section class="section">
-    <div class="container">
+  <!-- ============ 2. DOAÇÃO (tarja preta) ============ -->
+  <section class="apoio apoio--escuro" id="doacao" aria-labelledby="doacao-titulo">
+    <div class="container apoio__container">
+      <header class="apoio__cabecalho">
+        <p class="apoio__num apoio__num--claro">02</p>
+        <h2 id="doacao-titulo">Quer doar?</h2>
+        <p>
+          Toda doação vira <strong>nota fiscal eleitoral</strong>. O seu real
+          chega em panfleto, em combustível pra ir no interior, em álbum
+          de família pra uma equipe que mora longe.
+        </p>
+      </header>
 
-      <!-- 1. Seja voluntário -->
-      <article class="help-card" id="voluntario">
-        <div class="help-card__icon" aria-hidden="true">🤝</div>
-        <div class="help-card__body">
-          <h2>Seja voluntário(a)</h2>
-          <p>
-            Ajude em panfletagem, eventos, redes sociais, redação de conteúdo, organização do comitê ou articulação com sua comunidade. Cada pessoa faz diferença — e cada tempo disponível é bem-vindo.
-          </p>
-          <ul class="help-card__list">
-            <li>📍 Em Curitiba e Região Metropolitana</li>
-            <li>🌾 No interior do Paraná — pode ser online</li>
-            <li>📱 Nas redes sociais e grupos de WhatsApp</li>
-            <li>✍️ Na produção de texto, fotos e vídeos</li>
-          </ul>
-          <form
-            class="help-form"
-            id="form-voluntario"
-            action="#"
-            method="post"
-            aria-label="Formulário de cadastro de voluntário"
-            data-form-type="voluntario"
-          >
-            <div class="form-row">
-              <label>
-                <span>Nome completo *</span>
-                <input type="text" name="nome" required autocomplete="name" />
-              </label>
-              <label>
-                <span>Cidade/Região *</span>
-                <input type="text" name="cidade" required autocomplete="address-level2" />
-              </label>
-            </div>
-            <div class="form-row">
-              <label>
-                <span>WhatsApp *</span>
-                <input type="tel" name="whatsapp" required inputmode="tel" autocomplete="tel" placeholder="(00) 00000-0000" />
-              </label>
-              <label>
-                <span>E-mail</span>
-                <input type="email" name="email" autocomplete="email" />
-              </label>
-            </div>
-            <fieldset class="form-fieldset">
-              <legend>Como você quer ajudar?</legend>
-              <label class="checkbox">
-                <input type="checkbox" name="tipo" value="panfletagem" />
-                <span>Panfletagem e materiais</span>
-              </label>
-              <label class="checkbox">
-                <input type="checkbox" name="tipo" value="redes" />
-                <span>Redes sociais e comunicação</span>
-              </label>
-              <label class="checkbox">
-                <input type="checkbox" name="tipo" value="eventos" />
-                <span>Eventos e comícios</span>
-              </label>
-              <label class="checkbox">
-                <input type="checkbox" name="tipo" value="conteudo" />
-                <span>Produção de conteúdo (texto, foto, vídeo)</span>
-              </label>
-            </fieldset>
-            <label class="consent">
-              <input type="checkbox" name="consentimento" required />
-              <span>Concordo com a <a href="/politica-de-privacidade/">Política de Privacidade</a> e com o uso dos meus dados para receber contato da campanha. *</span>
-            </label>
-            <Button type="submit" variant="primary" size="md">Quero ser voluntário(a)</Button>
-            <p class="form-message" role="status" aria-live="polite"></p>
-          </form>
-        </div>
-      </article>
+      <div class="apoio__corpo">
+        <p>
+          Vou usar apenas plataformas <strong>autorizadas pelo TSE</strong>
+          para receber doações — conforme a lei obriga. Em breve divulgamos
+          os links de cada uma aqui.
+        </p>
 
-      <!-- 2. Doação -->
-      <article class="help-card help-card--dark" id="doacao">
-        <div class="help-card__icon" aria-hidden="true">💚</div>
-        <div class="help-card__body">
-          <h2>Faça uma doação</h2>
-          <p>
-            Toda doação é registrada na Justiça Eleitoral. Sua contribuição ajuda a campanha a chegar nos 399 municípios do Paraná. O limite de gastos para o cargo de Deputado Estadual em 2026 é de <strong>R$ 1.270.629,01</strong> — e cada real conta.
-          </p>
-          <p>
-            A Elisângela usa apenas plataformas <strong>cadastradas no TSE</strong> para receber doações, conforme exige a lei. Em breve divulgaremos os links aqui.
-          </p>
-          <div class="donation-platforms">
-            <p class="donation-platforms__title">Plataformas autorizadas pelo TSE para 2026:</p>
-            <ul>
-              <li>AppCívico</li>
-              <li>Elegis</li>
-              <li>GMT Tecnologia</li>
-              <li>QueroApoiar</li>
-            </ul>
-          </div>
-          <p class="donation-note">
-            <strong>Importante:</strong> Pessoas jurídicas (empresas) não podem doar — apenas pessoas físicas, conforme a Lei das Eleições.
-          </p>
+        <ul class="plataformas" aria-label="Plataformas de doação autorizadas pelo TSE para 2026">
+          <li>AppCívico</li>
+          <li>Elegis</li>
+          <li>GMT Tecnologia</li>
+          <li>QueroApoiar</li>
+        </ul>
+
+        <p class="aviso-doacao">
+          <strong>Atenção:</strong> pessoa jurídica (empresa, MEI, CNPJ) não
+          pode doar pra campanha — só pessoa física, conforme a Lei das
+          Eleições. Quem doar recebe CPF na nota fiscal.
+        </p>
+
+        <div class="apoio__acoes">
           {SITE.integrations.donationUrl && SITE.integrations.donationUrl !== '#' ? (
             <Button href={SITE.integrations.donationUrl} variant="primary" size="lg" external>
               Doar agora
             </Button>
           ) : (
-            <Button href={`https://wa.me/${SITE.contacts.whatsapp}?text=Quero%20fazer%20uma%20doa%C3%A7%C3%A3o`} variant="primary" size="lg" external>
+            <Button
+              href={`https://wa.me/${SITE.contacts.whatsapp}?text=${encodeURIComponent('Quero fazer uma doação pra campanha. Me explica como funciona.')}`}
+              variant="primary" size="lg" external
+            >
               Falar sobre doação no WhatsApp
             </Button>
           )}
         </div>
-      </article>
+      </div>
+    </div>
+  </section>
 
-      <!-- 3. Divulgue -->
-      <article class="help-card" id="divulgue">
-        <div class="help-card__icon" aria-hidden="true">📲</div>
-        <div class="help-card__body">
-          <h2>Divulgue e converse</h2>
-          <p>
-            Boca a boca ainda é a melhor campanha. Siga nas redes, compartilhe o site, mande esta história para quem acredita. Cada pessoa que conhece a Elisângela amplia o alcance.
-          </p>
-          <div class="share-buttons">
-            <a
-              href={`https://api.whatsapp.com/send?text=${encodeURIComponent('Conheça a história de Elisângela Tomba, candidata a Deputada Estadual pelo Paraná: https://www.elisangelatomba.com.br')}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="share-btn share-btn--wa"
-            >
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
-              </svg>
-              Compartilhar no WhatsApp
-            </a>
-            <a
-              href={`https://www.instagram.com/elisangelatomba`}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="share-btn share-btn--ig"
-            >
-              Seguir no Instagram
-            </a>
-            <a
-              href={`https://wa.me/${SITE.contacts.whatsapp}?text=Quero%20ajudar%20divulgando`}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="share-btn share-btn--ghost"
-            >
-              Falar no WhatsApp
-            </a>
-          </div>
+  <!-- ============ 3. DIVULGUE (texto corrido + botões chapados) ============ -->
+  <section class="apoio" id="divulgue" aria-labelledby="divulgue-titulo">
+    <div class="container apoio__container">
+      <header class="apoio__cabecalho">
+        <p class="apoio__num">03</p>
+        <h2 id="divulgue-titulo">Quer só divulgar?</h2>
+        <p>
+          Boca a boca ainda é a melhor campanha. Manda esta história pra
+          aquela prima que vive no interior, pra amiga do colégio que vota
+          PT, pro pai que não concorda com nada mas tá aberto a escutar.
+          Cada compartilhamento vale mais do que 10 impulsos de rede social.
+        </p>
+      </header>
+
+      <div class="apoio__corpo">
+        <p class="apoio__sub">Botão pra mandar agora:</p>
+
+        <div class="divulgue__botoes">
+          <a
+            class="btn-share btn-share--wa"
+            href={`https://api.whatsapp.com/send?text=${encodeURIComponent('Conheça a história de Elisângela Tomba, candidata a Deputada Estadual pelo Paraná: https://www.elisangelatomba.com.br')}`}
+            target="_blank" rel="noopener noreferrer"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+            </svg>
+            Mandar no WhatsApp
+          </a>
+          <a class="btn-share btn-share--ig" href="https://www.instagram.com/elisangelatomba" target="_blank" rel="noopener noreferrer">
+            Seguir no Instagram
+          </a>
         </div>
-      </article>
 
+        <p class="apoio__sub">Pra ficar por dentro:</p>
+        <ul class="divulgue__links">
+          <li><a href={SITE.contacts.instagram} target="_blank" rel="noopener noreferrer">Instagram · @elisangelatomba</a></li>
+          <li><a href={SITE.contacts.facebook} target="_blank" rel="noopener noreferrer">Facebook · /elisangelatomba</a></li>
+          <li><a href="/contato/">Press kit e materiais</a></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CTA ============ -->
+  <section class="cta-final">
+    <div class="container">
+      <h2 class="cta-final__titulo">Do Paraná que trabalha, com a força das mulheres, pra Assembleia.</h2>
+      <div class="cta-final__acoes">
+        <a class="wa-cta"
+          href={`https://wa.me/${SITE.contacts.whatsapp}?text=${encodeURIComponent('Tô contigo. Quero caminhar junto.')}`}
+          target="_blank" rel="noopener noreferrer"
+        >
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+          </svg>
+          Fala comigo no WhatsApp
+        </a>
+      </div>
     </div>
   </section>
 </Layout>
 
 <style>
-  .page-hero {
-    padding-block: var(--space-20) var(--space-12);
-    background: linear-gradient(180deg, var(--color-rose-100) 0%, var(--color-sand-50) 100%);
-    text-align: center;
+  /* ============ TOPO ============ */
+  .topo {
+    padding-block: var(--space-16) var(--space-10);
+    background: var(--papel);
+    border-bottom: var(--border-grossa) solid var(--carvao);
   }
 
-  .page-hero__title {
+  .topo__eyebrow {
+    font-family: var(--font-impacto);
+    font-size: var(--text-xs);
+    color: var(--carmin);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-pancada);
+    border-left: var(--border-grossa) solid var(--carmin);
+    padding-left: var(--space-3);
+    margin-bottom: var(--space-4);
+  }
+
+  .topo__titulo {
+    font-family: var(--font-impacto);
     font-size: clamp(2.5rem, 6vw, 4.5rem);
-    margin: 0 auto var(--space-6);
-    max-width: 32ch;
-    line-height: var(--leading-tight);
+    line-height: 1;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-pancada);
+    color: var(--carvao);
+    margin: 0 0 var(--space-5);
+    max-width: 22ch;
   }
 
-  .page-hero__title em {
+  .topo__intro {
+    font-family: var(--font-manuscrita);
     font-style: italic;
-    color: var(--color-red-600);
-  }
-
-  .page-hero__lede {
-    font-size: var(--text-md);
-    color: var(--color-brown-700);
-    max-width: 48rem;
-    margin: 0 auto;
+    font-size: clamp(1.0625rem, 2vw, 1.25rem);
     line-height: var(--leading-relaxed);
+    color: var(--carvao-claro);
+    max-width: 38rem;
+    margin: 0;
   }
 
-  .help-card {
+  .topo__intro strong { color: var(--carvao); background: var(--estrela); padding-inline: 4px; }
+
+  /* ============ APOIO (cada bloco = seu próprio bloco, sem card) ============ */
+  .apoio {
+    padding-block: var(--space-16);
+    border-bottom: var(--border-fina) solid var(--carvao-medio);
+  }
+
+  .apoio:nth-of-type(1) { background: var(--papel); }
+  .apoio:nth-of-type(2) { background: var(--papel-velho); }
+  .apoio:nth-of-type(3) { background: var(--papel); }
+
+  .apoio--escuro {
+    background: var(--preto);
+    color: var(--papel);
+    border-bottom: var(--border-grossa) solid var(--carvao);
+  }
+
+  .apoio__container {
     display: grid;
     grid-template-columns: 1fr;
-    gap: var(--space-6);
-    max-width: 56rem;
-    margin: 0 auto var(--space-12);
-    padding: var(--space-10);
-    background: var(--color-white);
-    border: 1px solid var(--color-sand-200);
-    border-radius: var(--radius-2xl);
-    box-shadow: var(--shadow-md);
+    gap: var(--space-10);
   }
 
-  .help-card--dark {
-    background: var(--color-brown-900);
-    color: var(--color-sand-50);
-    border-color: var(--color-brown-800);
+  @media (min-width: 900px) {
+    .apoio__container {
+      grid-template-columns: 1fr 1.2fr;
+      gap: var(--space-12);
+      align-items: start;
+    }
   }
 
-  .help-card--dark h2 { color: var(--color-sand-50); }
-  .help-card--dark p { color: var(--color-sand-200); }
-  .help-card--dark strong { color: var(--color-sand-50); }
-
-  .help-card__icon {
-    font-size: 3rem;
+  .apoio__cabecalho h2 {
+    font-family: var(--font-impacto);
+    font-size: clamp(2rem, 4vw, 3rem);
     line-height: 1;
-  }
-
-  .help-card__body h2 {
-    font-size: var(--text-3xl);
-    margin: 0 0 var(--space-3);
-    color: var(--color-red-700);
-  }
-
-  .help-card__body p {
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-pancada);
+    color: var(--carvao);
     margin: 0 0 var(--space-4);
+  }
+
+  .apoio--escuro .apoio__cabecalho h2 { color: var(--papel); }
+
+  .apoio__cabecalho p {
+    font-family: var(--font-corpo);
+    font-size: var(--text-base);
     line-height: var(--leading-relaxed);
+    color: var(--carvao-claro);
+    margin: 0;
   }
 
-  .help-card__list {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-2);
-    margin: 0 0 var(--space-6);
-    padding-left: 0;
+  .apoio--escuro .apoio__cabecalho p { color: var(--papel-saco); }
+
+  .apoio__num {
+    font-family: var(--font-impacto);
+    font-size: clamp(3.5rem, 8vw, 5rem);
+    line-height: 0.8;
+    color: var(--carmin);
+    margin: 0 0 var(--space-3);
   }
 
-  .help-card__list li {
-    color: var(--color-brown-700);
-    padding-left: var(--space-1);
-  }
+  .apoio__num--claro { color: var(--estrela); }
 
-  .donation-platforms {
-    background: var(--color-sand-100);
-    padding: var(--space-5);
-    border-radius: var(--radius-lg);
-    margin: var(--space-4) 0;
-  }
-
-  .help-card--dark .donation-platforms {
-    background: var(--color-brown-800);
-  }
-
-  .donation-platforms__title {
-    font-size: var(--text-sm);
-    font-weight: var(--weight-semibold);
-    color: var(--color-brown-800);
-    margin: 0 0 var(--space-2);
-  }
-
-  .help-card--dark .donation-platforms__title {
-    color: var(--color-sand-50);
-  }
-
-  .donation-platforms ul {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-2);
-  }
-
-  .donation-platforms li {
-    padding: var(--space-1) var(--space-3);
-    background: var(--color-white);
-    color: var(--color-brown-900);
-    border-radius: var(--radius-full);
-    font-size: var(--text-sm);
-    font-weight: var(--weight-semibold);
-  }
-
-  .help-card--dark .donation-platforms li {
-    background: var(--color-sand-50);
-  }
-
-  .donation-note {
-    background: var(--color-rose-100);
-    padding: var(--space-3) var(--space-4);
-    border-radius: var(--radius-md);
-    border-left: 3px solid var(--color-red-500);
-    font-size: var(--text-sm);
-    margin: var(--space-4) 0;
-  }
-
-  .help-card--dark .donation-note {
-    background: var(--color-brown-700);
-    color: var(--color-sand-50);
-  }
-
-  /* Formulário */
-  .help-form {
+  /* ============ FORM ============ */
+  .form {
     display: flex;
     flex-direction: column;
     gap: var(--space-4);
-    margin-top: var(--space-4);
-    padding-top: var(--space-6);
-    border-top: 1px dashed var(--color-sand-200);
   }
 
-  .form-row {
+  .form__linha {
     display: grid;
     grid-template-columns: 1fr;
     gap: var(--space-4);
   }
 
   @media (min-width: 600px) {
-    .form-row { grid-template-columns: 1fr 1fr; }
+    .form__linha { grid-template-columns: 1fr 1fr; }
   }
 
-  .help-form label {
+  .form__campo {
     display: flex;
     flex-direction: column;
     gap: var(--space-1);
-    font-size: var(--text-sm);
-    font-weight: var(--weight-semibold);
-    color: var(--color-brown-800);
+    font-family: var(--font-impacto);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-pancada);
+    color: var(--carvao);
   }
 
-  .help-form input[type="text"],
-  .help-form input[type="email"],
-  .help-form input[type="tel"] {
-    padding: var(--space-3) var(--space-4);
-    border: 2px solid var(--color-sand-200);
-    border-radius: var(--radius-md);
+  .form__campo input {
+    padding: var(--space-3);
+    border: var(--border-grossa) solid var(--carvao);
+    border-radius: 0;
+    font-family: var(--font-corpo);
     font-size: var(--text-base);
-    font-weight: var(--weight-normal);
-    background: var(--color-white);
-    color: var(--color-brown-900);
-    transition: border-color var(--duration-fast);
+    color: var(--carvao);
+    background: var(--papel);
+    min-height: 48px;
+    margin-top: var(--space-1);
   }
 
-  .help-form input:focus {
-    outline: none;
-    border-color: var(--color-red-500);
+  .form__campo input:focus {
+    outline: 3px solid var(--carmin);
+    outline-offset: 2px;
   }
 
-  .form-fieldset {
-    border: 0;
-    padding: 0;
-    margin: 0;
+  .form__grupo {
+    border: var(--border-grossa) solid var(--carvao);
+    padding: var(--space-4);
   }
 
-  .form-fieldset legend {
-    font-size: var(--text-sm);
-    font-weight: var(--weight-semibold);
-    color: var(--color-brown-800);
-    margin-bottom: var(--space-2);
+  .form__grupo legend {
+    font-family: var(--font-impacto);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-pancada);
+    color: var(--carvao);
+    padding: 0 var(--space-2);
   }
 
-  .checkbox {
-    display: flex !important;
-    flex-direction: row !important;
+  .form__check {
+    display: flex;
     align-items: center;
-    gap: var(--space-2);
-    font-weight: var(--weight-normal) !important;
-    margin-bottom: var(--space-2);
+    gap: var(--space-3);
+    font-family: var(--font-corpo);
+    font-size: var(--text-base);
+    text-transform: none;
+    letter-spacing: 0;
+    color: var(--carvao);
+    margin-block: var(--space-2);
+    cursor: pointer;
   }
 
-  .checkbox input {
-    width: 18px;
-    height: 18px;
-    accent-color: var(--color-red-500);
-  }
-
-  .consent {
-    display: flex !important;
-    flex-direction: row !important;
-    align-items: flex-start;
-    gap: var(--space-2);
-    font-size: var(--text-sm);
-    font-weight: var(--weight-normal) !important;
-    color: var(--color-brown-700);
-    line-height: var(--leading-snug);
-  }
-
-  .consent a {
-    color: var(--color-red-600);
-    text-decoration: underline;
-  }
-
-  .consent input {
-    margin-top: 4px;
+  .form__check input {
+    width: 20px;
+    height: 20px;
+    accent-color: var(--carmin);
     flex-shrink: 0;
-    width: 18px;
-    height: 18px;
-    accent-color: var(--color-red-500);
   }
 
-  .form-message {
+  .form__consent {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-3);
+    font-family: var(--font-corpo);
+    font-size: var(--text-sm);
+    color: var(--carvao-claro);
+    line-height: var(--leading-snug);
+    padding: var(--space-3);
+    border-left: var(--border-grossa) solid var(--carmin);
+    background: var(--papel-velho);
+  }
+
+  .form__consent input {
+    width: 20px;
+    height: 20px;
+    accent-color: var(--carmin);
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .form__consent a {
+    color: var(--carmin);
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+  }
+
+  .form__mensagem {
     margin: 0;
     padding: var(--space-3);
-    border-radius: var(--radius-md);
+    font-family: var(--font-impacto);
     font-size: var(--text-sm);
-    font-weight: var(--weight-semibold);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-pancada);
     text-align: center;
     display: none;
   }
 
-  .form-message[data-state="success"] {
+  .form__mensagem[data-state="success"] {
     display: block;
-    background: #DCFCE7;
-    color: #166534;
-    border: 1px solid #86EFAC;
+    background: var(--estrela);
+    color: var(--preto);
+    border: var(--border-grossa) solid var(--carvao);
   }
 
-  .form-message[data-state="error"] {
+  .form__mensagem[data-state="error"] {
     display: block;
-    background: var(--color-rose-100);
-    color: var(--color-red-700);
-    border: 1px solid var(--color-rose-300);
+    background: var(--carmin);
+    color: var(--papel);
+    border: var(--border-grossa) solid var(--carvao);
   }
 
-  /* Share */
-  .share-buttons {
+  /* ============ CORPO DO BLOCO 2 e 3 ============ */
+  .apoio__corpo {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .apoio__corpo p {
+    font-family: var(--font-corpo);
+    font-size: var(--text-base);
+    line-height: var(--leading-relaxed);
+    color: var(--carvao-claro);
+    margin: 0;
+  }
+
+  .apoio--escuro .apoio__corpo p { color: var(--papel-saco); }
+  .apoio__corpo strong { color: var(--carvao); font-weight: var(--weight-bold); }
+  .apoio--escuro .apoio__corpo strong { color: var(--papel); }
+
+  .apoio__sub {
+    font-family: var(--font-impacto);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-pancada);
+    color: var(--carmin) !important;
+    margin-block: var(--space-2) 0 !important;
+  }
+
+  .apoio--escuro .apoio__sub { color: var(--estrela) !important; }
+
+  .plataformas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    list-style: none;
+    padding: 0;
+    margin: var(--space-2) 0;
+  }
+
+  .plataformas li {
+    padding: var(--space-2) var(--space-4);
+    background: var(--carvao);
+    color: var(--papel);
+    font-family: var(--font-impacto);
+    font-size: var(--text-sm);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-pancada);
+    border: var(--border-media) solid var(--papel);
+  }
+
+  .aviso-doacao {
+    padding: var(--space-3) var(--space-4);
+    border-left: var(--border-grossa) solid var(--estrela);
+    background: rgba(255, 205, 0, 0.1);
+    font-size: var(--text-sm) !important;
+  }
+
+  .apoio__acoes {
+    margin-top: var(--space-2);
+  }
+
+  .divulgue__botoes {
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-3);
+    margin-block: var(--space-3);
   }
 
-  .share-btn {
+  .btn-share {
     display: inline-flex;
     align-items: center;
     gap: var(--space-2);
     padding: var(--space-3) var(--space-5);
-    border-radius: var(--radius-full);
+    font-family: var(--font-impacto);
     font-size: var(--text-sm);
-    font-weight: var(--weight-semibold);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-pancada);
     text-decoration: none;
-    transition: all var(--duration-fast);
+    border: var(--border-grossa) solid var(--carvao);
+    min-height: 44px;
   }
 
-  .share-btn--wa {
-    background: #25D366;
-    color: var(--color-white);
+  .btn-share--wa {
+    background: var(--verde-whatsapp);
+    color: var(--papel);
+  }
+  .btn-share--wa:hover { background: var(--verde-whatsapp-hover); }
+
+  .btn-share--ig {
+    background: var(--carvao);
+    color: var(--papel);
+  }
+  .btn-share--ig:hover { background: var(--preto); }
+
+  .divulgue__links {
+    list-style: none;
+    padding: 0;
+    margin: var(--space-2) 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
   }
 
-  .share-btn--ig {
-    background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
-    color: var(--color-white);
+  .divulgue__links a {
+    font-family: var(--font-corpo);
+    color: var(--carvao);
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-decoration-color: var(--carmin);
   }
 
-  .share-btn--ghost {
-    background: var(--color-sand-100);
-    color: var(--color-brown-800);
+  /* ============ CTA ============ */
+  .cta-final {
+    padding-block: var(--space-16);
+    background: var(--carmin);
+    color: var(--papel);
+    text-align: center;
   }
 
-  .share-btn:hover {
-    transform: translateY(-1px);
-    box-shadow: var(--shadow-md);
+  .cta-final__titulo {
+    font-family: var(--font-impacto);
+    font-size: clamp(2rem, 5vw, 3rem);
+    line-height: 1;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-pancada);
+    color: var(--papel);
+    margin: 0 0 var(--space-7);
+    max-width: 32rem;
+    margin-inline: auto;
   }
+
+  .cta-final__acoes {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-3);
+  }
+
+  .wa-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-4) var(--space-6);
+    background: var(--papel);
+    color: var(--carmin);
+    border: var(--border-grossa) solid var(--papel);
+    font-family: var(--font-impacto);
+    font-size: var(--text-md);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-pancada);
+    text-decoration: none;
+    min-height: 56px;
+  }
+
+  .wa-cta:hover { background: var(--estrela); border-color: var(--estrela); }
 </style>
 
 <script>
-  // Formulário de voluntário: validação e feedback visual
-  // Em produção, substituir pelo POST para um endpoint (ex: serverless function, Supabase, etc.)
   const form = document.getElementById('form-voluntario') as HTMLFormElement | null;
-  const message = form?.querySelector('.form-message') as HTMLElement | null;
+  const message = form?.querySelector('.form__mensagem') as HTMLElement | null;
 
   if (form && message) {
     form.addEventListener('submit', (e) => {
       e.preventDefault();
-      const consentimento = (form.querySelector('input[name="consentimento"]') as HTMLInputElement)?.checked;
-
-      if (!consentimento) {
-        message.textContent = 'Você precisa concordar com a Política de Privacidade para enviar.';
+      const consent = (form.querySelector('input[name="consentimento"]') as HTMLInputElement)?.checked;
+      if (!consent) {
+        message.textContent = 'Marca a concordância pra gente poder te chamar.';
         message.setAttribute('data-state', 'error');
         return;
       }
-
-      // Aqui entraria o POST real. Por enquanto, simula sucesso.
-      message.textContent = '✅ Recebemos seu cadastro! Em breve a equipe da campanha entra em contato pelo WhatsApp. Obrigado(a)!';
+      message.textContent = 'Recebido. A equipe da campanha te chama pelo WhatsApp nos próximos dias.';
       message.setAttribute('data-state', 'success');
       form.reset();
     });

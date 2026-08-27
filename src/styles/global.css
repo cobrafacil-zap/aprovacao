@@ -1,13 +1,12 @@
 /* =========================================================
-   GLOBAL — Reset, base, utilitários
+   GLOBAL — Reset enxuto, base, utilitários
+   Campanha popular: menos polidez técnica, mais calor
    ========================================================= */
 
 @import "./tokens.css";
 
-/* Reset moderno */
-*,
-*::before,
-*::after {
+/* Reset enxuto */
+*, *::before, *::after {
   box-sizing: border-box;
 }
 
@@ -16,47 +15,34 @@
 }
 
 html {
-  font-family: var(--font-sans);
+  font-family: var(--font-corpo);
   font-size: 16px;
   line-height: var(--leading-normal);
   -webkit-text-size-adjust: 100%;
-  -moz-text-size-adjust: 100%;
-  text-size-adjust: 100%;
   scroll-behavior: smooth;
-  scroll-padding-top: 5rem;
+  scroll-padding-top: 80px;
 }
 
 body {
   min-height: 100vh;
-  font-family: var(--font-sans);
-  color: var(--color-brown-900);
-  background-color: var(--color-sand-50);
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  font-feature-settings: "kern", "liga", "calt";
+  font-family: var(--font-corpo);
+  color: var(--carvao);
+  background-color: var(--papel);
+  font-feature-settings: "kern", "liga";
 }
 
-img,
-picture,
-video,
-canvas,
-svg {
+img, picture, video, canvas, svg {
   display: block;
   max-width: 100%;
   height: auto;
 }
 
-input,
-button,
-textarea,
-select {
+input, button, textarea, select {
   font: inherit;
   color: inherit;
 }
 
-p,
-h1, h2, h3, h4, h5, h6 {
+p, h1, h2, h3, h4, h5, h6 {
   overflow-wrap: break-word;
 }
 
@@ -69,7 +55,15 @@ button {
 
 a {
   color: inherit;
-  text-decoration: none;
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+  transition: text-decoration-color var(--transition-rapida);
+}
+
+a:hover {
+  text-decoration-color: currentColor;
 }
 
 ul, ol {
@@ -79,49 +73,58 @@ ul, ol {
 
 /* ====== TIPOGRAFIA BASE ====== */
 
-h1, h2, h3, h4 {
-  font-family: var(--font-serif);
-  font-weight: var(--weight-bold);
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-impacto);
+  font-weight: var(--weight-regular);
   line-height: var(--leading-tight);
-  letter-spacing: var(--tracking-tight);
-  color: var(--color-brown-900);
+  color: var(--carvao);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-pancada);
 }
 
-h1 { font-size: var(--text-5xl); }
-h2 { font-size: var(--text-4xl); }
-h3 { font-size: var(--text-3xl); }
-h4 { font-size: var(--text-2xl); }
-h5, h6 { font-size: var(--text-xl); font-weight: var(--weight-semibold); }
+/* Citações e parágrafos narrativos usam Lora */
+h1.serif, h2.serif, h3.serif {
+  font-family: var(--font-manuscrita);
+  text-transform: none;
+  letter-spacing: var(--tracking-normal);
+  font-weight: var(--weight-bold);
+}
+
+h1 { font-size: clamp(2.5rem, 7vw, 4.5rem); }
+h2 { font-size: clamp(1.875rem, 4.5vw, 3rem); }
+h3 { font-size: clamp(1.375rem, 3vw, 2rem); }
+h4 { font-size: clamp(1.125rem, 2vw, 1.4375rem); }
 
 p {
-  max-width: var(--container-prose);
+  max-width: var(--container-texto);
   line-height: var(--leading-relaxed);
-  color: var(--color-brown-800);
+  color: var(--carvao-claro);
+  font-size: var(--text-base);
 }
 
-strong { font-weight: var(--weight-semibold); }
+strong, b {
+  font-weight: var(--weight-bold);
+  color: var(--carvao);
+}
 
 /* ====== UTILITÁRIOS ====== */
 
 .container {
   width: 100%;
-  max-width: var(--container-max);
+  max-width: var(--container-largo);
   margin-inline: auto;
-  padding-inline: var(--space-6);
+  padding-inline: var(--space-5);
 }
 
-.container-narrow {
-  width: 100%;
-  max-width: var(--container-narrow);
-  margin-inline: auto;
-  padding-inline: var(--space-6);
+@media (min-width: 768px) {
+  .container { padding-inline: var(--space-6); }
 }
 
-.container-text {
+.container-texto {
   width: 100%;
-  max-width: var(--container-text);
+  max-width: var(--container-texto);
   margin-inline: auto;
-  padding-inline: var(--space-6);
+  padding-inline: var(--space-5);
 }
 
 .sr-only {
@@ -136,114 +139,87 @@ strong { font-weight: var(--weight-semibold); }
   border: 0;
 }
 
+/* Skip link — tarja preta com texto amarelo */
 .skip-link {
   position: absolute;
   top: -100px;
-  left: var(--space-4);
+  left: var(--space-5);
   z-index: var(--z-toast);
-  padding: var(--space-3) var(--space-4);
-  background: var(--color-red-500);
-  color: var(--color-white);
-  font-weight: var(--weight-semibold);
-  border-radius: var(--radius-md);
-  transition: top var(--duration-fast) var(--ease-out);
+  padding: var(--space-3) var(--space-5);
+  background: var(--preto);
+  color: var(--estrela);
+  font-family: var(--font-impacto);
+  font-weight: var(--weight-regular);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-pancada);
+  text-decoration: none;
+  transition: top var(--transition-rapida);
 }
 
 .skip-link:focus {
-  top: var(--space-4);
+  top: var(--space-5);
 }
 
-/* Foco visível (acessibilidade WCAG 2.4.7) */
+/* Foco visível — contorno preto grosso, sem cor */
 :focus-visible {
-  outline: 3px solid var(--color-red-500);
+  outline: 3px solid var(--preto);
   outline-offset: 3px;
-  border-radius: 2px;
-}
-
-/* Reduzir movimento para quem prefere */
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
 }
 
 /* ====== SEÇÕES ====== */
 
 .section {
-  padding-block: var(--space-20);
+  padding-block: var(--space-9);
 }
 
 @media (max-width: 768px) {
-  .section { padding-block: var(--space-12); }
+  .section { padding-block: var(--space-7); }
 }
 
-.section--alt {
-  background-color: var(--color-sand-100);
+.section-papel-velho {
+  background-color: var(--papel-velho);
 }
 
-.section--dark {
-  background-color: var(--color-brown-900);
-  color: var(--color-sand-50);
+.section-preto {
+  background-color: var(--preto);
+  color: var(--papel);
 }
 
-.section--dark h1,
-.section--dark h2,
-.section--dark h3,
-.section--dark h4 {
-  color: var(--color-sand-50);
+.section-preto h1,
+.section-preto h2,
+.section-preto h3,
+.section-preto h4 {
+  color: var(--papel);
 }
 
-.section--dark p {
-  color: var(--color-sand-200);
+.section-preto p {
+  color: var(--papel-saco);
 }
 
-/* ====== TIPOS DE TAG (etiquetas pequenas) ====== */
+/* ====== TAG (etiqueta pequena, sem pill) ====== */
 .tag {
   display: inline-block;
   padding: var(--space-1) var(--space-3);
-  background: var(--color-rose-100);
-  color: var(--color-red-700);
+  background: transparent;
+  color: var(--carvao);
+  font-family: var(--font-impacto);
   font-size: var(--text-xs);
-  font-weight: var(--weight-semibold);
-  border-radius: var(--radius-full);
+  font-weight: var(--weight-regular);
   text-transform: uppercase;
-  letter-spacing: var(--tracking-widest);
+  letter-spacing: var(--tracking-pancada);
+  border: var(--border-media) solid var(--carvao);
 }
 
-/* ====== TIPOS DE EYEBROW (acima do título) ====== */
+/* ====== EYEBROW (acima do título) — versão contida ====== */
 .eyebrow {
   display: block;
-  font-family: var(--font-sans);
+  font-family: var(--font-impacto);
   font-size: var(--text-sm);
-  font-weight: var(--weight-semibold);
+  font-weight: var(--weight-regular);
   text-transform: uppercase;
-  letter-spacing: var(--tracking-widest);
-  color: var(--color-red-500);
+  letter-spacing: var(--tracking-pancada);
+  color: var(--carmin);
   margin-bottom: var(--space-3);
-}
-
-/* ====== ANIMAÇÕES ====== */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(24px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.fade-in {
-  animation: fadeIn var(--duration-slow) var(--ease-out);
-}
-
-.fade-in-up {
-  animation: fadeInUp var(--duration-slow) var(--ease-out) both;
 }
 
 /* ====== PRINT ====== */

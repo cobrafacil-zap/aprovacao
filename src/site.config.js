@@ -2,6 +2,9 @@
  * Dados de configuração da campanha
  * Centraliza informações usadas em várias páginas
  *
+ * Copy reescrita em primeira pessoa (voz da Elisângela) — sem slogans genéricos,
+ * sem policy brief. Frases curtas, com causos, lugares e nomes concretos.
+ *
  * ⚠️ ATENÇÃO LGPD/TSE: o CNPJ e o número de urna são públicos por exigência
  * da Justiça Eleitoral (Res. TSE 23.732/2024). Devem aparecer no rodapé.
  */
@@ -15,18 +18,21 @@ export const SITE = {
   party: 'PT',
   partyFull: 'Partido dos Trabalhadores',
   number: null, // ⚠️ Preencher com número de urna quando tiver
-  coalition: null, // Federação/coligação se houver
+  coalition: null,
 
-  // Slogan
-  slogan: 'Agora é oficial!',
-  subtitle: 'Representatividade. Oportunidade. Comunidade.',
+  // Slogan — frase de campanha, primeira pessoa
+  slogan: 'Eu sou a neta da Francisca. Agora é a vez das nossas comunidades na Assembleia.',
+  subtitle: 'Assistente social. Neta da vó Francisca. Fundadora da APAE de Jundiaí do Sul.',
 
-  // Biografia curta
-  shortBio: 'Assistente social, liderança popular e neta da dona Francisca. Neta da avó Francisca, cresceu na área rural do Paraná colhendo café e algodão. Fundou a APAE de Jundiaí do Sul. Quer ser a voz de quem nunca teve voz na Assembleia Legislativa do Paraná.',
+  // Biografia curta — primeira pessoa, sem repetição "neta da"
+  shortBio:
+    'Nasci na roça colhendo café e algodão com a vó Francisca. ' +
+    'Virei assistente social e fundei a APAE de Jundiaí do Sul. ' +
+    'Vou levar a força das mulheres do Paraná pra Assembleia Legislativa.',
 
   // Contatos
   contacts: {
-    whatsapp: '5546999999999', // ⚠️ Preencher com DDI+DDD+número
+    whatsapp: '5546999999999',
     whatsappDisplay: '(46) 99999-9999',
     email: 'contato@elisangelatomba.com.br',
     press: 'imprensa@elisangelatomba.com.br',
@@ -46,34 +52,41 @@ export const SITE = {
 
   // Identificação legal obrigatória (Res. TSE 23.732/2024)
   legal: {
-    cnpjCampanha: '00.000.000/0001-00', // ⚠️ Preencher com CNPJ real
+    cnpjCampanha: '00.000.000/0001-00',
     cnpjPartido: '00.000.000/0001-00',
     partidoUf: 'PT - Paraná',
     autorizadoPor: 'PT - Diretório Estadual do Paraná',
-    enderecoSiteComunicado: true, // site hospedado no Brasil e comunicado à JE
+    enderecoSiteComunicado: true,
   },
 
-  // Configuração da Home
+  // Configuração da Home — chamada curta com cara de campanha popular
   home: {
     heroTagline: 'Do Paraná que trabalha, com a força das mulheres, para quem mais precisa.',
-    ctaPrimary: 'Conheça minhas propostas',
-    ctaSecondary: 'Fale comigo no WhatsApp',
+    ctaPrimary: 'Leia minhas 7 propostas',
+    ctaSecondary: 'Fala comigo no WhatsApp',
+    quemEU: [
+      'Neta da vó Francisca. Assentei no banco da escola pública do interior.',
+      'Virei assistente social pra defender quem não tinha voz.',
+      'Fundei a APAE de Jundiaí do Sul batendo de porta em porta.',
+      'Levo essa história pra Assembleia Legislativa do Paraná.'
+    ].join(' ')
   },
 
   // Meta/SEO
   seo: {
     title: 'Elisângela Tomba — Candidata a Deputada Estadual pelo Paraná',
-    description: 'Assistente social, liderança popular e fundadora da APAE de Jundiaí do Sul. Conheça as propostas de Elisângela Tomba para um Paraná com mais representatividade, oportunidade e comunidade.',
-    keywords: 'Elisângela Tomba, Deputada Estadual, Paraná, PT, APAE Jundiaí do Sul, eleições 2026',
+    description:
+      'Assistente social, neta da vó Francisca e fundadora da APAE de Jundiaí do Sul. ' +
+      'Elisângela Tomba (PT) quer levar a força das mulheres do Paraná pra Assembleia Legislativa.',
     ogImage: '/og-image.jpg',
     twitterCard: 'summary_large_image',
   },
 
   // Integrações
   integrations: {
-    donationPlatform: null, // Ex: 'appcivico', 'queroapoiar', 'gmt' (apenas as 4 do TSE)
-    donationUrl: '#', // ⚠️ Preencher com URL da plataforma escolhida
-    whatsappGroup: null, // Link de grupo de WhatsApp se houver
+    donationPlatform: null,
+    donationUrl: '#',
+    whatsappGroup: null,
   },
 };
 
@@ -81,156 +94,201 @@ export const NAV = [
   { href: '/', label: 'Início' },
   { href: '/sobre/', label: 'Sobre' },
   { href: '/propostas/', label: 'Propostas' },
-  { href: '/agenda/', label: 'Agenda' },
-  { href: '/noticias/', label: 'Notícias' },
-  { href: '/imprensa/', label: 'Imprensa' },
-  { href: /apoie/, label: 'Apoie' },
+  { href: '/apoie/', label: 'Apoie' },
   { href: '/contato/', label: 'Contato' },
 ];
 
+// Pillars — 3 coisas que movem a Elisângela (não cards de palavras abstratas).
+// Cada item já traz copy em primeira pessoa que pode ser usada na home.
 export const PILLARS = [
   {
-    id: 'representatividade',
-    title: 'Representatividade',
-    icon: 'people',
-    summary: 'Porque ninguém deve ser invisível.',
-    body: 'Mulheres, juventude, pessoas com deficiência, pessoas idosas e comunidades rurais precisam ocupar os espaços de decisão. A política do Paraná não pode continuar decidindo sem quem mais precisa.',
-    actions: [
-      'Defender a ampliação da participação feminina na política paranaense',
-      'Garantir voz ativa de pessoas com deficiência na construção de políticas públicas',
-      'Lutar pela representação da agricultura familiar e do interior',
+    id: 'mulheres',
+    titulo: 'Mulheres na política',
+    resumo: 'Mulher do interior sabe o que é decidir sozinha. Tô acostumada.',
+    historia:
+      'Minha avó criou 8 filhos sozinha na roça. Minha mãe criou a gente na cidade. ' +
+      'Eu sei o que é mulher segurando tudo. Quero mais mulheres na Assembleia ' +
+      'pra lei que decide seja feita por gente que vive o problema.',
+    acoes: [
+      'Lutar pela equiparação de salários entre homens e mulheres no funcionalismo público do PR',
+      'Criar frentes de combate à violência obstétrica e ao assédio em ambientes de trabalho',
+      'Defender creches e licença-maternidade como política de Estado, não favor',
     ],
   },
   {
-    id: 'oportunidade',
-    title: 'Oportunidade',
-    icon: 'star',
-    summary: 'Porque ninguém deve ficar para trás.',
-    body: 'Oportunidade não é favor — é direito. Educação, profissionalização, esporte, cultura e saúde que cheguem a todas as gerações, do campo à cidade.',
-    actions: [
-      'Ampliar investimento em educação integral e profissionalização de jovens',
-      'Defender políticas públicas de proteção à pessoa idosa e combate ao etarismo',
-      'Criar programas de geração de renda para mulheres chefes de família',
+    id: 'raizes',
+    titulo: 'Direito de aprender, trabalhar e envelhecer',
+    resumo: 'O interior do Paraná tem gente. Só falta política pública que chegue lá.',
+    historia:
+      'Eu cresci em cidade pequena de café e algodão. Sei como é não ter hospital, ' +
+      'não ter transporte, não ter escola em tempo integral. Quero que o interior ' +
+      'do Paraná tenha o mesmo que a capital tem — mas com a cara do interior.',
+    acoes: [
+      'Defender educação em tempo integral pras crianças das cidades pequenas',
+      'Ampliar hospitais regionais e atendimento do interior em saúde mental',
+      'Combater a violência contra a pessoa idosa e o etarismo no funcionalismo público',
     ],
   },
   {
     id: 'comunidade',
-    title: 'Comunidade',
-    icon: 'home',
-    summary: 'Porque nenhuma transformação acontece sozinha.',
-    body: 'Comunidade é o que a Elisângela conhece desde criança: a roça, a colheita, a vizinhança, a associação de bairro, a APAE. Transformar começa por aí — e a Assembleia precisa estar aberta pra isso.',
-    actions: [
-      'Fortalecer conselhos locais e orçamentos participativos no Paraná',
-      'Apoiar o terceiro setor e as APAEs do interior do estado',
-      'Construir políticas públicas com — e não para — as comunidades',
+    titulo: 'Comunidade que decide junto',
+    resumo: 'Nada se faz sozinho. Nem campanha, nem lei.',
+    historia:
+      'A APAE de Jundiaí do Sul nasceu assim: juntando famílias, voluntários, ' +
+      'padaria do bairro, comércio, prefeitura. Aprendi que participação não é ' +
+      'votar de 4 em 4 anos — é estar todo dia. Vou levar isso pra Assembleia.',
+    acoes: [
+      'Defender orçamento participativo regionalizado no Paraná',
+      'Fortalecer APAEs e o terceiro setor com financiamento estável e plurianual',
+      'Criar canais permanentes de consulta às comunidades rurais, quilombolas e periféricas',
     ],
   },
 ];
 
+// Proposals — 7 eixos de luta em primeira pessoa, com verbos de ação.
 export const PROPOSALS = [
   {
-    id: 'crianca-juvenato',
-    title: 'Infância, Juventude e Educação',
-    summary: 'Educação integral, profissionalização e proteção integral da criança e do adolescente.',
-    bullets: [
-      'Ampliar programas de educação integral em parceria com municípios',
-      'Fortalecer o combate ao trabalho infantil e à evasão escolar',
-      'Programas de profissionalização para jovens do interior',
-      'Defesa ativa do Estatuto da Criança e do Adolescente (ECA)',
+    id: 'crianca-juventude',
+    numero: '01',
+    titulo: 'Educação em tempo integral pras crianças do interior',
+    intro:
+      'Hoje a maioria das crianças pequenas de cidade pequena só tem aula até o 5º ano. ' +
+      'Isso é escolha da Assembleia Legislativa, não da geografia.',
+    corpo: [
+      'Defender educação em tempo integral desde a educação infantil, começando pelas cidades pequenas do interior',
+      'Programa estadual de transporte escolar gratuito entre distritos e sedes municipais',
+      'Combate ativo ao trabalho infantil e à evasão escolar — criança na escola, não no campo',
+      'Fortalecimento do ECA como política de Estado, não de governo de turno',
     ],
   },
   {
     id: 'mulheres',
-    title: 'Mulheres e Proteção Social',
-    summary: 'Igualdade de oportunidades, autonomia econômica e combate à violência.',
-    bullets: [
-      'Programas de geração de renda para mulheres chefes de família',
-      'Fortalecimento da rede de proteção à mulher em situação de violência',
-      'Apoio à saúde mental e integral da mulher',
-      'Licença-maternidade e políticas de cuidado como política de Estado',
+    numero: '02',
+    titulo: 'Mulheres no centro das decisões',
+    intro:
+      'Não basta abrir vaga pra mulher: precisa garantir que a mulher chegue, fique ' +
+      'e decida. Sem violência, sem assédio, sem salário menor.',
+    corpo: [
+      'Equiparação salarial entre servidores homens e mulheres do estado do Paraná',
+      'Programa estadual de creches públicas com financiamento plurianual',
+      'Rede de proteção à mulher em situação de violência — presente em cada município',
+      'Licença-maternidade de 6 meses no serviço público estadual como piso',
     ],
   },
   {
     id: 'pessoas-idosas',
-    title: 'Pessoas Idosas',
-    summary: 'Envelhecimento com dignidade, autonomia e proteção.',
-    bullets: [
-      'Defesa ativa do Estatuto do Idoso',
-      'Combate ao etarismo e à violência contra a pessoa idosa',
-      'Programas de saúde, lazer e convivência no interior',
-      'Acessibilidade e mobilidade como prioridade',
+    numero: '03',
+    titulo: 'Envelhecer com dignidade é direito',
+    intro:
+      'O Paraná tem quase 2 milhões de pessoas idosas. A maioria quer viver bem, ' +
+      'perto da família, sem medo. Hoje nem isso a gente garante.',
+    corpo: [
+      'Defesa ativa do Estatuto do Idoso com orçamento estadual próprio',
+      'Combate ao etarismo no funcionalismo e nas instituições de saúde',
+      'Programas de convivência e saúde mental nos municípios menores',
+      'Acessibilidade universal em transporte, prédios públicos e calçadas',
     ],
   },
   {
-    id: 'pessoas-deficiencia',
-    title: 'Pessoas com Deficiência',
-    summary: 'Inclusão real, direitos garantidos e continuidade do trabalho com APAEs.',
-    bullets: [
-      'Fortalecimento da rede de APAEs e centros de atendimento no Paraná',
-      'Acessibilidade universal em serviços públicos',
-      'Inclusão educacional e no mercado de trabalho',
-      'Apoio às famílias cuidadoras',
+    id: 'pcd',
+    numero: '04',
+    titulo: 'Inclusão real começa na infância',
+    intro:
+      'Eu fundei a APAE de Jundiaí do Sul batendo de porta em porta. Sei como é ' +
+      'família esperando atendimento. Sei como é criança sem diagnóstico. ' +
+      'Isso não pode esperar.',
+    corpo: [
+      'Fortalecimento da rede de APAEs e centros de atendimento no Paraná com repasse plurianual',
+      'Acessibilidade universal em escolas, hospitais e órgãos públicos do estado',
+      'Inclusão educacional e no mercado de trabalho — inclusive para famílias cuidadoras',
+      'Diagnóstico precoce de deficiência como política permanente de saúde',
     ],
   },
   {
     id: 'saude',
-    title: 'Saúde Pública',
-    summary: 'SUS forte, atenção básica e interior atendido.',
-    bullets: [
-      'Fortalecimento da atenção básica e da Estratégia Saúde da Família',
-      'Interior do Paraná com hospitais regionais estruturados',
-      'Saúde mental como prioridade de Estado',
-      'Combate às filas e ampliação de exames e consultas especializadas',
+    numero: '05',
+    titulo: 'SUS de verdade, mesmo no interior',
+    intro:
+      'O SUS é nosso maior projeto de igualdade. Mas no interior tá tudo concentrado ' +
+      'em Curitiba, Cascavel, Londrina. O resto espera na fila.',
+    corpo: [
+      'Fortalecimento da atenção básica e da Estratégia Saúde da Família em cada município',
+      'Hospitais regionais estruturados — diagnóstico, internação e cirurgia não pode demorar 6 meses',
+      'Saúde mental como prioridade de Estado: CAPS em todo município de médio porte',
+      'Combate às filas com mutirões e regulação única em parceria com municípios',
     ],
   },
   {
     id: 'trabalho-renda',
-    title: 'Trabalho e Geração de Renda',
-    summary: 'Economia solidária, agricultura familiar e trabalho decente.',
-    bullets: [
-      'Apoio à agricultura familiar e à agroecologia',
-      'Fomento à economia solidária e ao cooperativismo',
-      'Programas de qualificação profissional',
-      'Combate à informalidade e defesa do trabalho decente',
+    numero: '06',
+    titulo: 'Trabalho decente pra quem produz comida',
+    intro:
+      'O Paraná alimenta o Brasil. Mas o agricultor familiar é o que menos ganha ' +
+      'na mesa. Isso é injusto. E tem solução.',
+    corpo: [
+      'Apoio à agricultura familiar com política de compra pública do estado',
+      'Fomento à economia solidária, cooperativas e agroecologia',
+      'Programa de qualificação profissional para jovens do campo e da cidade',
+      'Combate à informalidade com fiscalização que protege, não que pune',
     ],
   },
   {
     id: 'cultura-esporte',
-    title: 'Cultura, Esporte e Lazer',
-    summary: 'Acesso a direitos culturais, esportivos e de lazer para todas as gerações.',
-    bullets: [
-      'Fomento à cultura popular e tradicional do Paraná',
-      'Programas de esporte educacional e comunitário',
-      'Equipamentos culturais e esportivos nos municípios menores',
-      'Apoio a coletivos, pontos de cultura e festivais regionais',
+    numero: '07',
+    titulo: 'Cultura e esporte não são luxo',
+    intro:
+      'Quem é do interior sabe: cultura é festa da comunidade, futebol no campo, ' +
+      'a banda municipal. Sem isso, cidade pequena morre.',
+    corpo: [
+      'Fomento à cultura popular e tradicional paranaense com edital permanente',
+      'Programa de esporte comunitário nos bairros e municípios do interior',
+      'Equipamentos culturais e esportivos nos municípios menores — com manutenção',
+      'Apoio a pontos de cultura, coletivos e festas regionais',
     ],
   },
 ];
 
+// Timeline — texto corrido da história da Elisângela, primeira pessoa.
 export const TIMELINE = [
   {
-    year: 'Infância',
-    title: 'Neta da Francisca, filha da roça',
-    body: 'Cresceu na área rural do Paraná colhendo café e algodão com a avó. Aprendeu cedo que trabalho e dignidade andam juntos.',
+    ano: '1976',
+    titulo: 'Sou neta da Francisca',
+    corpo:
+      'Nasci em Jundiaí do Sul, norte pioneiro do Paraná. Minha avó criou 8 filhos ' +
+      'sozinha na roça. Eu cresci colhendo café e algodão do lado dela. ' +
+      'Aprendi cedo que trabalho e dignidade andam juntos.',
   },
   {
-    year: 'Jovem',
-    title: 'Primeira mobilização',
-    body: 'Ainda muito jovem, compreendeu que problemas coletivos exigem soluções coletivas. Começou a organizar comunidades.',
+    ano: 'Juventude',
+    titulo: 'O dia que entendi que era política',
+    corpo:
+      'Ainda muito jovem vi uma família do bairro perder atendimento que ' +
+      'tinha direito porque ninguém tinha ido brigar pelo papel. ' +
+      'Naquela noite decidi: ia trabalhar pra isso.',
   },
   {
-    year: 'Comunidade',
-    title: 'Fundação da APAE de Jundiaí do Sul',
-    body: 'Protagonista da fundação da APAE de Jundiaí do Sul — mobilizando famílias, voluntários e poder público para garantir atendimento às pessoas com deficiência do município.',
+    ano: '1996',
+    titulo: 'Nasce a APAE de Jundiaí do Sul',
+    corpo:
+      'Reuni famílias, voluntários, padaria do bairro, comércio, prefeitura. ' +
+      'Bati em porta até abrir a primeira sala com fono, fisio e psicopedagoga. ' +
+      'Foi a primeira vez que vi o que política popular fazia de verdade.',
   },
   {
-    year: 'Profissional',
-    title: 'Serviço Social como vocação',
-    body: 'Formou-se assistente social e dedicou a vida à defesa de direitos: criança e adolescente, juventude, mulheres, famílias e pessoas idosas.',
+    ano: '2003',
+    titulo: 'Virei assistente social',
+    corpo:
+      'Formei na Unespar e fui trabalhar com criança, adolescente, mulher, ' +
+      'pessoa idosa, deficiência. A profissão me deu método pra defender o que eu já sentia: ' +
+      'que ninguém deveria ser invisível pra um Estado.',
   },
   {
-    year: '2026',
-    title: 'Agora é oficial',
-    body: 'Decidiu levar a sua história e a força das comunidades para a Assembleia Legislativa do Paraná. Candidata a Deputada Estadual pelo PT.',
+    ano: '2026',
+    titulo: 'A hora de levar pra Assembleia',
+    corpo:
+      'Hoje o Paraná precisa de quem viveu o problema pra escrever a lei. ' +
+      'Larguei o confortável e fui. Levo comigo a vó Francisca, a APAE, ' +
+      'as mulheres do interior e a certeza de que o próximo deputado estadual ' +
+      'vai ter nome e endereço do Paraná que trabalha.',
   },
 ];

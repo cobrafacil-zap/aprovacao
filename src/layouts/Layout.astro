@@ -1,15 +1,12 @@
 ---
 /**
- * Layout base — todas as páginas usam este layout
+ * Layout base — todas as páginas usam este layout.
  *
- * Inclui:
- * - <head> com SEO, Open Graph, Schema.org JSON-LD
- * - Google Fonts (Fraunces + Inter) com display=swap
- * - Header
- * - Slot para conteúdo
- * - Footer
- * - Banner de Cookies (LGPD)
- * - Botão flutuante de WhatsApp
+ * Mudanças da v2 (cara de campanha, menos SaaS):
+ * - Tipografia: Anton (impacto) + Lora (narrativa) + Inter (corpo)
+ * - Favicon: estrela do PT em SVG inline
+ * - JSON-LD sem knowsAbout granular (não é currículo Lattes)
+ * - Removido data-theme dark mode (não combina com campanha popular)
  */
 
 import '../styles/global.css';
@@ -46,7 +43,7 @@ const {
 const canonical = new URL(Astro.url.pathname, Astro.site).toString();
 const fullOgImage = new URL(ogImage, Astro.site).toString();
 
-// Schema.org JSON-LD — informações da candidata
+// Schema.org — informações da candidata (sem knowsAbout genérico)
 const personSchema = {
   '@context': 'https://schema.org',
   '@type': 'Person',
@@ -61,20 +58,13 @@ const personSchema = {
     SITE.contacts.instagram,
     SITE.contacts.facebook,
   ].filter(Boolean),
-  knowsAbout: [
-    'Serviço Social',
-    'Direitos da criança e do adolescente',
-    'APAE',
-    'Políticas públicas para pessoas idosas',
-    'Políticas para mulheres',
-    'Agricultura familiar',
-  ],
+  description: SITE.shortBio,
 };
 
 const orgSchema = {
   '@context': 'https://schema.org',
   '@type': 'PoliticalOrganization',
-  name: `Campanha ${SITE.name} ${SITE.year || 2026}`,
+  name: `Campanha ${SITE.name} 2026`,
   url: Astro.site?.toString(),
   logo: fullOgImage,
   sameAs: [
@@ -88,7 +78,6 @@ const orgSchema = {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="generator" content={Astro.generator} />
 
     <!-- SEO básico -->
     <title>{title}</title>
@@ -97,8 +86,8 @@ const orgSchema = {
     <link rel="canonical" href={canonical} />
     {noindex && <meta name="robots" content="noindex, nofollow" />}
 
-    <!-- Favicon (emoji temporário — substituir por .ico/.svg real depois) -->
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✊</text></svg>" />
+    <!-- Favicon: estrela do PT em SVG inline (vermelha, com estrela amarela) -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23C8102E'/><polygon points='50,20 56,40 78,40 60,52 67,72 50,60 33,72 40,52 22,40 44,40' fill='%23FFCD00'/></svg>" />
 
     <!-- Open Graph -->
     <meta property="og:type" content={pageType} />
@@ -122,26 +111,20 @@ const orgSchema = {
     <script type="application/ld+json" set:html={JSON.stringify(personSchema)} />
     <script type="application/ld+json" set:html={JSON.stringify(orgSchema)} />
 
-    <!-- Fontes: Fraunces + Inter (com preconnect para performance) -->
+    <!-- Fontes: Anton + Lora + Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,900&family=Inter:wght@400;500;600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;700&family=Lora:ital,wght@0,400;0,600;1,400;1,600&display=swap"
     />
-
-    <!--
-      📌 Google Analytics 4 + Meta Pixel ficam aqui,
-      mas só inicializam APÓS consentimento de cookies.
-      Implementação concreta: src/scripts/analytics.ts (carregado dinamicamente)
-    -->
 
     <!-- Sitemap -->
     <link rel="sitemap" href="/sitemap-index.xml" />
   </head>
 
   <body class={bodyClass}>
-    <a href="#main" class="skip-link">Pular para o conteúdo principal</a>
+    <a href="#main" class="skip-link">Pular pro conteúdo</a>
 
     <Header />
 

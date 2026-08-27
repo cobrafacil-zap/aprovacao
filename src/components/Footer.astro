@@ -1,8 +1,12 @@
 ---
 /**
- * Footer — inclui identificação legal obrigatória (Res. TSE 23.732/2024)
- * LGPD-compliant: DPO, links para política de privacidade
- * Acessível: estrutura semântica de <footer>, <address>, <nav>
+ * Footer — versão campanha popular
+ *
+ * Mudanças da v2:
+ * - Fundo bege (não marrom-escuro SaaS)
+ * - Sem licença Creative Commons em destaque
+ * - 3 colunas simples
+ * - Identificação legal obrigatória preservada (LGPD + TSE)
  */
 
 import { SITE } from '../site.config.js';
@@ -12,7 +16,12 @@ const year = new Date().getFullYear();
 <footer class="footer" role="contentinfo">
   <div class="footer__top container">
     <div class="footer__brand">
-      <div class="footer__mark" aria-hidden="true">ET</div>
+      <span class="footer__mark" aria-hidden="true">
+        <svg width="56" height="56" viewBox="0 0 100 100">
+          <rect width="100" height="100" fill="#C8102E"/>
+          <polygon points="50,18 57,40 80,40 61,52 68,74 50,62 32,74 39,52 20,40 43,40" fill="#FFCD00"/>
+        </svg>
+      </span>
       <div>
         <p class="footer__name">Elisângela Tomba</p>
         <p class="footer__role">Candidata a Deputada Estadual pelo Paraná</p>
@@ -26,9 +35,8 @@ const year = new Date().getFullYear();
         <ul>
           <li><a href="/sobre/">Sobre</a></li>
           <li><a href="/propostas/">Propostas</a></li>
-          <li><a href="/agenda/">Agenda</a></li>
-          <li><a href="/noticias/">Notícias</a></li>
-          <li><a href="/imprensa/">Imprensa</a></li>
+          <li><a href="/apoie/">Apoie</a></li>
+          <li><a href="/contato/">Contato</a></li>
         </ul>
       </nav>
 
@@ -36,7 +44,7 @@ const year = new Date().getFullYear();
         <h2 class="footer__col-title">Apoie</h2>
         <ul>
           <li><a href="/apoie/#voluntario">Seja voluntário(a)</a></li>
-          <li><a href={SITE.integrations.donationUrl} rel="noopener">Faça uma doação</a></li>
+          <li><a href="/apoie/#doacao">Faça uma doação</a></li>
           <li><a href={SITE.contacts.instagram} target="_blank" rel="noopener noreferrer">Instagram</a></li>
           <li><a href={`https://wa.me/${SITE.contacts.whatsapp}`} target="_blank" rel="noopener noreferrer">WhatsApp</a></li>
         </ul>
@@ -60,26 +68,21 @@ const year = new Date().getFullYear();
           <strong>Propaganda Eleitoral</strong> — CNPJ campanha: {SITE.legal.cnpjCampanha}
         </p>
         <p>
-          Autorizado por: <strong>{SITE.legal.autorizadoPor}</strong>
-        </p>
-        <p>
-          Site comunicado à Justiça Eleitoral · Hospedado no Brasil
+          Autorizada por <strong>{SITE.legal.autorizadoPor}</strong>
         </p>
       </div>
 
       <div class="footer__legal-row">
+        <p>Encarregado de Dados (DPO): <a href="mailto:dpo@elisangelatomba.com.br">dpo@elisangelatomba.com.br</a></p>
         <p>
-          Encarregado de Dados (DPO): <a href={`mailto:dpo@elisangelatomba.com.br`}>dpo@elisangelatomba.com.br</a>
+          <a href="#" onclick="event.preventDefault(); window.reabrirPreferenciasCookies && window.reabrirPreferenciasCookies();">Cookies</a>
+          ·
+          <a href="/politica-de-privacidade/">Política de Privacidade</a>
         </p>
-        <ul class="footer__legal-links">
-          <li><a href="/politica-de-privacidade/">Política de Privacidade</a></li>
-          <li><a href="/politica-de-privacidade/#cookies">Cookies</a></li>
-          <li><a href="/politica-de-privacidade/#direitos">Seus direitos LGPD</a></li>
-        </ul>
       </div>
 
       <p class="footer__copyright">
-        © {year} Elisângela Tomba · Conteúdo disponível sob licença Creative Commons (CC BY-NC 4.0), exceto fotos e materiais de terceiros.
+        © {year} Elisângela Tomba · Conteúdo sob licença Creative Commons (CC BY-NC 4.0)
       </p>
     </div>
   </div>
@@ -87,22 +90,22 @@ const year = new Date().getFullYear();
 
 <style>
   .footer {
-    background: var(--color-brown-900);
-    color: var(--color-sand-100);
-    margin-top: var(--space-24);
+    background: var(--papel);
+    color: var(--carvao);
+    border-top: var(--border-grossa) solid var(--carvao);
   }
 
   .footer__top {
     display: grid;
     grid-template-columns: 1fr;
-    gap: var(--space-12);
-    padding-block: var(--space-16);
+    gap: var(--space-7);
+    padding-block: var(--space-8);
   }
 
-  @media (min-width: 720px) {
+  @media (min-width: 768px) {
     .footer__top {
       grid-template-columns: 1fr 2fr;
-      gap: var(--space-16);
+      gap: var(--space-8);
     }
   }
 
@@ -114,127 +117,114 @@ const year = new Date().getFullYear();
 
   .footer__mark {
     flex-shrink: 0;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 56px;
-    height: 56px;
-    background: var(--color-red-500);
-    color: var(--color-white);
-    font-family: var(--font-serif);
-    font-weight: var(--weight-black);
-    font-size: var(--text-xl);
-    border-radius: var(--radius-md);
+    line-height: 0;
   }
 
   .footer__name {
-    font-family: var(--font-serif);
-    font-size: var(--text-xl);
-    font-weight: var(--weight-bold);
-    color: var(--color-sand-50);
+    font-family: var(--font-impacto);
+    font-size: var(--text-lg);
+    font-weight: var(--weight-regular);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-pancada);
+    color: var(--carvao);
     margin-bottom: var(--space-1);
   }
 
   .footer__role,
   .footer__party {
     font-size: var(--text-sm);
-    color: var(--color-sand-300);
+    color: var(--carvao-claro);
     margin: 0;
   }
 
   .footer__columns {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: var(--space-8);
+    gap: var(--space-6);
   }
 
   .footer__col-title {
-    font-family: var(--font-sans);
+    font-family: var(--font-impacto);
     font-size: var(--text-sm);
-    font-weight: var(--weight-bold);
-    color: var(--color-sand-50);
+    font-weight: var(--weight-regular);
+    color: var(--carvao);
     text-transform: uppercase;
-    letter-spacing: var(--tracking-widest);
-    margin-bottom: var(--space-4);
+    letter-spacing: var(--tracking-pancada);
+    margin-bottom: var(--space-3);
+    border-bottom: var(--border-media) solid var(--carvao);
+    padding-bottom: var(--space-2);
   }
 
   .footer__col ul,
   .footer__col address {
     display: flex;
     flex-direction: column;
-    gap: var(--space-3);
+    gap: var(--space-2);
     font-style: normal;
   }
 
   .footer__col a {
     font-size: var(--text-sm);
-    color: var(--color-sand-200);
-    transition: color var(--duration-fast) var(--ease-out);
+    color: var(--carvao-claro);
+    text-decoration-color: var(--carvao);
   }
 
   .footer__col a:hover {
-    color: var(--color-sand-50);
+    color: var(--carmin);
   }
 
   .footer__col p {
     font-size: var(--text-sm);
-    color: var(--color-sand-200);
+    color: var(--carvao-claro);
     margin: 0;
   }
 
-  /* Bloco legal */
+  /* Bloco legal — tarja preta fina */
   .footer__legal {
-    background: var(--color-black);
-    border-top: 1px solid var(--color-brown-800);
-    padding-block: var(--space-6);
+    background: var(--preto);
+    color: var(--papel);
+    padding-block: var(--space-5);
   }
 
   .footer__legal-inner {
     display: flex;
     flex-direction: column;
-    gap: var(--space-4);
+    gap: var(--space-3);
   }
 
   .footer__legal-row {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--space-4) var(--space-8);
+    gap: var(--space-4) var(--space-6);
     align-items: baseline;
   }
 
   .footer__legal p {
     font-size: var(--text-xs);
-    color: var(--color-sand-300);
+    color: var(--papel);
     margin: 0;
   }
 
   .footer__legal strong {
-    color: var(--color-sand-100);
-    font-weight: var(--weight-semibold);
+    color: var(--estrela);
+    font-weight: var(--weight-bold);
   }
 
   .footer__legal a {
-    color: var(--color-sand-100);
-    text-decoration: underline;
-    text-decoration-color: var(--color-brown-700);
-    text-underline-offset: 3px;
+    color: var(--papel);
+    text-decoration-color: var(--carmin);
+    text-decoration-thickness: 2px;
   }
 
   .footer__legal a:hover {
-    text-decoration-color: var(--color-red-400);
-  }
-
-  .footer__legal-links {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-4);
+    color: var(--estrela);
   }
 
   .footer__copyright {
     font-size: var(--text-xs);
-    color: var(--color-sand-300);
-    border-top: 1px solid var(--color-brown-800);
-    padding-top: var(--space-4);
+    color: var(--papel-saco);
+    border-top: 1px solid var(--carvao-medio);
+    padding-top: var(--space-3);
     margin-top: var(--space-2);
   }
 </style>
