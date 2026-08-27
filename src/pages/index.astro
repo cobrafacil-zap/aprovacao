@@ -224,7 +224,14 @@ import { SITE, PILLARS, TIMELINE, GALLERY } from '../site.config.js';
       <div class="container supporter__inner">
         <div class="supporter__portrait">
           {SITE.supporter.photo ? (
-            <img src={SITE.supporter.photo} alt={`Foto do deputado ${SITE.supporter.name}`} loading="lazy" />
+            <img
+              src={SITE.supporter.photo}
+              alt={`Retrato do deputado federal ${SITE.supporter.name}, de camiseta verde, sorrindo — apoiador da campanha.`}
+              loading="lazy"
+              decoding="async"
+              width="1080"
+              height="1080"
+            />
           ) : (
             <div class="supporter__placeholder" aria-hidden="true">
               <svg viewBox="0 0 100 100" width="100%" height="100%">
@@ -863,6 +870,14 @@ import { SITE, PILLARS, TIMELINE, GALLERY } from '../site.config.js';
     background: var(--carvao-medio);
     max-width: 320px;
     margin-inline: auto;
+  }
+
+  .supporter__portrait img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 20%;
+    filter: contrast(1.05) saturate(1.05);
   }
 
   .supporter__portrait img,

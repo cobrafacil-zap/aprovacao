@@ -27,7 +27,7 @@ export const SITE = {
     name: 'Zeca Dirceu',
     number: '1310',
     role: 'Deputado Federal',
-    photo: null, // foto do Zeca a ser adicionada quando o usuário fornecer
+    photo: '/images/zeca-dirceu.jpg',
   },
 
   // Slogan — frase de campanha, primeira pessoa
