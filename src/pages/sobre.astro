@@ -12,7 +12,11 @@ import { SITE, TIMELINE } from '../site.config.js';
   <!-- ============ HERO: foto preto-e-branco com citação grande ============ -->
   <section class="hero" aria-labelledby="hero-titulo">
     <div class="hero__container container">
-      <figure class="hero__retrato">
+      <figure
+        class="hero__retrato"
+        data-zoomable
+        data-zoom-src="/images/sobre-original.jpg"
+      >
         <img
           src="/images/sobre-original.jpg"
           alt="Elisângela Tomba sentada, com blazer vermelho, cara séria e olho no horizonte."
@@ -21,10 +25,16 @@ import { SITE, TIMELINE } from '../site.config.js';
           fetchpriority="high"
           loading="eager"
         />
-        <figcaption class="hero__legenda">
-          Elisângela Tomba · Foto: Karine Gehlen · Jundiaí do Sul/PR
-        </figcaption>
+        <span class="hero__zoom" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="20" height="20">
+            <circle cx="11" cy="11" r="6" stroke="currentColor" stroke-width="2" fill="none"/>
+            <path d="M15.5 15.5 L20 20 M9 11 H13 M11 9 V13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </span>
       </figure>
+      <p class="hero__credito">
+        Foto: <strong>Karine Gehlen</strong> · Jundiaí do Sul/PR · 2026
+      </p>
 
       <div class="hero__intro">
         <p class="hero__eyebrow">Sobre · Quem é essa candidata</p>
@@ -201,11 +211,13 @@ import { SITE, TIMELINE } from '../site.config.js';
   }
 
   .hero__retrato {
+    position: relative;
     margin: 0;
     border: var(--border-grossa) solid var(--carvao);
     background: var(--carvao-medio);
     overflow: hidden;
     aspect-ratio: 4/5;
+    cursor: zoom-in;
   }
 
   .hero__retrato img {
@@ -213,17 +225,48 @@ import { SITE, TIMELINE } from '../site.config.js';
     height: 100%;
     object-fit: cover;
     filter: grayscale(100%) contrast(1.05);
+    transition: transform 350ms ease-out;
+    display: block;
   }
 
-  .hero__legenda {
-    padding: var(--space-2) var(--space-3);
-    background: var(--preto);
-    color: var(--papel);
-    font-family: var(--font-impacto);
-    font-size: var(--text-xs);
-    text-transform: uppercase;
-    letter-spacing: var(--tracking-pancada);
+  .hero__retrato:hover img,
+  .hero__retrato:focus-visible img {
+    transform: scale(1.03);
   }
+
+  .hero__zoom {
+    position: absolute;
+    top: var(--space-3);
+    right: var(--space-3);
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--papel);
+    color: var(--carvao);
+    border: 2px solid var(--carvao);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 200ms;
+  }
+
+  .hero__retrato:hover .hero__zoom,
+  .hero__retrato:focus-visible .hero__zoom {
+    opacity: 1;
+  }
+
+  .hero__credito {
+    margin: var(--space-3) 0 0;
+    padding-left: var(--space-3);
+    border-left: var(--border-fina) solid var(--carvao-medio);
+    font-family: var(--font-corpo);
+    font-size: var(--text-sm);
+    color: var(--carvao-claro);
+    line-height: var(--leading-snug);
+  }
+
+  .hero__credito strong { color: var(--carvao); font-weight: var(--weight-bold); }
 
   .hero__eyebrow {
     font-family: var(--font-impacto);

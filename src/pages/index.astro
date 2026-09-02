@@ -52,7 +52,11 @@ import { SITE, PILLARS, TIMELINE, GALLERY } from '../site.config.js';
       </div>
 
       <div class="hero__visual">
-        <figure class="hero__portrait">
+        <figure
+          class="hero__portrait"
+          data-zoomable
+          data-zoom-src="/images/elisangela-apontando.jpg"
+        >
           <img
             src="/images/elisangela-apontando.jpg"
             alt="Elisângela Tomba, de blazer vermelho, apontando em direção ao espectador, sorrindo — chamando a pessoa pra dentro dessa campanha."
@@ -60,10 +64,17 @@ import { SITE, PILLARS, TIMELINE, GALLERY } from '../site.config.js';
             height="1067"
             fetchpriority="high"
           />
-          <figcaption class="hero__caption">
-            <span>Vote 13579 · Deputada Estadual</span>
-          </figcaption>
+          <span class="hero__zoom" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="20" height="20">
+              <circle cx="11" cy="11" r="6" stroke="currentColor" stroke-width="2" fill="none"/>
+              <path d="M15.5 15.5 L20 20 M9 11 H13 M11 9 V13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </span>
         </figure>
+        <p class="hero__numero-selo">
+          <span class="hero__numero-digitos">13<span class="hero__numero-ponto">·</span>579</span>
+          <span class="hero__numero-rotulo">Deputada Estadual · PT</span>
+        </p>
       </div>
     </div>
   </section>
@@ -201,17 +212,25 @@ import { SITE, PILLARS, TIMELINE, GALLERY } from '../site.config.js';
 
       <div class="galeria__grid">
         {GALLERY.map((photo) => (
-          <figure class="galeria__item">
+          <figure
+            class="galeria__item"
+            data-zoomable
+            data-zoom-src={photo.src}
+          >
             <img
               src={photo.thumb}
-              data-src={photo.src}
               alt={photo.alt}
               loading="lazy"
               decoding="async"
               width="800"
               height="533"
             />
-            <figcaption class="galeria__caption">{photo.caption}</figcaption>
+            <span class="galeria__zoom" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="18" height="18">
+                <circle cx="11" cy="11" r="6" stroke="currentColor" stroke-width="2" fill="none"/>
+                <path d="M15.5 15.5 L20 20 M9 11 H13 M11 9 V13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </span>
           </figure>
         ))}
       </div>
@@ -222,7 +241,11 @@ import { SITE, PILLARS, TIMELINE, GALLERY } from '../site.config.js';
   {SITE.supporter?.name && (
     <section class="supporter" aria-labelledby="supporter-title">
       <div class="container supporter__inner">
-        <div class="supporter__portrait">
+        <figure
+          class="supporter__portrait"
+          data-zoomable
+          data-zoom-src={SITE.supporter.photo || ''}
+        >
           {SITE.supporter.photo ? (
             <img
               src={SITE.supporter.photo}
@@ -240,7 +263,13 @@ import { SITE, PILLARS, TIMELINE, GALLERY } from '../site.config.js';
               </svg>
             </div>
           )}
-        </div>
+          <span class="supporter__zoom" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="18" height="18">
+              <circle cx="11" cy="11" r="6" stroke="currentColor" stroke-width="2" fill="none"/>
+              <path d="M15.5 15.5 L20 20 M9 11 H13 M11 9 V13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </span>
+        </figure>
         <div class="supporter__text">
           <p class="bio__eyebrow">Caminha com a Elisângela</p>
           <h2 id="supporter-title" class="supporter__title">{SITE.supporter.name}</h2>
@@ -396,6 +425,13 @@ import { SITE, PILLARS, TIMELINE, GALLERY } from '../site.config.js';
   }
 
   /* Portrait */
+  .hero__visual {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    align-items: stretch;
+  }
+
   .hero__portrait {
     position: relative;
     margin: 0;
@@ -404,6 +440,7 @@ import { SITE, PILLARS, TIMELINE, GALLERY } from '../site.config.js';
     border: var(--border-grossa) solid var(--carvao);
     overflow: hidden;
     background: var(--carvao-medio);
+    cursor: zoom-in;
   }
 
   .hero__portrait img {
@@ -412,19 +449,67 @@ import { SITE, PILLARS, TIMELINE, GALLERY } from '../site.config.js';
     object-fit: cover;
     object-position: center top;
     filter: contrast(1.05) saturate(1.1);
+    transition: transform 350ms ease-out;
+    display: block;
   }
 
-  .hero__caption {
+  .hero__portrait:hover img,
+  .hero__portrait:focus-visible img {
+    transform: scale(1.03);
+  }
+
+  .hero__zoom {
     position: absolute;
-    left: 0;
-    bottom: 0;
+    top: var(--space-3);
+    right: var(--space-3);
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--papel);
+    color: var(--carvao);
+    border: 2px solid var(--carvao);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 200ms;
+  }
+
+  .hero__portrait:hover .hero__zoom,
+  .hero__portrait:focus-visible .hero__zoom {
+    opacity: 1;
+  }
+
+  .hero__numero-selo {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-3);
+    margin: 0;
     padding: var(--space-2) var(--space-3);
-    background: var(--preto);
-    color: var(--papel);
+    border: var(--border-grossa) solid var(--carvao);
+    background: var(--papel);
+  }
+
+  .hero__numero-digitos {
+    font-family: var(--font-impacto);
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    line-height: 1;
+    color: var(--carmin);
+    letter-spacing: 0.04em;
+  }
+
+  .hero__numero-ponto {
+    color: var(--carvao);
+    margin-inline: 0.05em;
+  }
+
+  .hero__numero-rotulo {
     font-family: var(--font-impacto);
     font-size: var(--text-xs);
     text-transform: uppercase;
     letter-spacing: var(--tracking-pancada);
+    color: var(--carvao);
   }
 
   /* ============ FAIXA DIAGONAL ============ */
@@ -817,6 +902,7 @@ import { SITE, PILLARS, TIMELINE, GALLERY } from '../site.config.js';
     overflow: hidden;
     border: var(--border-grossa) solid var(--carvao);
     background: var(--carvao-medio);
+    cursor: zoom-in;
   }
 
   .galeria__item img {
@@ -825,25 +911,35 @@ import { SITE, PILLARS, TIMELINE, GALLERY } from '../site.config.js';
     object-fit: cover;
     object-position: center top;
     filter: contrast(1.05) saturate(1.05);
-    transition: transform 250ms ease-out;
+    transition: transform 350ms ease-out;
+    display: block;
   }
 
-  .galeria__item:hover img {
+  .galeria__item:hover img,
+  .galeria__item:focus-visible img {
     transform: scale(1.04);
   }
 
-  .galeria__caption {
+  .galeria__zoom {
     position: absolute;
-    left: var(--space-3);
-    bottom: var(--space-3);
-    padding: var(--space-1) var(--space-3);
-    background: var(--preto);
-    color: var(--estrela);
-    font-family: var(--font-impacto);
-    font-size: var(--text-xs);
-    text-transform: uppercase;
-    letter-spacing: var(--tracking-pancada);
-    border: var(--border-fina) solid var(--papel);
+    top: var(--space-3);
+    right: var(--space-3);
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--papel);
+    color: var(--carvao);
+    border: 2px solid var(--carvao);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 200ms;
+  }
+
+  .galeria__item:hover .galeria__zoom,
+  .galeria__item:focus-visible .galeria__zoom {
+    opacity: 1;
   }
 
   /* ============ SUPPORTER (Zeca Dirceu) ============ */
@@ -868,12 +964,14 @@ import { SITE, PILLARS, TIMELINE, GALLERY } from '../site.config.js';
   }
 
   .supporter__portrait {
+    position: relative;
     aspect-ratio: 1/1;
     border: var(--border-grossa) solid var(--carvao);
     overflow: hidden;
     background: var(--carvao-medio);
     max-width: 320px;
     margin-inline: auto;
+    cursor: zoom-in;
   }
 
   .supporter__portrait img {
@@ -894,6 +992,28 @@ import { SITE, PILLARS, TIMELINE, GALLERY } from '../site.config.js';
   .supporter__placeholder {
     display: block;
     padding: var(--space-7);
+  }
+
+  .supporter__zoom {
+    position: absolute;
+    top: var(--space-3);
+    right: var(--space-3);
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--papel);
+    color: var(--carvao);
+    border: 2px solid var(--carvao);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 200ms;
+  }
+
+  .supporter__portrait:hover .supporter__zoom,
+  .supporter__portrait:focus-visible .supporter__zoom {
+    opacity: 1;
   }
 
   .supporter__title {

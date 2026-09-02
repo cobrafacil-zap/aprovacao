@@ -1,0 +1,240 @@
+---
+/**
+ * Lightbox — abre a foto em tela cheia quando o usuário clica.
+ * Não tem cara de plugin JS. É só uma camada preta + imagem centralizada,
+ * com setas pra navegar e ESC pra fechar. Ativado por data-zoomable.
+ */
+---
+<div
+  id="lightbox"
+  class="lb"
+  hidden
+  role="dialog"
+  aria-modal="true"
+  aria-label="Foto em tela cheia"
+  tabindex="-1"
+>
+  <button class="lb__close" type="button" aria-label="Fechar (ESC)">
+    <svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true">
+      <path d="M6 6 L18 18 M18 6 L6 18" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    </svg>
+  </button>
+
+  <button class="lb__nav lb__nav--prev" type="button" aria-label="Foto anterior">
+    <svg viewBox="0 0 24 24" width="32" height="32" aria-hidden="true">
+      <path d="M15 5 L8 12 L15 19" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </button>
+
+  <button class="lb__nav lb__nav--next" type="button" aria-label="Próxima foto">
+    <svg viewBox="0 0 24 24" width="32" height="32" aria-hidden="true">
+      <path d="M9 5 L16 12 L9 19" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </button>
+
+  <figure class="lb__stage">
+    <img class="lb__img" alt="" />
+    <figcaption class="lb__caption"></figcaption>
+  </figure>
+
+  <p class="lb__hint">Use ← → pra navegar · ESC pra fechar</p>
+</div>
+
+<style>
+  .lb {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: rgba(10, 10, 10, 0.96);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(2rem, 5vw, 4rem);
+  }
+
+  .lb[hidden] { display: none; }
+
+  .lb__stage {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    max-width: min(1400px, 96vw);
+    max-height: 90vh;
+  }
+
+  .lb__img {
+    max-width: 96vw;
+    max-height: 82vh;
+    object-fit: contain;
+    border: 3px solid var(--papel);
+    background: var(--carvao);
+    display: block;
+  }
+
+  .lb__caption {
+    font-family: var(--font-impacto);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-pancada);
+    color: var(--papel);
+    text-align: center;
+    margin: 0;
+  }
+
+  .lb__hint {
+    position: absolute;
+    bottom: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: var(--font-impacto);
+    font-size: 0.7rem;
+    color: var(--carvao-claro);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-pancada);
+    margin: 0;
+    opacity: 0.7;
+  }
+
+  .lb__close,
+  .lb__nav {
+    position: absolute;
+    background: transparent;
+    border: 2px solid var(--papel);
+    color: var(--papel);
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 150ms, color 150ms;
+    border-radius: 0;
+  }
+
+  .lb__close:hover,
+  .lb__nav:hover {
+    background: var(--carmin);
+    color: var(--papel);
+    border-color: var(--carmin);
+  }
+
+  .lb__close:focus-visible,
+  .lb__nav:focus-visible {
+    outline: 3px solid var(--estrela);
+    outline-offset: 2px;
+  }
+
+  .lb__close {
+    top: 1.25rem;
+    right: 1.25rem;
+  }
+
+  .lb__nav--prev {
+    left: 1.25rem;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .lb__nav--next {
+    right: 1.25rem;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  @media (max-width: 640px) {
+    .lb__nav { display: none; }
+    .lb__hint { display: none; }
+  }
+</style>
+
+<script>
+  // Lightbox controller — gerencia abrir/fechar e navegar entre fotos do mesmo grupo.
+  const lb = document.getElementById('lightbox');
+  if (lb) {
+    const imgEl = lb.querySelector('.lb__img') as HTMLImageElement;
+    const capEl = lb.querySelector('.lb__caption') as HTMLElement;
+    const closeBtn = lb.querySelector('.lb__close') as HTMLButtonElement;
+    const prevBtn = lb.querySelector('.lb__nav--prev') as HTMLButtonElement;
+    const nextBtn = lb.querySelector('.lb__nav--next') as HTMLButtonElement;
+
+    let group: HTMLElement[] = [];
+    let idx = 0;
+    let lastFocus: HTMLElement | null = null;
+
+    const collectGroup = (el: HTMLElement): HTMLElement[] => {
+      const parent = el.parentElement;
+      if (!parent) return [el];
+      const sibs = Array.from(parent.children).filter((c): c is HTMLElement =>
+        c instanceof HTMLElement && c.hasAttribute('data-zoomable')
+      );
+      return sibs.length > 1 ? sibs : [el];
+    };
+
+    const render = () => {
+      const cur = group[idx];
+      if (!cur) return;
+      const src = cur.getAttribute('data-zoom-src') || (cur.querySelector('img') as HTMLImageElement | null)?.src;
+      const alt = (cur.querySelector('img') as HTMLImageElement | null)?.alt || '';
+      const cap = cur.getAttribute('data-zoom-caption') || '';
+      if (src) imgEl.src = src;
+      imgEl.alt = alt;
+      capEl.textContent = cap;
+      capEl.style.display = cap ? '' : 'none';
+      prevBtn.style.display = group.length > 1 ? '' : 'none';
+      nextBtn.style.display = group.length > 1 ? '' : 'none';
+    };
+
+    const open = (el: HTMLElement) => {
+      lastFocus = document.activeElement as HTMLElement;
+      group = collectGroup(el);
+      idx = group.indexOf(el);
+      if (idx < 0) idx = 0;
+      lb.removeAttribute('hidden');
+      document.body.style.overflow = 'hidden';
+      render();
+      closeBtn.focus();
+    };
+
+    const close = () => {
+      lb.setAttribute('hidden', '');
+      document.body.style.overflow = '';
+      imgEl.src = '';
+      if (lastFocus && typeof lastFocus.focus === 'function') lastFocus.focus();
+    };
+
+    const nav = (delta: number) => {
+      if (group.length < 2) return;
+      idx = (idx + delta + group.length) % group.length;
+      render();
+    };
+
+    // Delegação: qualquer elemento com data-zoomable abre o lightbox
+    document.addEventListener('click', (e) => {
+      const target = e.target as HTMLElement | null;
+      if (!target) return;
+      const trig = target.closest('[data-zoomable]') as HTMLElement | null;
+      if (trig) {
+        e.preventDefault();
+        open(trig);
+      }
+    });
+
+    closeBtn.addEventListener('click', close);
+    prevBtn.addEventListener('click', () => nav(-1));
+    nextBtn.addEventListener('click', () => nav(1));
+
+    // Clique no fundo fecha (mas não na imagem)
+    lb.addEventListener('click', (e) => {
+      if (e.target === lb || (e.target as HTMLElement).classList.contains('lb__stage')) close();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (lb.hasAttribute('hidden')) return;
+      if (e.key === 'Escape') { close(); e.preventDefault(); }
+      else if (e.key === 'ArrowLeft') { nav(-1); e.preventDefault(); }
+      else if (e.key === 'ArrowRight') { nav(1); e.preventDefault(); }
+    });
+  }
+</script>
