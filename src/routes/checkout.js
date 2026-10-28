@@ -9,7 +9,7 @@ import { track } from '../lib/analytics.js';
 import { garantirConta } from '../lib/auth.js';
 import { sendEmail, emailCompra, emailDefinirSenha, urlMembros } from '../lib/mail.js';
 import { baseUrl } from '../lib/helpers.js';
-import { mpAtivo, criarOrder } from '../lib/mercadopago.js';
+import { mpAtivo, criarOrder, consultarOrder, estaPago } from '../lib/mercadopago.js';
 
 const router = Router();
 const VALOR = async () => (await read('settings', {})).preco ?? 19.9;
@@ -108,8 +108,21 @@ function pixCopiaECola(pedido) {
 }
 
 router.get('/pedidos/:id', async (req, res) => {
-  const p = (await read('orders', [])).find((x) => x.id === req.params.id);
+  const pedidos = await read('orders', []);
+  const p = pedidos.find((x) => x.id === req.params.id);
   if (!p) return res.status(404).json({ error: 'pedido não encontrado' });
+
+  // fallback de confirmação: se ainda está aguardando, confere direto no MP
+  // (não depende do webhook estar configurado — a página faz polling aqui)
+  if (p.status === 'aguardando' && p.mpOrderId && mpAtivo()) {
+    try {
+      const mp = await consultarOrder(p.mpOrderId);
+      if (estaPago(mp.status, mp.statusDetail)) await aprovarPedido(p, pedidos);
+    } catch (e) {
+      console.error('[MP] falha ao consultar order:', e.message);
+    }
+  }
+
   res.json({ pedido: { id: p.id, status: p.status, valor: p.valor, metodo: p.metodo, email: p.email, criadoEm: p.criadoEm } });
 });
 
@@ -184,13 +197,12 @@ router.post('/webhook', async (req, res) => {
     if (process.env.MP_ACCESS_TOKEN && recursoId && (tipo === 'payment' || tipo === 'order' || tipo === 'merchant_order')) {
       const pagamento = await consultarPagamentoMP(recursoId);
       const pedidoId = pagamento?.external_reference;
-      const status = pagamento?.status; // approved | pending | rejected ...
-      if (pedidoId && status === 'approved') {
+      if (pedidoId && estaPago(pagamento?.status, pagamento?.statusDetail)) {
         const pedidos = await read('orders', []);
         const p = pedidos.find((x) => x.id === pedidoId);
         if (p && p.status !== 'pago') await aprovarPedido(p, pedidos);
       }
-      return res.json({ ok: true, consultado: recursoId, status });
+      return res.json({ ok: true, consultado: recursoId, status: pagamento?.status });
     }
 
     // modo demo / payloads de teste: aceita external_reference + status direto
@@ -225,6 +237,7 @@ async function consultarPagamentoMP(id) {
         const pagamento = d?.transactions?.payments?.[0] || d;
         return {
           status: pagamento.status || d.status,
+          statusDetail: pagamento.status_detail || d.status_detail,
           external_reference: d.external_reference || pagamento.external_reference,
         };
       }

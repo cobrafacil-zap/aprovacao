@@ -93,6 +93,14 @@ function montarPayer(payer = {}) {
   return base;
 }
 
+// A Orders API usa outro vocabulário de status que a Payments API:
+// processed/accredited = pago (além de approved, da API legada).
+export function estaPago(status, statusDetail) {
+  const s = String(status || '').toLowerCase();
+  const d = String(statusDetail || '').toLowerCase();
+  return ['approved', 'processed', 'accredited'].includes(s) || d === 'accredited';
+}
+
 // Consulta o estado real da order (usado pelo webhook e pelo polling do checkout).
 export async function consultarOrder(orderId) {
   const o = await mp('GET', `/v1/orders/${orderId}`);
