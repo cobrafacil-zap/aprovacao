@@ -32,9 +32,14 @@
       if (agora) agora.innerHTML = `<small>R$</small> ${Number(p.preco).toFixed(2).replace('.', ',')}`;
       const de = document.querySelector('.preco-card .de');
       if (de) de.textContent = `De ${fmt(p.precoAntigo)} por`;
+      const topo = document.querySelector('#preco-topo');
+      if (topo) topo.textContent = fmt(p.preco);
+      const unica = document.querySelector('#preco-compra-unica');
+      if (unica) unica.textContent = fmt(p.preco);
       $$('.hero-cta .btn--cta, .cta-final .btn--cta').forEach((b) => {
         b.textContent = `Quero acesso vitalício por ${fmt(p.preco)}`;
       });
+      $$('.compra-fixa .preco strong').forEach((b) => { b.textContent = fmt(p.preco); });
     } catch {}
   }
 

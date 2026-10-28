@@ -12,9 +12,14 @@
   let cardForm = null;
   let pollTimer = null;
 
-  // ---------- Configuração (public key + modo) ----------
+  // ---------- Configuração (public key + modo + preço) ----------
   fetch('/api/produto').then((r) => r.json()).then((p) => {
     config = p;
+    const precoTxt = fmt(p.preco ?? 19.9);
+    $('#valor-total').textContent = precoTxt;
+    $('#btn-pagar').textContent = `Finalizar compra — ${precoTxt}`;
+    const topo = $('#preco-topo');
+    if (topo) topo.textContent = precoTxt;
     if (p.mp_ativo && p.mp_public_key) prepararSDK();
   }).catch(() => {});
 

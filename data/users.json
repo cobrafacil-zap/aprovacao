@@ -243,5 +243,23 @@
     "feitas": [],
     "lista": [],
     "ultimaVisita": null
+  },
+  {
+    "id": "usr_mvsjby1uwnbck8",
+    "nome": "Fluxo Real",
+    "email": "delivered@resend.dev",
+    "senhaSalt": "f197288fd73d5942c2b12dda74092df5",
+    "senhaHash": "972575c22be7b49abce8049ce18a189ff0a87c5ce5f2a83db4939f836aa0e6d9521b8ccb936509927a31ef38cb251bb94418f3b6a7e835e6ef1fa65c62b56da6",
+    "senhaDefinida": false,
+    "criadoEm": "2026-10-28T19:56:25.506Z",
+    "acesso": {
+      "ativo": true,
+      "liberadoEm": "2026-10-28T19:56:25.506Z",
+      "pedidoId": "ped_mvsjbwp0ffjyq3"
+    },
+    "favoritos": [],
+    "feitas": [],
+    "lista": [],
+    "ultimaVisita": null
   }
 ]

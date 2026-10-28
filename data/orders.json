@@ -102,5 +102,20 @@
     "utm": null,
     "acessoLiberado": true,
     "pagoEm": "2026-10-28T19:47:15.514Z"
+  },
+  {
+    "id": "ped_mvsjbwp0ffjyq3",
+    "nome": "Fluxo Real",
+    "email": "delivered@resend.dev",
+    "produto": "Acesso vitalício — Oferta Fit BR",
+    "valor": 19.9,
+    "metodo": "pix",
+    "status": "pago",
+    "criadoEm": "2026-10-28T19:56:23.748Z",
+    "utm": null,
+    "acessoLiberado": true,
+    "mpOrderId": "ORD01M621BKRCFS464AHDNZKQ6QGZ",
+    "mpStatus": "action_required",
+    "pagoEm": "2026-10-28T19:56:25.484Z"
   }
 ]
