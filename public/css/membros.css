@@ -387,6 +387,41 @@
 /* (estilos de login movidos para base.css — compartilhados com admin.html) */
 
 /* ============================================================
+   PÁGINA DA RECEITA — visual simples, grande e legível
+   ============================================================ */
+.receita-pagina { padding-top: 18px; padding-bottom: 110px; max-width: 760px; }
+.foto-receita {
+  width: 100%; border-radius: var(--raio-grande); aspect-ratio: 4/3;
+  object-fit: cover; box-shadow: var(--sombra); background: var(--azul-claro);
+}
+.titulo-receita {
+  font-size: clamp(1.7rem, 5.5vw, 2.5rem); margin: 22px 0 0; line-height: 1.15;
+}
+.subtitulo-receita { font-size: clamp(1.05rem, 3vw, 1.25rem); color: var(--cinza); margin-top: 10px; line-height: 1.6; }
+.titulo-secao {
+  font-size: clamp(1.25rem, 4vw, 1.6rem); margin: 34px 0 14px;
+  padding-left: 14px; border-left: 6px solid var(--amarelo);
+}
+.dica-texto {
+  background: var(--amarelo-claro); border-radius: var(--raio); padding: 18px 20px;
+  font-size: 1.08rem; line-height: 1.65; color: var(--tinta);
+}
+.info-receita { margin-top: 20px; }
+.receita-pagina .ingredientes-check li { font-size: 1.12rem; padding: 14px 16px; }
+.receita-pagina .passo-texto { font-size: 1.12rem; }
+.receita-pagina .passo-check { padding: 14px; background: var(--fundo); border-radius: 14px; margin-bottom: 10px; }
+
+/* barra de ações fixa no rodapão */
+.acoes-receita {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 80;
+  background: rgba(255, 255, 255, 0.97); backdrop-filter: blur(8px);
+  box-shadow: 0 -8px 24px rgba(22, 38, 110, 0.14);
+  padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
+  display: flex; gap: 10px; justify-content: center;
+}
+.acoes-receita .btn { flex: 1; max-width: 240px; padding: 14px 16px; }
+
+/* ============================================================
    MODO IMPRESSÃO DE RECEITA
    ============================================================ */
 .area-impressao { display: none; }

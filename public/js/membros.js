@@ -209,7 +209,7 @@
     grade.querySelectorAll('.receita-card').forEach((c) =>
       c.addEventListener('click', (e) => {
         if (e.target.closest('[data-fav]')) return;
-        abrirReceita(c.dataset.id);
+        location.href = `receita.html?id=${c.dataset.id}`;
       })
     );
     grade.querySelectorAll('[data-fav]').forEach((b) =>
@@ -622,7 +622,7 @@
     window.open(`https://wa.me/?text=${encodeURIComponent(texto)}`, '_blank');
   });
 
-  // Atalho: abre receita direto pelo link do e-mail (?receita=ID)
+  // Atalho: link do e-mail (?receita=ID) → página da receita
   const q = new URLSearchParams(location.search);
-  if (q.get('receita')) setTimeout(() => abrirReceita(q.get('receita')), 700);
+  if (q.get('receita')) location.replace(`receita.html?id=${q.get('receita')}`);
 })();

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Receita — Livro de Receitas Digital da Núbia</title>
+  <link rel="icon" type="image/png" href="assets/logo-favicon.png" />
+  <link rel="icon" type="image/svg+xml" href="assets/logo.svg" />
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/membros.css" />
+</head>
+<body class="app-membros">
+
+  <!-- ===== Topo ===== -->
+  <header class="app-topo">
+    <div class="container linha-flex">
+      <a href="membros.html" class="menu-btn" title="Voltar">←</a>
+      <a href="index.html" title="Início do site">
+        <img class="logo" src="assets/logo.jpg" onerror="this.onerror=null;this.src='assets/logo.svg'" alt="Oferta Fit BR" />
+      </a>
+      <div class="espaçador"></div>
+      <a class="btn-sair" href="membros.html">🍽 Todas as receitas</a>
+    </div>
+  </header>
+
+  <main class="container receita-pagina" id="conteudo-receita">
+    <p class="cinza texto-centro mt-4">Carregando receita...</p>
+  </main>
+
+  <!-- barra de ações fixa (desktop e mobile) -->
+  <div class="acoes-receita oculto" id="acoes-receita"></div>
+
+  <!-- ===== Toast ===== -->
+  <div id="toast" class="toast oculto"></div>
+
+  <!-- ===== Área de impressão ===== -->
+  <div class="area-impressao" id="area-impressao"></div>
+
+  <script src="js/track.js"></script>
+  <script src="js/receita.js"></script>
+</body>
+</html>
