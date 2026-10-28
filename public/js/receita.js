@@ -79,9 +79,10 @@
         <div class="nutri"><strong>${r.porcoes ?? '—'}</strong><span>porção(ões)</span></div>
         <div class="nutri"><strong>${(r.ingredientes || []).length}</strong><span>ingredientes</span></div>
         <div class="nutri"><strong>${(r.passos || []).length}</strong><span>etapas</span></div>
-        ${r.kcal_por_porcao ? `<div class="nutri"><strong>🔥 ${r.kcal_por_porcao}</strong><span>kcal/porção*</span></div>` : ''}
       </div>
-      ${r.kcal_por_porcao ? `<p class="pequeno cinza mt-1">* Valor <strong>estimado</strong>, calculado automaticamente a partir dos ingredientes — pode variar conforme marcas e porções.</p>` : ''}
+
+      <h2 class="titulo-secao">Informação nutricional (aproximada)</h2>
+      ${nutricaoHtml(r)}
       ${(r.dificuldade || r.custo) ? `
       <div class="nutricao mt-1">
         ${r.dificuldade ? `<div class="nutri"><strong>${rotulo[r.dificuldade] || r.dificuldade}</strong><span>dificuldade</span></div>` : ''}
@@ -140,6 +141,20 @@
       toast(r.feita ? 'Receita marcada como feita! 👨‍🍳' : 'Marcação desfeita');
     });
     $('#btn-imprimir').addEventListener('click', () => imprimir());
+  }
+
+  function nutricaoHtml(r) {
+    const n = r.nutricao_aprox || {};
+    if (!n.kcal_por_porcao) return '<p class="cinza">Cálculo disponível para esta receita.</p>';
+    return `
+      <div class="nutricao">
+        <div class="nutri"><strong>🔥 ${n.kcal_por_porcao}</strong><span>kcal/porção</span></div>
+        <div class="nutri"><strong>${n.carboidratos_g}g</strong><span>carboidratos</span></div>
+        <div class="nutri"><strong>${n.proteinas_g}g</strong><span>proteínas</span></div>
+        <div class="nutri"><strong>${n.gorduras_g}g</strong><span>gorduras</span></div>
+      </div>
+      <p class="pequeno cinza mt-1">≈ Valores <strong>aproximados</strong>, calculados automaticamente a partir dos
+      ingredientes e da porção — podem variar conforme marcas, medidas e modo de preparo.</p>`;
   }
 
   function renderIngredientes() {

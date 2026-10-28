@@ -135,7 +135,7 @@ const receitaPublica = (r, u) => ({
   data_liberacao: r.data_liberacao,
   dificuldade: r.dificuldade || null,
   custo: r.custo || null,
-  kcal_por_porcao: calcularNutricao(r.ingredientes || [], r.porcoes || 1).kcal_por_porcao,
+  nutricao_aprox: calcularNutricao(r.ingredientes || [], r.porcoes || 1),
   favorito: (u?.favoritos || []).includes(r.id),
   feita: (u?.feitas || []).some((f) => f.receitaId === r.id),
 });
