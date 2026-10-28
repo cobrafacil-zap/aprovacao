@@ -197,7 +197,6 @@
           <div class="meta">
             ${recemLiberada(r) ? '<span class="meta-chip nova">🆕 Nova da semana</span>' : ''}
             ${r.tempo_preparo_min ? `<span class="meta-chip">⏱ ${r.tempo_preparo_min} min</span>` : ''}
-            ${r.nutricao?.calorias ? `<span class="meta-chip kcal">🔥 ${r.nutricao.calorias} kcal</span>` : ''}
           </div>
         </div>
       </article>`;
@@ -294,7 +293,6 @@
     receitaAtual = r;
     porcoesAtuais = r.porcoes || 1;
     checksFeitos = new Set();
-    const nutri = r.nutricao || {};
 
     $('#modal-conteudo').innerHTML = `
       <img class="foto-capa" src="${r.foto || '/assets/receitas/bowl-frango-quinoa.jpg'}" alt="${r.nome}" />
@@ -321,17 +319,6 @@
         <h4>Modo de preparo <span class="dica-check">toque para marcar o que já foi feito</span></h4>
         <ol class="passos passos-check" id="lista-passos"></ol>
 
-        ${nutri.calorias ? `
-        <h4>Informação nutricional aproximada (por porção)</h4>
-        <div class="nutricao">
-          <div class="nutri"><strong>${nutri.calorias}</strong><span>kcal</span></div>
-          <div class="nutri"><strong>${nutri.carboidratos_g ?? '—'}g</strong><span>carboidratos</span></div>
-          <div class="nutri"><strong>${nutri.proteinas_g ?? '—'}g</strong><span>proteínas</span></div>
-          <div class="nutri"><strong>${nutri.gorduras_g ?? '—'}g</strong><span>gorduras</span></div>
-        </div>
-        <div class="aviso mt-2">⚠️ Os valores nutricionais são <strong>estimativas aproximadas</strong> e podem variar
-        conforme ingredientes, marcas e porções. Este conteúdo é informativo e não substitui o acompanhamento
-        de nutricionista ou médico.</div>` : ''}
 
         ${r.dicas ? `<h4>Anote aí</h4><p class="cinza">${r.dicas}</p>` : ''}
       </div>`;
@@ -430,7 +417,6 @@
 
   // ================= MODO IMPRESSÃO =================
   function imprimirReceita(r, fator = 1) {
-    const n = r.nutricao || {};
     $('#area-impressao').innerHTML = `
       <div class="imp-cabecalho">
         <div><h1>${r.nome}</h1><small>${r.descricao || ''}</small></div>
@@ -440,9 +426,7 @@
       <ul>${(r.ingredientes || []).map((i) => `<li>${escalarQtd(i.qtd, fator)} ${i.unidade || ''} ${i.item || i}</li>`).join('')}</ul>
       <h2>Modo de preparo</h2>
       <ol>${(r.passos || []).map((p) => `<li>${p}</li>`).join('')}</ol>
-      ${n.calorias ? `<h2>Informação nutricional aproximada (por porção)</h2>
-      <div class="imp-nutricao"><span><strong>${n.calorias}</strong> kcal</span><span><strong>${n.carboidratos_g ?? '—'}g</strong> carboidratos</span><span><strong>${n.proteinas_g ?? '—'}g</strong> proteínas</span><span><strong>${n.gorduras_g ?? '—'}g</strong> gorduras</span></div>` : ''}
-      <div class="imp-rodape">Valores nutricionais são estimativas. Conteúdo informativo — não substitui acompanhamento de nutricionista ou médico. • Oferta Fit BR</div>`;
+      <div class="imp-rodape">Conteúdo informativo — não substitui acompanhamento de nutricionista ou médico. • Oferta Fit BR</div>`;
     window.print();
   }
 

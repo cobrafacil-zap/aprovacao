@@ -45,12 +45,6 @@
       "Despeje porções da massa e doure 2 a 3 minutos de cada lado.",
       "Sirva com frutas frescas ou um fio de mel."
     ],
-    "nutricao": {
-      "calorias": 245,
-      "carboidratos_g": 32,
-      "proteinas_g": 11,
-      "gorduras_g": 8
-    },
     "dicas": "Fica ainda melhor com uma colher de pasta de amendoim por cima para mais saciedade.",
     "foto": "/assets/receitas/panqueca-banana-aveia.jpg",
     "data_liberacao": "2026-09-07T08:00:00-03:00",
@@ -112,12 +106,6 @@
       "Monte o bowl: base de quinoa, frango e legumes por cima.",
       "Finalize com sementes de gergelim ou um fio de azeite."
     ],
-    "nutricao": {
-      "calorias": 420,
-      "carboidratos_g": 38,
-      "proteinas_g": 36,
-      "gorduras_g": 12
-    },
     "dicas": "Faça o dobro de frango e guarde para montar o bowl em menos tempo no dia seguinte.",
     "foto": "/assets/receitas/bowl-frango-quinoa.jpg",
     "data_liberacao": "2026-09-14T08:00:00-03:00",
@@ -180,12 +168,6 @@
       "Despeje na forma e asse por 18 a 20 minutos, até firmar e dourar levemente.",
       "Sirva quente com uma salada verde ao lado."
     ],
-    "nutricao": {
-      "calorias": 230,
-      "carboidratos_g": 8,
-      "proteinas_g": 19,
-      "gorduras_g": 14
-    },
     "dicas": "Sobrou? Corte em fatias e leve como lanche no dia seguinte — vai bem fria também.",
     "foto": "/assets/receitas/omelete-forno-legumes.jpg",
     "data_liberacao": "2026-09-21T08:00:00-03:00",
@@ -232,12 +214,6 @@
       "Misture bem até cobrir todas as castanhas.",
       "Divida em potinhos para levar na bolsa ou na marmita."
     ],
-    "nutricao": {
-      "calorias": 190,
-      "carboidratos_g": 12,
-      "proteinas_g": 5,
-      "gorduras_g": 14
-    },
     "dicas": "Uma porção (cerca de 2 colheres de sopa) costuma ser suficiente para matar a fome.",
     "foto": "/assets/receitas/mix-castanhas-mel.jpg",
     "data_liberacao": "2026-09-28T08:00:00-03:00",
@@ -285,12 +261,6 @@
       "Leve à geladeira por pelo menos 30 minutos para firmar.",
       "Sirva com frutas vermelhas por cima."
     ],
-    "nutricao": {
-      "calorias": 210,
-      "carboidratos_g": 22,
-      "proteinas_g": 3,
-      "gorduras_g": 13
-    },
     "dicas": "Quanto mais maduro o abacate, mais cremoso e doce fica o mousse.",
     "foto": "/assets/receitas/mousse-abacate-cacau.jpg",
     "data_liberacao": "2026-10-05T08:00:00-03:00",
@@ -337,12 +307,6 @@
       "Frite o ovo à parte e coloque sobre a tapioca.",
       "Acrescente o queijo branco, tempere com sal e orégano e dobre ao meio."
     ],
-    "nutricao": {
-      "calorias": 280,
-      "carboidratos_g": 30,
-      "proteinas_g": 16,
-      "gorduras_g": 10
-    },
     "dicas": "Fica ótima com tomate em rodelas e um toque de azeitona.",
     "foto": "/assets/receitas/tapioca-ovo-queijo.jpg",
     "data_liberacao": "2026-10-12T08:00:00-03:00",
@@ -399,12 +363,6 @@
       "Aqueça o purê com um fio de azeite e retifique o sal.",
       "Sirva o salmão sobre o purê e finalize com salsa picada."
     ],
-    "nutricao": {
-      "calorias": 480,
-      "carboidratos_g": 34,
-      "proteinas_g": 38,
-      "gorduras_g": 20
-    },
     "dicas": "Prefira selar o salmão sem mexer: é o segredo para uma casquinha dourada.",
     "foto": "/assets/receitas/salmao-mandioquinha.jpg",
     "data_liberacao": "2026-10-19T08:00:00-03:00",
@@ -466,12 +424,6 @@
       "Misture o tahine com o suco de limão e um pouco de água até virar um molho cremoso.",
       "Regue a salada com o molho e finalize com salsinha."
     ],
-    "nutricao": {
-      "calorias": 350,
-      "carboidratos_g": 42,
-      "proteinas_g": 14,
-      "gorduras_g": 13
-    },
     "dicas": "O molho de tahine fica na geladeira por até 5 dias — faça uma porção maior.",
     "foto": "/assets/receitas/salada-grao-bico-tahine.jpg",
     "data_liberacao": "2026-10-26T08:00:00-03:00",
@@ -528,12 +480,6 @@
       "Deixe esfriar completamente antes de cortar em barras.",
       "Guarde em pote fechado por até 7 dias."
     ],
-    "nutricao": {
-      "calorias": 195,
-      "carboidratos_g": 26,
-      "proteinas_g": 6,
-      "gorduras_g": 8
-    },
     "dicas": "Corte antes de esfriar para não quebrar. Para mais proteína, acrescente whey ou mais castanhas.",
     "foto": "/assets/receitas/barra-cereal-caseira.jpg",
     "data_liberacao": "2026-11-02T08:00:00-03:00",
@@ -585,12 +531,6 @@
       "Leve à geladeira por pelo menos 4 horas (ou a noite inteira).",
       "Sirva com as frutas por cima."
     ],
-    "nutricao": {
-      "calorias": 175,
-      "carboidratos_g": 24,
-      "proteinas_g": 6,
-      "gorduras_g": 6
-    },
     "dicas": "Faça 3 potinhos de uma vez: café da manhã resolvido para metade da semana.",
     "foto": "/assets/receitas/pudim-chia-frutas.jpg",
     "data_liberacao": "2026-11-09T08:00:00-03:00",

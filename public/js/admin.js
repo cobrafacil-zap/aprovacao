@@ -216,10 +216,6 @@
     (r.passos || []).forEach((p) => addPasso(p));
     if (!r.ingredientes?.length) addIngrediente();
     if (!r.passos?.length) addPasso();
-    $('#rec-calorias').value = r.nutricao?.calorias ?? '';
-    $('#rec-carbo').value = r.nutricao?.carboidratos_g ?? '';
-    $('#rec-proteina').value = r.nutricao?.proteinas_g ?? '';
-    $('#rec-gordura').value = r.nutricao?.gorduras_g ?? '';
     if (r.foto) {
       $('#preview-foto').src = r.foto;
       $('#preview-foto').classList.remove('oculto');
@@ -260,12 +256,6 @@
       tags: $('#rec-tags').value.split(',').map((t) => t.trim()).filter(Boolean),
       ingredientes,
       passos,
-      nutricao: {
-        calorias: Number($('#rec-calorias').value) || null,
-        carboidratos_g: Number($('#rec-carbo').value) || null,
-        proteinas_g: Number($('#rec-proteina').value) || null,
-        gorduras_g: Number($('#rec-gordura').value) || null,
-      },
     };
 
     let r = receitaEditando

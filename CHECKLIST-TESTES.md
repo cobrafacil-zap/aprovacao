@@ -101,5 +101,5 @@ Marque cada item após validar. Use duas janelas (ou aba anônima) para simular 
 |---|---|---|---|---|
 | 9.1 | Sem promessa de resultado | Ler LP inteira | Nenhuma promessa de emagrecimento garantido/resultado médico | ☐ |
 | 9.2 | Avisos legais | Rodapé da LP, modal de receita, e-mails | Aviso de conteúdo informativo + não substitui nutricionista/médico | ☐ |
-| 9.3 | Estimativa nutricional | Abrir qualquer receita | Aviso de que os valores são estimativas | ☐ |
+| 9.3 | Sem nutrição no produto | Buscar no site/app | Nenhuma menção a calorias, macros ou informação nutricional | ☐ |
 | 9.4 | Depoimentos | Seção Depoimentos | Espaço marcado para inserir depoimentos reais antes da campanha | ☐ |

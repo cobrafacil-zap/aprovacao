@@ -92,7 +92,7 @@ via `POST /api/checkout/webhook` (que libera o acesso e envia o e-mail).
 Foto do prato • nome e descrição curta • tempo de preparo e porções • ingredientes com
 quantidades • modo de preparo em passos numerados • tags (café da manhã, almoço, jantar,
 lanche, sobremesa, sem glúten, sem lactose, alto proteico, low carb, vegetariano, rápido) •
-informação nutricional aproximada (calorias + macros) **com aviso de estimativa**.
+dicas de preparo.
 
 ### 4. Liberação semanal (`src/lib/release.js`)
 Cada receita tem `data_liberacao` e fica **invisível até a data** (API retorna 404).
@@ -148,9 +148,9 @@ Para trocar as cores, edite as variáveis em `public/css/base.css` (`:root`).
 ## ✍️ Regras de conteúdo (já aplicadas)
 
 - Nenhuma promessa de emagrecimento garantido ou resultado médico.
+- Sem informação nutricional no produto (não usar como argumento de venda).
 - Linguagem de bem-estar e alimentação equilibrada.
-- Aviso em rodapé, no modal de cada receita e nos e-mails: conteúdo informativo,
-  não substitui nutricionista ou médico; valores nutricionais são estimativas.
+- Aviso em rodapé e nos e-mails: conteúdo informativo, não substitui nutricionista ou médico.
 
 ---
 
