@@ -137,6 +137,11 @@
       `${receitas.length} receita${receitas.length !== 1 ? 's' : ''} encontrada${receitas.length !== 1 ? 's' : ''}`;
     const filtrando = filtros.q || filtros.categoria || filtros.tags.length;
     $('#btn-limpar-filtros').classList.toggle('oculto', !filtrando);
+    const totalFiltros = (filtros.categoria ? 1 : 0) + filtros.tags.length;
+    const badge = $('#filtro-badge');
+    badge.textContent = totalFiltros;
+    badge.classList.toggle('oculto', totalFiltros === 0);
+    $('#btn-toggle-filtros').classList.toggle('ativo', totalFiltros > 0);
     if (d.proxima) renderizarStats({ ...usuario, proxima: d.proxima, receitas_liberadas: receitas.length, usuario });
   }
 
@@ -159,11 +164,9 @@
         <div class="corpo">
           <h3>${r.nome}</h3>
           <div class="meta">
-            <span class="meta-chip">⏱ ${r.tempo_preparo_min} min</span>
-            <span class="meta-chip">🍽 ${r.porcoes} porção(ões)</span>
+            ${r.tempo_preparo_min ? `<span class="meta-chip">⏱ ${r.tempo_preparo_min} min</span>` : ''}
             ${r.nutricao?.calorias ? `<span class="meta-chip kcal">🔥 ${r.nutricao.calorias} kcal</span>` : ''}
           </div>
-          <div class="tags">${(r.tags || []).slice(0, 3).map((t) => `<span class="tag">${t.replace(/-/g, ' ')}</span>`).join('')}</div>
         </div>
       </article>`;
   }
@@ -210,12 +213,26 @@
     filtros.tags = [...$$('#filtros-tag .chip.ativo')].map((b) => b.dataset.tag);
     carregarReceitas();
   });
+  // Filtros recolhidos: abrem/fecham pelo botão "Filtros"
+  $('#btn-toggle-filtros').addEventListener('click', () => {
+    $('#painel-filtros').classList.toggle('oculto');
+  });
+
   $('#btn-limpar-filtros').addEventListener('click', () => {
     filtros = { q: '', categoria: '', tags: [], ordenar: filtros.ordenar };
     $('#busca').value = '';
     $$('#filtros-categoria .chip').forEach((b) => b.classList.toggle('ativo', b.dataset.categoria === ''));
     $$('#filtros-tag .chip').forEach((b) => b.classList.remove('ativo'));
     carregarReceitas();
+  });
+
+  // Enviar a lista de compras por WhatsApp
+  $('#btn-whatsapp').addEventListener('click', () => {
+    const itens = usuario?.lista || [];
+    if (!itens.length) return toast('Sua lista de compras está vazia', 'erro');
+    const linhas = itens.map((i) => `${i.marcado ? '☑' : '☐'} ${[i.qtd, i.unidade, i.item].filter(Boolean).join(' ')}`);
+    const texto = `🛒 *Lista de compras — Oferta Fit BR*\n\n${linhas.join('\n')}\n\n🥗 Feita na área de membros`;
+    window.open(`https://wa.me/?text=${encodeURIComponent(texto)}`, '_blank');
   });
 
   // ================= MODAL DA RECEITA =================
@@ -252,8 +269,8 @@
         <h2>${r.nome}</h2>
         <p class="cinza">${r.descricao || ''}</p>
         <div class="meta-flex">
-          <span>⏱ ${r.tempo_preparo_min} min</span>
-          <span>📂 ${r.categoria.replace(/-/g, ' ')}</span>
+          ${r.tempo_preparo_min ? `<span>⏱ ${r.tempo_preparo_min} min</span>` : ''}
+          ${r.categoria ? `<span>📂 ${r.categoria.replace(/-/g, ' ')}</span>` : ''}
           ${(r.tags || []).map((t) => `<span>🏷 ${t.replace(/-/g, ' ')}</span>`).join('')}
         </div>
 

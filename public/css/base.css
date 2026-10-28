@@ -14,7 +14,7 @@
   --vermelho: #FF4B2E;
   --vermelho-escuro: #E23A1F;
   --tinta: #0E1330;
-  --cinza: #5B627E;
+  --cinza: #4B5266;
   --fundo: #F7F8FC;
   --branco: #fff;
   --verde: #12B76A;
@@ -36,6 +36,8 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 img { max-width: 100%; display: block; }
+/* Logo em formato circular (a logo original é quadrada) */
+img.logo, .gate-logo, .login-card .logo { border-radius: 50%; }
 a { color: inherit; text-decoration: none; }
 button { font-family: inherit; cursor: pointer; border: none; background: none; }
 

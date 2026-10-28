@@ -99,8 +99,11 @@ router.put('/receitas/:id', async (req, res) => {
 
   Object.assign(r, {
     nome: b.nome, descricao: b.descricao ?? r.descricao, categoria: b.categoria ?? r.categoria,
-    tags: b.tags ?? r.tags, tempo_preparo_min: Number(b.tempo_preparo_min) ?? r.tempo_preparo_min,
-    porcoes: Number(b.porcoes) ?? r.porcoes, ingredientes: b.ingredientes ?? r.ingredientes,
+    tags: b.tags ?? r.tags,
+    // cuidado: Number(undefined) = NaN — só troca se veio valor válido
+    tempo_preparo_min: Number(b.tempo_preparo_min) || r.tempo_preparo_min || 20,
+    porcoes: Number(b.porcoes) || r.porcoes || 2,
+    ingredientes: b.ingredientes ?? r.ingredientes,
     passos: b.passos ?? r.passos, nutricao: b.nutricao ?? r.nutricao, dicas: b.dicas ?? r.dicas,
     foto: b.foto ?? r.foto, data_liberacao: new Date(b.data_liberacao).toISOString(),
     ativo: b.ativo !== false,

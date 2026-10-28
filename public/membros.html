@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Área de Membros — Oferta Fit BR</title>
-  <link rel="icon" type="image/jpeg" href="assets/logo.jpg" />
+  <link rel="icon" type="image/png" href="assets/logo-favicon.png" />
   <link rel="icon" type="image/svg+xml" href="assets/logo.svg" />
   <link rel="stylesheet" href="css/base.css" />
   <link rel="stylesheet" href="css/membros.css" />
@@ -36,18 +36,25 @@
 
   <main class="container" id="app" style="padding-bottom:80px">
 
-    <!-- ===== Boas-vindas + estatísticas ===== -->
+    <!-- ===== Boas-vindas compacta ===== -->
     <section class="boas-vindas">
-      <div>
-        <span class="rotulo">🥗 Sua cozinha fit</span>
-        <h1 id="saudacao">Olá!</h1>
-        <p class="bv-sub" id="bv-sub">Que tal preparar uma receita nova hoje?</p>
+      <div class="bv-linha">
+        <div>
+          <h1 id="saudacao">Olá!</h1>
+          <p class="bv-sub" id="bv-sub">Que tal preparar uma receita nova hoje?</p>
+        </div>
+        <div class="bv-proxima">
+          <span class="bv-icone">📅</span>
+          <div>
+            <strong id="stat-proxima">—</strong>
+            <small id="stat-proxima-rotulo">próxima receita</small>
+          </div>
+        </div>
       </div>
-      <div class="stats-grid">
-        <div class="stat"><strong id="stat-liberadas">0</strong><span>receitas liberadas</span></div>
-        <div class="stat"><strong id="stat-feitas">0</strong><span>você já fez</span></div>
-        <div class="stat"><strong id="stat-favoritos">0</strong><span>favoritas</span></div>
-        <div class="stat stat--destaque"><strong id="stat-proxima">—</strong><span id="stat-proxima-rotulo">próxima receita</span></div>
+      <div class="stats-inline">
+        <span>📚 <strong id="stat-liberadas">0</strong> receitas</span>
+        <span>✅ <strong id="stat-feitas">0</strong> feitas</span>
+        <span>❤️ <strong id="stat-favoritos">0</strong> favoritas</span>
       </div>
     </section>
 
@@ -55,7 +62,7 @@
     <div class="filtros abas-membros" id="abas-membros">
       <button class="chip ativo" data-aba="receitas">🍽 Receitas</button>
       <button class="chip" data-aba="favoritos">❤️ Favoritos</button>
-      <button class="chip" data-aba="lista">🛒 Lista de compras</button>
+      <button class="chip" data-aba="lista">🛒 Lista</button>
       <button class="chip" data-aba="historico">✅ Feitas</button>
     </div>
 
@@ -63,36 +70,40 @@
     <section id="aba-receitas">
       <div class="busca-barra">
         <input type="search" id="busca" placeholder="🔍 Buscar receita, ingrediente ou tag..." />
-        <select id="ordenar" class="select-ordenar" aria-label="Ordenar receitas">
-          <option value="recentes">Mais recentes</option>
-          <option value="az">A – Z</option>
-          <option value="rapidas">Mais rápidas</option>
-        </select>
-        <button class="btn btn--cta btn--pequeno" id="btn-lista">🛒 Gerar lista</button>
+        <button class="btn-filtros" id="btn-toggle-filtros">
+          ⚙️ Filtros <span class="filtro-badge oculto" id="filtro-badge">0</span>
+        </button>
       </div>
 
-      <div class="filtros" id="filtros-categoria">
-        <button class="chip ativo" data-categoria="">Todas</button>
-        <button class="chip" data-categoria="cafe-manha">☀️ Café da manhã</button>
-        <button class="chip" data-categoria="almoco">🍛 Almoço</button>
-        <button class="chip" data-categoria="jantar">🌙 Jantar</button>
-        <button class="chip" data-categoria="lanche">🥜 Lanche</button>
-        <button class="chip" data-categoria="sobremesa">🍫 Sobremesa</button>
+      <!-- filtros recolhidos: abrem só quando o usuário pedir -->
+      <div class="painel-filtros oculto" id="painel-filtros">
+        <div class="filtros" id="filtros-categoria">
+          <button class="chip ativo" data-categoria="">Todas</button>
+          <button class="chip" data-categoria="cafe-manha">☀️ Café da manhã</button>
+          <button class="chip" data-categoria="almoco">🍛 Almoço</button>
+          <button class="chip" data-categoria="jantar">🌙 Jantar</button>
+          <button class="chip" data-categoria="lanche">🥜 Lanche</button>
+          <button class="chip" data-categoria="sobremesa">🍫 Sobremesa</button>
+        </div>
+        <div class="filtros mt-1" id="filtros-tag">
+          <button class="chip" data-tag="sem-gluten">Sem glúten</button>
+          <button class="chip" data-tag="sem-lactose">Sem lactose</button>
+          <button class="chip" data-tag="alto-proteico">Alto proteico</button>
+          <button class="chip" data-tag="low-carb">Low carb</button>
+          <button class="chip" data-tag="vegetariano">Vegetariano</button>
+          <button class="chip" data-tag="rapido">Até 15 min</button>
+        </div>
+        <div class="linha-filtros-rodape">
+          <select id="ordenar" class="select-ordenar" aria-label="Ordenar receitas">
+            <option value="recentes">Mais recentes</option>
+            <option value="az">A – Z</option>
+            <option value="rapidas">Mais rápidas</option>
+          </select>
+          <button class="link-limpar" id="btn-limpar-filtros">✕ Limpar filtros</button>
+        </div>
       </div>
 
-      <div class="filtros mt-1" id="filtros-tag">
-        <button class="chip" data-tag="sem-gluten">Sem glúten</button>
-        <button class="chip" data-tag="sem-lactose">Sem lactose</button>
-        <button class="chip" data-tag="alto-proteico">Alto proteico</button>
-        <button class="chip" data-tag="low-carb">Low carb</button>
-        <button class="chip" data-tag="vegetariano">Vegetariano</button>
-        <button class="chip" data-tag="rapido">Até 15 min</button>
-      </div>
-
-      <div class="linha-resultado">
-        <span id="contador-resultados">Carregando receitas...</span>
-        <button class="link-limpar oculto" id="btn-limpar-filtros">✕ Limpar filtros</button>
-      </div>
+      <p class="linha-resultado" id="contador-resultados">Carregando receitas...</p>
 
       <div class="receita-grade" id="grade-receitas"></div>
       <div class="estado-vazio oculto" id="vazio-receitas">
@@ -116,13 +127,17 @@
 
     <!-- ===== ABA: LISTA DE COMPRAS ===== -->
     <section id="aba-lista" class="oculto">
-      <h2 class="titulo-aba">Lista de compras 🛒</h2>
-      <p class="cinza pequeno">Gere a lista a partir das receitas que você vai fazer — ingredientes iguais são somados automaticamente.</p>
+      <div class="linha-flex mt-3">
+        <h2 style="font-size:1.3rem">Lista de compras 🛒</h2>
+        <div class="espaçador"></div>
+        <button class="btn btn--cta btn--pequeno" id="btn-lista">＋ Adicionar receitas</button>
+      </div>
 
       <div class="lista-card mt-2">
         <div class="cabeca">
           <h3>Minha lista da semana</h3>
           <div class="espaçador"></div>
+          <button class="btn-mini-whats" id="btn-whatsapp">📱 WhatsApp</button>
           <button class="btn btn--contorno btn--pequeno" id="btn-imprimir-lista">🖨 Imprimir</button>
           <button class="btn-mini-cinza" id="btn-limpar-lista">Limpar</button>
         </div>
@@ -142,7 +157,6 @@
     <!-- ===== ABA: HISTÓRICO ===== -->
     <section id="aba-historico" class="oculto">
       <h2 class="titulo-aba">Receitas que você já fez ✅</h2>
-      <p class="cinza pequeno">Marque as receitas como feitas para acompanhar sua evolução na cozinha.</p>
       <div class="mt-2" id="lista-historico"></div>
       <div class="estado-vazio oculto" id="vazio-historico">
         <div class="vazio-icone">👨‍🍳</div>
@@ -166,10 +180,10 @@
     <div class="modal">
       <button class="fechar" id="fechar-modal-lista">✕</button>
       <div class="conteudo">
-        <h2>Gerar lista de compras</h2>
+        <h2>Adicionar receitas à lista</h2>
         <p class="cinza">Selecione as receitas que você vai preparar:</p>
         <div id="selecao-receitas" class="mt-2"></div>
-        <button class="btn btn--cta btn--bloco mt-3" id="btn-gerar-lista">Gerar minha lista</button>
+        <button class="btn btn--cta btn--bloco mt-3" id="btn-gerar-lista">Adicionar à lista de compras</button>
       </div>
     </div>
   </div>
