@@ -208,5 +208,67 @@
     "receitaId": null,
     "origem": "site",
     "dispositivo": "desktop"
+  },
+  {
+    "id": "evt_mvsf67dvgzm5qs",
+    "ts": "2026-10-28T17:59:59.203Z",
+    "sessao": "s1",
+    "tipo": "pageview",
+    "pagina": null,
+    "utm": {
+      "source": "instagram"
+    },
+    "referrer": null,
+    "valor": null,
+    "pedidoId": null,
+    "receitaId": null,
+    "origem": "site",
+    "dispositivo": "desktop"
+  },
+  {
+    "id": "evt_mvsf67e7p7nw5b",
+    "ts": "2026-10-28T17:59:59.215Z",
+    "sessao": null,
+    "tipo": "checkout_start",
+    "pagina": null,
+    "utm": {
+      "source": "instagram"
+    },
+    "referrer": null,
+    "valor": 19.9,
+    "pedidoId": "ped_mvsf67e67vlqqo",
+    "receitaId": null,
+    "origem": "site",
+    "dispositivo": null
+  },
+  {
+    "id": "evt_mvsf67g0wzvax7",
+    "ts": "2026-10-28T17:59:59.281Z",
+    "sessao": null,
+    "tipo": "purchase",
+    "pagina": null,
+    "utm": {
+      "source": "instagram"
+    },
+    "referrer": null,
+    "valor": 19.9,
+    "pedidoId": "ped_mvsf67e67vlqqo",
+    "receitaId": null,
+    "origem": "checkout",
+    "dispositivo": null
+  },
+  {
+    "id": "evt_mvsf67ipp9w6ws",
+    "ts": "2026-10-28T17:59:59.377Z",
+    "sessao": null,
+    "tipo": "lista_gerada",
+    "pagina": null,
+    "utm": null,
+    "referrer": null,
+    "valor": null,
+    "pedidoId": null,
+    "receitaId": "rec_panqueca_banana_aveia",
+    "origem": "membros",
+    "dispositivo": null
   }
 ]

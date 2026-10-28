@@ -24,5 +24,20 @@
     "utm": null,
     "acessoLiberado": true,
     "pagoEm": "2026-10-28T17:38:52.493Z"
+  },
+  {
+    "id": "ped_mvsf67e67vlqqo",
+    "nome": "Maria Refator",
+    "email": "maria@refator.com",
+    "produto": "Acesso vitalício — Oferta Fit BR",
+    "valor": 19.9,
+    "metodo": "pix",
+    "status": "pago",
+    "criadoEm": "2026-10-28T17:59:59.214Z",
+    "utm": {
+      "source": "instagram"
+    },
+    "acessoLiberado": true,
+    "pagoEm": "2026-10-28T17:59:59.254Z"
   }
 ]

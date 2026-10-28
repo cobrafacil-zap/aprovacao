@@ -2,11 +2,11 @@
 import { Router } from 'express';
 import { read } from '../lib/db.js';
 import { track } from '../lib/analytics.js';
-import { receitasLiberadas, proximaReceita } from '../lib/release.js';
+import { receitasLiberadas, proximaReceita, liberarPendentesSeNecessario } from '../lib/release.js';
 
 const router = Router();
 
-const PUBLIC_RECIPE_FIELDS = (r) => ({
+const RECEITA_PUBLICA = (r) => ({
   id: r.id,
   nome: r.nome,
   descricao: r.descricao,
@@ -18,8 +18,8 @@ const PUBLIC_RECIPE_FIELDS = (r) => ({
   data_liberacao: r.data_liberacao,
 });
 
-router.get('/produto', (req, res) => {
-  const s = read('settings', {});
+router.get('/produto', async (req, res) => {
+  const s = await read('settings', {});
   res.json({
     nome: s.nomeProduto || 'Oferta Fit BR',
     preco: s.preco ?? 19.9,
@@ -32,21 +32,23 @@ router.get('/produto', (req, res) => {
   });
 });
 
-// Prévia para a LP (prints do produto): 3 receitas já liberadas + contagem total.
-router.get('/receitas/preview', (req, res) => {
-  const liberadas = receitasLiberadas();
+// Prévia para a LP (prints do produto): receitas liberadas + próxima.
+router.get('/receitas/preview', async (req, res) => {
+  await liberarPendentesSeNecessario().catch(() => {});
+  const liberadas = await receitasLiberadas();
+  const proxima = await proximaReceita();
   res.json({
     total: liberadas.length,
-    itens: liberadas.slice(0, 3).map(PUBLIC_RECIPE_FIELDS),
-    proxima: proximaReceita() ? { nome: proximaReceita().nome, data: proximaReceita().data_liberacao } : null,
+    itens: liberadas.slice(0, 3).map(RECEITA_PUBLICA),
+    proxima: proxima ? { nome: proxima.nome, data: proxima.data_liberacao } : null,
   });
 });
 
 // Tracking público (LP e checkout). Nunca bloqueia a página.
-router.post('/track', (req, res) => {
+router.post('/track', async (req, res) => {
   try {
     const b = req.body || {};
-    track({
+    await track({
       tipo: b.tipo,
       pagina: b.pagina,
       sessao: b.sessao,

@@ -50,5 +50,124 @@
     "favoritos": [],
     "feitas": [],
     "ultimaVisita": "2026-10-28T17:39:09.511Z"
+  },
+  {
+    "id": "usr_mvsf67g0cj1zo4",
+    "nome": "Maria Refatorada",
+    "email": "maria@refator.com",
+    "senhaSalt": "f190da97b9260c8ee8bf74d567edd2ca",
+    "senhaHash": "d7818496224356c0fba70139e9c5165af7ecab7f1e12d405ff0697f865568812c1712670404dcd6d91f3806bf15863f1dffbc56a7667ad741da4084d590ca1da",
+    "senhaDefinida": true,
+    "criadoEm": "2026-10-28T17:59:59.280Z",
+    "acesso": {
+      "ativo": true,
+      "liberadoEm": "2026-10-28T17:59:59.280Z",
+      "pedidoId": "ped_mvsf67e67vlqqo"
+    },
+    "favoritos": [],
+    "feitas": [],
+    "lista": [
+      {
+        "qtd": "8",
+        "unidade": "un",
+        "item": "ovos",
+        "receitas": [
+          "Omelete de Forno com Legumes",
+          "Panqueca de Banana com Aveia"
+        ],
+        "marcado": false
+      },
+      {
+        "qtd": "1",
+        "unidade": "un",
+        "item": "tomate sem sementes em cubos",
+        "receitas": [
+          "Omelete de Forno com Legumes"
+        ],
+        "marcado": false
+      },
+      {
+        "qtd": "1",
+        "unidade": "un",
+        "item": "cebola pequena picada",
+        "receitas": [
+          "Omelete de Forno com Legumes"
+        ],
+        "marcado": false
+      },
+      {
+        "qtd": "1",
+        "unidade": "xíc",
+        "item": "espinafre fresco",
+        "receitas": [
+          "Omelete de Forno com Legumes"
+        ],
+        "marcado": false
+      },
+      {
+        "qtd": "50",
+        "unidade": "g",
+        "item": "queijo branco em cubos (opcional)",
+        "receitas": [
+          "Omelete de Forno com Legumes"
+        ],
+        "marcado": false
+      },
+      {
+        "qtd": "1",
+        "unidade": "cs",
+        "item": "azeite de oliva",
+        "receitas": [
+          "Omelete de Forno com Legumes"
+        ],
+        "marcado": false
+      },
+      {
+        "qtd": "1",
+        "unidade": "un",
+        "item": "sal e pimenta-do-reino a gosto",
+        "receitas": [
+          "Omelete de Forno com Legumes"
+        ],
+        "marcado": false
+      },
+      {
+        "qtd": "1",
+        "unidade": "un",
+        "item": "banana madura",
+        "receitas": [
+          "Panqueca de Banana com Aveia"
+        ],
+        "marcado": false
+      },
+      {
+        "qtd": "4",
+        "unidade": "cs",
+        "item": "aveia em flocos",
+        "receitas": [
+          "Panqueca de Banana com Aveia"
+        ],
+        "marcado": false
+      },
+      {
+        "qtd": "1",
+        "unidade": "cp",
+        "item": "canela em pó",
+        "receitas": [
+          "Panqueca de Banana com Aveia"
+        ],
+        "marcado": false
+      },
+      {
+        "qtd": "1",
+        "unidade": "cd",
+        "item": "óleo de coco para untar",
+        "receitas": [
+          "Panqueca de Banana com Aveia"
+        ],
+        "marcado": false
+      }
+    ],
+    "ultimaVisita": null
   }
 ]

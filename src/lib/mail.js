@@ -1,6 +1,7 @@
-// Envio de e-mail: Resend (fetch) → SMTP (nodemailer) → modo simulado (console).
-// Templates prontos: boas-vindas, compra aprovada e nova receita semanal.
-import { read } from './db.js';
+// Envio de e-mail — canal principal: RESEND (funciona na Vercel).
+// Fallback: SMTP (nodemailer) para desenvolvimento local.
+// Sem credenciais: modo simulado (imprime no console — ótimo para testes).
+import { baseUrl } from './helpers.js';
 
 export async function sendEmail({ to, subject, html }) {
   const from = process.env.FROM_EMAIL || 'entrega@ofertafitbr.com';
@@ -79,14 +80,6 @@ export const emailDefinirSenha = (nome, url) =>
     ${botao(url, 'Definir minha senha')}
     <p style="color:#5B627E">Se você já tem senha, é só entrar normalmente.</p>`);
 
-export function baseUrl() {
-  return process.env.PUBLIC_BASE_URL || 'http://localhost:3000';
-}
-
 export function urlMembros() {
   return `${baseUrl()}/membros.html`;
-}
-
-export function emailDeSuporte() {
-  return read('settings', {}).emailSuporte || 'suporte@ofertafitbr.com';
 }

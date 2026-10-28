@@ -1,11 +1,11 @@
-// Analytics próprio (sem cookie de terceiros).
-// Registra eventos crus em data/events.json e agrega sob demanda:
-// visitas, conversão da página, checkouts abandonados, vendas e origem do tráfego.
-import { read, write, id, agora } from './db.js';
+// Analytics próprio (sem cookies de terceiros).
+// Cada evento custa ~1 comando Redis (LPUSH); a agregação é feita sob demanda
+// no painel admin: visitas, conversão da página, checkouts abandonados,
+// vendas e origem do tráfego.
+import { eventoAdd, eventoLista, read, id, agora } from './db.js';
 
-export function track(evt) {
-  const eventos = read('events', []);
-  eventos.push({
+export async function track(evt) {
+  await eventoAdd({
     id: id('evt'),
     ts: agora(),
     sessao: evt.sessao || null,
@@ -19,46 +19,53 @@ export function track(evt) {
     origem: evt.origem || 'site',
     dispositivo: evt.dispositivo || null,
   });
-  // guarda só os últimos 100k eventos para o arquivo não crescer sem limite
-  write('events', eventos.slice(-100000));
 }
 
 const dia = (ts) => String(ts).slice(0, 10);
 const noPeriodo = (ts, de, ate) => (!de || ts >= de) && (!ate || ts <= ate);
 
-export function resumo({ de, ate, dias = 14 } = {}) {
-  const eventos = read('events', []).filter((e) => noPeriodo(dia(e.ts), de, ate));
-  const pedidos = read('orders', []).filter((p) => noPeriodo(dia(p.criadoEm), de, ate));
+export async function resumo({ de, ate, dias = 14 } = {}) {
+  const [todosEventos, pedidos] = await Promise.all([
+    eventoLista(5000),
+    read('orders', []),
+  ]);
+  const eventos = todosEventos.filter((e) => noPeriodo(dia(e.ts), de, ate));
+  const pedidosP = pedidos.filter((p) => noPeriodo(dia(p.criadoEm), de, ate));
 
   const pageviews = eventos.filter((e) => e.tipo === 'pageview');
   const sessoes = new Set(pageviews.map((e) => e.sessao).filter(Boolean));
   const visitas = sessoes.size || pageviews.length;
-  const lp = new Set(eventos.filter((e) => e.tipo === 'lp_view').map((e) => e.sessao).filter(Boolean)).size || eventos.filter((e) => e.tipo === 'lp_view').length;
-  const inicios = new Set(eventos.filter((e) => e.tipo === 'checkout_start').map((e) => e.sessao).filter(Boolean)).size || eventos.filter((e) => e.tipo === 'checkout_start').length;
-  const pagos = pedidos.filter((p) => p.status === 'pago');
-  const abandonados = pedidos.filter((p) => p.status === 'abandonado');
+  const lp = new Set(eventos.filter((e) => e.tipo === 'lp_view').map((e) => e.sessao).filter(Boolean)).size ||
+    eventos.filter((e) => e.tipo === 'lp_view').length;
+  const inicios = new Set(eventos.filter((e) => e.tipo === 'checkout_start').map((e) => e.sessao).filter(Boolean)).size ||
+    eventos.filter((e) => e.tipo === 'checkout_start').length;
+  const pagos = pedidosP.filter((p) => p.status === 'pago');
+  const abandonados = pedidosP.filter((p) => p.status === 'abandonado');
 
   const receita = pagos.reduce((s, p) => s + (p.valor || 0), 0);
   const pct = (a, b) => (b ? Math.round((a / b) * 1000) / 10 : 0);
 
-  // série diária (últimos N dias) para gráficos
   const hoje = new Date();
   const serie = [];
   for (let i = dias - 1; i >= 0; i--) {
     const d = new Date(hoje.getTime() - i * 864e5).toISOString().slice(0, 10);
     serie.push({
       data: d,
-      visitas: new Set(pageviews.filter((e) => dia(e.ts) === d).map((e) => e.sessao).filter(Boolean)).size || pageviews.filter((e) => dia(e.ts) === d).length,
+      visitas: new Set(pageviews.filter((e) => dia(e.ts) === d).map((e) => e.sessao).filter(Boolean)).size ||
+        pageviews.filter((e) => dia(e.ts) === d).length,
       checkouts: eventos.filter((e) => e.tipo === 'checkout_start' && dia(e.ts) === d).length,
-      vendas: pedidos.filter((p) => p.status === 'pago' && dia(p.criadoEm) === d).length,
-      receita: pedidos.filter((p) => p.status === 'pago' && dia(p.criadoEm) === d).reduce((s, p) => s + (p.valor || 0), 0),
+      vendas: pedidosP.filter((p) => p.status === 'pago' && dia(p.criadoEm) === d).length,
+      receita: pedidosP.filter((p) => p.status === 'pago' && dia(p.criadoEm) === d).reduce((s, p) => s + (p.valor || 0), 0),
     });
   }
 
-  // origem do tráfego (utm_source ou referrer)
   const origens = {};
   pageviews.forEach((e) => {
-    const o = (e.utm?.source || (e.referrer ? new URL(e.referrer, 'https://x').hostname.replace('www.', '') : 'direto')).toLowerCase();
+    let o = 'direto';
+    if (e.utm?.source) o = String(e.utm.source).toLowerCase();
+    else if (e.referrer) {
+      try { o = new URL(e.referrer, 'https://x').hostname.replace('www.', '').toLowerCase(); } catch {}
+    }
     origens[o] = (origens[o] || 0) + 1;
   });
 
@@ -83,6 +90,6 @@ export function resumo({ de, ate, dias = 14 } = {}) {
     serie,
     origens: Object.entries(origens).sort((a, b) => b[1] - a[1]).map(([nome, total]) => ({ nome, total })),
     dispositivos: Object.entries(dispositivos).sort((a, b) => b[1] - a[1]).map(([nome, total]) => ({ nome, total })),
-    eventos_recentes: read('events', []).slice(-30).reverse(),
+    eventos_recentes: todosEventos.slice(-30).reverse(),
   };
 }

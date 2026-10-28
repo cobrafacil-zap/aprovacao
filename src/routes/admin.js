@@ -1,28 +1,24 @@
-// Painel administrativo: receitas (CRUD + foto + agendamento), alunos/acessos,
-// pedidos, métricas (analytics) e configurações.
+// Painel administrativo: login, receitas (CRUD + foto + agendamento), alunos,
+// pedidos, métricas e configurações.
+// Upload de foto: Vercel Blob em produção (BLOB_READ_WRITE_TOKEN);
+// sem token, grava em public/assets/receitas/ (desenvolvimento local).
 import { Router } from 'express';
 import multer from 'multer';
 import path from 'path';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
-import { read, write, id, agora, DATA_DIR } from '../lib/db.js';
-import { requireAdmin, criarSessao, destruirSessao, isSessaoAdmin, hashSenha, conferirSenha } from '../lib/auth.js';
-import { resumo } from '../lib/analytics.js';
+import { read, write, id, agora } from '../lib/db.js';
+import { requireAdmin, criarSessao, destruirSessao, isSessaoAdmin, hashSenha } from '../lib/auth.js';
+import { resumo, track } from '../lib/analytics.js';
 import { liberarPendentes, receitasLiberadas, proximaReceita } from '../lib/release.js';
 import { sendEmail, emailNovaReceita, urlMembros } from '../lib/mail.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const UPLOAD_DIR = path.join(__dirname, '..', '..', 'public', 'assets', 'receitas');
-fs.mkdirSync(UPLOAD_DIR, { recursive: true });
 
+// memória: o arquivo vai direto para o Blob (produção) ou para o disco (dev)
 const upload = multer({
-  storage: multer.diskStorage({
-    destination: (req, file, cb) => cb(null, UPLOAD_DIR),
-    filename: (req, file, cb) => {
-      const ext = path.extname(file.originalname).toLowerCase() || '.jpg';
-      cb(null, `${Date.now().toString(36)}${ext}`);
-    },
-  }),
+  storage: multer.memoryStorage(),
   limits: { fileSize: 6 * 1024 * 1024 },
   fileFilter: (req, file, cb) => cb(null, /^image\//.test(file.mimetype)),
 });
@@ -30,26 +26,29 @@ const upload = multer({
 const router = Router();
 
 // ---------- Login admin ----------
-router.post('/login', (req, res) => {
+router.post('/login', async (req, res) => {
   const { senha } = req.body || {};
-  const esperada = process.env.ADMIN_SENHA || read('settings', {}).adminSenha || 'admin123';
+  const settings = await read('settings', {});
+  const esperada = process.env.ADMIN_SENHA || settings.adminSenha || 'Comsoc1#';
   if (String(senha) !== String(esperada)) return res.status(401).json({ error: 'senha incorreta' });
-  criarSessao(res, 'admin', 'admin');
+  await criarSessao(res, 'admin', 'admin');
   res.json({ ok: true });
 });
 
-router.post('/sair', (req, res) => {
-  destruirSessao(req, res);
+router.post('/sair', async (req, res) => {
+  await destruirSessao(req, res);
   res.json({ ok: true });
 });
 
-router.get('/sessao', (req, res) => res.json({ admin: isSessaoAdmin(req) }));
+router.get('/sessao', async (req, res) => {
+  res.json({ admin: await isSessaoAdmin(req) });
+});
 
 router.use(requireAdmin);
 
 // ---------- Receitas ----------
-router.get('/receitas', (req, res) => {
-  const lista = read('receitas', []).slice().sort((a, b) => new Date(b.data_liberacao) - new Date(a.data_liberacao));
+router.get('/receitas', async (req, res) => {
+  const lista = (await read('receitas', [])).slice().sort((a, b) => new Date(b.data_liberacao) - new Date(a.data_liberacao));
   res.json({ receitas: lista, agora: new Date().toISOString() });
 });
 
@@ -59,7 +58,7 @@ const validarReceita = (b) => {
   return null;
 };
 
-router.post('/receitas', (req, res) => {
+router.post('/receitas', async (req, res) => {
   const b = req.body || {};
   const erro = validarReceita(b);
   if (erro) return res.status(400).json({ error: erro });
@@ -83,18 +82,18 @@ router.post('/receitas', (req, res) => {
     ativo: b.ativo !== false,
     criadoEm: agora(),
   };
-  const receitas = read('receitas', []);
+  const receitas = await read('receitas', []);
   receitas.push(receita);
-  write('receitas', receitas);
+  await write('receitas', receitas);
   liberarPendentes().catch(() => {});
   res.json({ ok: true, receita });
 });
 
-router.put('/receitas/:id', (req, res) => {
+router.put('/receitas/:id', async (req, res) => {
   const b = req.body || {};
   const erro = validarReceita(b);
   if (erro) return res.status(400).json({ error: erro });
-  const receitas = read('receitas', []);
+  const receitas = await read('receitas', []);
   const r = receitas.find((x) => x.id === req.params.id);
   if (!r) return res.status(404).json({ error: 'receita não encontrada' });
 
@@ -106,52 +105,67 @@ router.put('/receitas/:id', (req, res) => {
     foto: b.foto ?? r.foto, data_liberacao: new Date(b.data_liberacao).toISOString(),
     ativo: b.ativo !== false,
   });
-  // se a data já passou, mantém a regra de visibilidade
   if (new Date(r.data_liberacao) <= new Date()) r.liberada = true;
-  write('receitas', receitas);
+  await write('receitas', receitas);
   liberarPendentes().catch(() => {});
   res.json({ ok: true, receita: r });
 });
 
-router.delete('/receitas/:id', (req, res) => {
-  write('receitas', read('receitas', []).filter((r) => r.id !== req.params.id));
+router.delete('/receitas/:id', async (req, res) => {
+  await write('receitas', (await read('receitas', [])).filter((r) => r.id !== req.params.id));
   res.json({ ok: true });
 });
 
-// Upload da foto do prato
-router.post('/receitas/:id/foto', upload.single('foto'), (req, res) => {
-  const receitas = read('receitas', []);
+// Upload da foto do prato (Blob em produção / disco em dev)
+router.post('/receitas/:id/foto', upload.single('foto'), async (req, res) => {
+  const receitas = await read('receitas', []);
   const r = receitas.find((x) => x.id === req.params.id);
   if (!r) return res.status(404).json({ error: 'receita não encontrada' });
   if (!req.file) return res.status(400).json({ error: 'envie uma imagem (jpg, png ou webp até 6MB)' });
-  r.foto = `/assets/receitas/${req.file.filename}`;
-  write('receitas', receitas);
+
+  const ext = path.extname(req.file.originalname).toLowerCase() || '.jpg';
+  const nomeArquivo = `${Date.now().toString(36)}${ext}`;
+
+  if (process.env.BLOB_READ_WRITE_TOKEN) {
+    const { put } = await import('@vercel/blob');
+    const blob = await put(`receitas/${nomeArquivo}`, req.file.buffer, {
+      access: 'public',
+      token: process.env.BLOB_READ_WRITE_TOKEN,
+    });
+    r.foto = blob.url;
+  } else {
+    fs.mkdirSync(UPLOAD_DIR, { recursive: true });
+    fs.writeFileSync(path.join(UPLOAD_DIR, nomeArquivo), req.file.buffer);
+    r.foto = `/assets/receitas/${nomeArquivo}`;
+  }
+
+  await write('receitas', receitas);
   res.json({ ok: true, foto: r.foto });
 });
 
-// Publicar agora (força a liberação imediata e o e-mail semanal)
+// Publicar agora (força a liberação imediata + e-mail)
 router.post('/receitas/:id/publicar', async (req, res) => {
-  const receitas = read('receitas', []);
+  const receitas = await read('receitas', []);
   const r = receitas.find((x) => x.id === req.params.id);
   if (!r) return res.status(404).json({ error: 'receita não encontrada' });
   r.data_liberacao = new Date().toISOString();
   r.liberada = true;
   r.liberadaEm = agora();
-  write('receitas', receitas);
+  await write('receitas', receitas);
 
-  const membros = read('users', []).filter((u) => u.acesso?.ativo);
+  const membros = (await read('users', [])).filter((u) => u.acesso?.ativo);
   for (const u of membros) {
     try {
       await sendEmail({ to: u.email, subject: `Nova receita liberada: ${r.nome} 🥗`, html: emailNovaReceita(u.nome, r, `${urlMembros()}?receita=${r.id}`) });
     } catch {}
   }
+  await track({ tipo: 'receita_liberada', receitaId: r.id, origem: 'admin' });
   res.json({ ok: true, receita: r, emails: membros.length });
 });
 
 // ---------- Alunos / acessos ----------
-router.get('/alunos', (req, res) => {
-  const usuarios = read('users', []);
-  const pedidos = read('orders', []);
+router.get('/alunos', async (req, res) => {
+  const [usuarios, pedidos] = await Promise.all([read('users', []), read('orders', [])]);
   const lista = usuarios.map((u) => ({
     id: u.id, nome: u.nome, email: u.email, criadoEm: u.criadoEm,
     acesso: u.acesso, ultimaVisita: u.ultimaVisita,
@@ -161,53 +175,61 @@ router.get('/alunos', (req, res) => {
   res.json({ alunos: lista });
 });
 
-router.post('/alunos/:id/acesso', (req, res) => {
-  const users = read('users', []);
+router.post('/alunos/:id/acesso', async (req, res) => {
+  const users = await read('users', []);
   const u = users.find((x) => x.id === req.params.id);
   if (!u) return res.status(404).json({ error: 'aluno não encontrado' });
   u.acesso = u.acesso || {};
   u.acesso.ativo = req.body?.ativo !== false;
-  if (u.acesso.ativo) u.acesso.liberadoEm = u.acesso.liberadoEm || agora();
-  write('users', users);
+  if (u.acesso.ativo) {
+    u.acesso.pendente = false;
+    u.acesso.liberadoEm = u.acesso.liberadoEm || agora();
+  }
+  await write('users', users);
   res.json({ ok: true, acesso: u.acesso });
 });
 
-router.delete('/alunos/:id', (req, res) => {
-  write('users', read('users', []).filter((u) => u.id !== req.params.id));
+router.delete('/alunos/:id', async (req, res) => {
+  await write('users', (await read('users', [])).filter((u) => u.id !== req.params.id));
   res.json({ ok: true });
 });
 
 // ---------- Pedidos ----------
-router.get('/pedidos', (req, res) => {
-  const lista = read('orders', []).slice().sort((a, b) => new Date(b.criadoEm) - new Date(a.criadoEm));
+router.get('/pedidos', async (req, res) => {
+  const lista = (await read('orders', [])).slice().sort((a, b) => new Date(b.criadoEm) - new Date(a.criadoEm));
   res.json({ pedidos: lista });
 });
 
 // ---------- Métricas ----------
-router.get('/metricas', (req, res) => {
+router.get('/metricas', async (req, res) => {
   const { de, ate, dias } = req.query;
-  const r = resumo({ de, ate, dias: Number(dias) || 14 });
-  r.receitas = {
-    total: read('receitas', []).length,
-    liberadas: receitasLiberadas().length,
-    proxima: proximaReceita() ? { nome: proximaReceita().nome, data: proximaReceita().data_liberacao } : null,
+  const [m, receitas, usuarios, proxima] = await Promise.all([
+    resumo({ de, ate, dias: Number(dias) || 14 }),
+    read('receitas', []),
+    read('users', []),
+    proximaReceita(),
+  ]);
+  m.receitas = {
+    total: receitas.length,
+    liberadas: (await receitasLiberadas()).length,
+    proxima: proxima ? { nome: proxima.nome, data: proxima.data_liberacao } : null,
   };
-  r.alunos = {
-    total: read('users', []).length,
-    ativos: read('users', []).filter((u) => u.acesso?.ativo).length,
+  m.alunos = {
+    total: usuarios.length,
+    ativos: usuarios.filter((u) => u.acesso?.ativo).length,
   };
-  res.json(r);
+  res.json(m);
 });
 
 // ---------- Configurações ----------
-router.get('/config', (req, res) => {
-  const s = { ...read('settings', {}) };
+router.get('/config', async (req, res) => {
+  const s = { ...(await read('settings', {})) };
   delete s.adminSenha;
   res.json({ config: s });
 });
 
-router.put('/config', (req, res) => {
-  const s = read('settings', {});
+router.put('/config', async (req, res) => {
+  const s = await read('settings', {});
   const b = req.body || {};
   ['nomeProduto', 'preco', 'precoAntigo', 'garantiaDias', 'emailSuporte', 'diaLiberacao', 'fraseRodape'].forEach((k) => {
     if (b[k] !== undefined) s[k] = b[k];
@@ -216,7 +238,7 @@ router.put('/config', (req, res) => {
     const { salt, hash } = hashSenha(b.adminSenha);
     s.adminSenhaHash = hash; s.adminSenhaSalt = salt; s.adminSenha = b.adminSenha;
   }
-  write('settings', s);
+  await write('settings', s);
   res.json({ ok: true, config: { ...s, adminSenha: undefined } });
 });
 

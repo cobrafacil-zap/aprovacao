@@ -146,11 +146,39 @@ Para trocar as cores, edite as variáveis em `public/css/base.css` (`:root`).
 
 ---
 
-## 🚀 Publicar
+## 🚀 Publicar na Vercel (arquitetura atual)
 
-- **LP + páginas + backend:** Vercel/Netlify só servem estáticos — como há backend
-  (e-mail, pedidos, dados), use Railway/Render/VPS para o projeto inteiro (`npm start`).
-- Produção: defina `ADMIN_SENHA`, SMTP ou `RESEND_API_KEY`, `PUBLIC_BASE_URL` e
-  `MP_ACCESS_TOKEN` (Mercado Pago) no ambiente.
-- Persistência: os JSONs em `/data` são o banco — faça backup periódico ou troque
-  `src/lib/db.js` por um banco real (a interface do módulo é a mesma).
+O projeto já está preparado para a Vercel: APIs como função serverless
+(`api/[...path].js`), banco no **Upstash Redis**, fotos no **Vercel Blob**,
+e-mails por **Resend** e liberação semanal pelo **Vercel Cron** (`vercel.json`).
+
+### 1. Crie os recursos gratuitos (painel da Vercel → aba Storage)
+- **Upstash for Redis** (Marketplace) → *Create database* → conecte ao projeto
+  (as variáveis `KV_REST_API_URL` e `KV_REST_API_TOKEN` entram sozinhas)
+- **Blob** → *Create database* → conecte ao projeto (`BLOB_READ_WRITE_TOKEN`)
+
+### 2. Resend (e-mails)
+1. Crie a conta em https://resend.com e uma API Key
+2. Valide o domínio do remetente (DNS) — sem isso, os e-mails não saem
+3. Variáveis: `RESEND_API_KEY` e `FROM_EMAIL`
+
+### 3. Variáveis de ambiente (Settings → Environment Variables)
+```
+ADMIN_SENHA=Comsoc1#
+RESEND_API_KEY=...
+FROM_EMAIL=entrega@seudominio.com
+PUBLIC_BASE_URL=https://aprovacao-psi.vercel.app
+CRON_API_SECRET=<gere um segredo longo>
+```
+(Opcional, para pagamento real: `MP_ACCESS_TOKEN`. Sem ele, o checkout fica em modo demo.)
+
+### 4. Deploy
+Importe o repositório `cobrafacil-zap/aprovacao` na Vercel (preset: *Other*).
+- Páginas: servidas pelo CDN (pasta `public/`)
+- APIs: `api/[...path].js` (Express dentro da função)
+- Cron diário: `/api/cron` faz a liberação semanal + marcação de checkouts abandonados
+  (a área de membros também dispara a checagem ao abrir, no máx. 1x a cada 10 min)
+
+> **Banco:** em produção os dados vivem no Upstash Redis (as receitas são semeadas
+> automaticamente no primeiro acesso). Em desenvolvimento local (`npm start`),
+> o banco são os arquivos JSON em `/data`.

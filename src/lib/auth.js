@@ -1,7 +1,8 @@
-// Autenticação simples por cookie (sessões em data/sessions.json).
-// Senhas com scrypt + salt. Suporta sessão de MEMBRO e de ADMIN.
+// Autenticação por cookie — cada sessão é uma chave com TTL no banco
+// (1 comando Redis por operação; a expiração é automática, sem limpeza manual).
+// Senhas com scrypt + salt. Sessões de MEMBRO e de ADMIN.
 import crypto from 'crypto';
-import { read, write, id, agora } from './db.js';
+import { read, write, id, agora, sessaoGet, sessaoSet, sessaoDelete } from './db.js';
 
 const SESSION_COOKIE = 'of_session';
 const DIAS = 30;
@@ -27,73 +28,52 @@ export function parseCookies(req) {
   return out;
 }
 
-function sessoes() {
-  return read('sessions', []);
-}
-
-export function criarSessao(res, usuarioId, tipo = 'membro') {
+export async function criarSessao(res, usuarioId, tipo = 'membro') {
   const token = id('ses') + crypto.randomBytes(24).toString('hex');
-  const expiraEm = new Date(Date.now() + DIAS * 864e5).toISOString();
-  const lista = sessoes().filter((s) => s.usuarioId !== usuarioId || s.tipo !== tipo);
-  lista.push({ token, usuarioId, tipo, criadoEm: agora(), expiraEm });
-  write('sessions', lista);
+  await sessaoSet(token, { usuarioId, tipo, criadoEm: agora() }, DIAS);
   res.setHeader('Set-Cookie', `${SESSION_COOKIE}=${token}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${DIAS * 86400}`);
   return token;
 }
 
-export function destruirSessao(req, res) {
+export async function destruirSessao(req, res) {
   const token = parseCookies(req)[SESSION_COOKIE];
-  if (token) write('sessions', sessoes().filter((s) => s.token !== token));
+  if (token) await sessaoDelete(token);
   res.setHeader('Set-Cookie', `${SESSION_COOKIE}=; Path=/; HttpOnly; Max-Age=0`);
 }
 
-export function sessaoAtual(req) {
-  const token = parseCookies(req)[SESSION_COOKIE];
-  if (!token) return null;
-  const s = sessoes().find((x) => x.token === token && new Date(x.expiraEm) > new Date());
-  return s || null;
+export async function sessaoAtual(req) {
+  return sessaoGet(parseCookies(req)[SESSION_COOKIE]);
 }
 
-export function usuarioDaSessao(req) {
-  const s = sessaoAtual(req);
+export async function usuarioDaSessao(req) {
+  const s = await sessaoAtual(req);
   if (!s || s.tipo !== 'membro') return null;
-  return read('users', []).find((u) => u.id === s.usuarioId) || null;
+  const users = await read('users', []);
+  return users.find((u) => u.id === s.usuarioId) || null;
 }
 
-export function isSessaoAdmin(req) {
-  const s = sessaoAtual(req);
+export async function isSessaoAdmin(req) {
+  const s = await sessaoAtual(req);
   return !!s && s.tipo === 'admin';
 }
 
-// Higiene: remove sessões de usuários que não existem mais (ou já expiraram).
-export function limparSessoes() {
-  const users = new Set(read('users', []).map((u) => u.id));
-  const agora = Date.now();
-  const antes = sessoes().length;
-  const validas = sessoes().filter(
-    (s) => new Date(s.expiraEm).getTime() > agora && (s.tipo === 'admin' || users.has(s.usuarioId))
-  );
-  if (validas.length !== antes) write('sessions', validas);
-  return antes - validas.length;
-}
-
 // ---- Middlewares ----
-export function requireMember(req, res, next) {
-  const u = usuarioDaSessao(req);
+export async function requireMember(req, res, next) {
+  const u = await usuarioDaSessao(req);
   if (!u) return res.status(401).json({ error: 'faça login para continuar' });
   if (u.acesso?.ativo === false) return res.status(403).json({ error: 'acesso inativo — fale com o suporte' });
   req.usuario = u;
   next();
 }
 
-export function requireAdmin(req, res, next) {
-  if (!isSessaoAdmin(req)) return res.status(401).json({ error: 'login de administrador necessário' });
+export async function requireAdmin(req, res, next) {
+  if (!(await isSessaoAdmin(req))) return res.status(401).json({ error: 'login de administrador necessário' });
   next();
 }
 
-// Cria (ou acha) a conta do comprador quando o pagamento cai.
-export function garantirConta({ nome, email, senha, pedidoId }) {
-  const users = read('users', []);
+// Cria (ou reativa) a conta do comprador quando o pagamento cai.
+export async function garantirConta({ nome, email, senha, pedidoId }) {
+  const users = await read('users', []);
   let u = users.find((x) => x.email.toLowerCase() === String(email).toLowerCase());
   if (!u) {
     const { salt, hash } = senha ? hashSenha(senha) : hashSenha(crypto.randomBytes(16).toString('hex'));
@@ -108,15 +88,16 @@ export function garantirConta({ nome, email, senha, pedidoId }) {
       acesso: { ativo: true, liberadoEm: agora(), pedidoId: pedidoId || null },
       favoritos: [],
       feitas: [],
+      lista: [],
       ultimaVisita: null,
     };
     users.push(u);
-    write('users', users);
+    await write('users', users);
   } else if (u.acesso?.ativo === false) {
     u.acesso.ativo = true;
     u.acesso.pendente = false;
     u.acesso.liberadoEm = agora();
-    write('users', users);
+    await write('users', users);
   }
   return u;
 }

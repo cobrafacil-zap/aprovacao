@@ -1,77 +1,47 @@
 // Área de membros: login (conta criada após o pagamento), receitas liberadas,
-// busca/filtros, favoritos, lista de compras gerada, histórico e próxima liberação.
+// busca/filtros, favoritos, lista de compras gerada, histórico, perfil e
+// redefinição de senha. O cadastro público NÃO existe: a conta nasce no checkout.
 import { Router } from 'express';
 import { read, write, agora } from '../lib/db.js';
 import {
   requireMember, criarSessao, destruirSessao,
   hashSenha, conferirSenha,
 } from '../lib/auth.js';
-import { sendEmail, emailDefinirSenha, baseUrl } from '../lib/mail.js';
-import { receitasLiberadas, proximaReceita } from '../lib/release.js';
+import { sendEmail, emailDefinirSenha } from '../lib/mail.js';
+import { baseUrl } from '../lib/helpers.js';
+import {
+  receitasLiberadas, proximaReceita, liberarPendentesSeNecessario,
+} from '../lib/release.js';
 import { track } from '../lib/analytics.js';
 import { consumirToken, tokenDefinirSenha } from './checkout.js';
 
 const router = Router();
+const diasAte = (data) => Math.max(0, Math.ceil((new Date(data) - Date.now()) / 864e5));
 
 // ---------- Conta ----------
-// Não existe cadastro público: a conta é criada automaticamente após o pagamento
-// (garantirConta em checkout.js) e a senha é definida pelo link do e-mail
-// (definir-senha) ou redefinida em "esqueci minha senha".
-router.post('/login', (req, res) => {
+router.post('/login', async (req, res) => {
   const { email, senha } = req.body || {};
-  const u = read('users', []).find((x) => x.email.toLowerCase() === String(email || '').toLowerCase());
+  const users = await read('users', []);
+  const u = users.find((x) => x.email.toLowerCase() === String(email || '').toLowerCase());
   if (!u || !conferirSenha(senha, u.senhaSalt, u.senhaHash)) {
     return res.status(401).json({ error: 'e-mail ou senha incorretos' });
   }
-  criarSessao(res, u.id, 'membro');
+  await criarSessao(res, u.id, 'membro');
   u.ultimaVisita = agora();
-  write('users', read('users', []));
+  await write('users', users);
   res.json({ ok: true, usuario: { id: u.id, nome: u.nome, email: u.email } });
 });
 
-// Define a senha a partir do link enviado por e-mail após a compra.
-router.post('/definir-senha', (req, res) => {
-  const { token, senha } = req.body || {};
-  const userId = consumirToken(token);
-  if (!userId) return res.status(400).json({ error: 'link inválido ou expirado' });
-  if (!senha || senha.length < 6) return res.status(400).json({ error: 'senha muito curta (mín. 6)' });
-  const users = read('users', []);
-  const u = users.find((x) => x.id === userId);
-  if (!u) return res.status(404).json({ error: 'conta não encontrada' });
-  const { salt, hash } = hashSenha(senha);
-  u.senhaSalt = salt;
-  u.senhaHash = hash;
-  u.senhaDefinida = true;
-  write('users', users);
-  criarSessao(res, u.id, 'membro');
-  res.json({ ok: true });
-});
-
-// Esqueci minha senha: manda o link de redefinição por e-mail
-// (resposta genérica para não revelar se o e-mail tem conta).
-router.post('/recuperar-senha', async (req, res) => {
-  const email = String(req.body?.email || '').toLowerCase();
-  const u = read('users', []).find((x) => x.email.toLowerCase() === email);
-  if (u) {
-    const link = `${baseUrl()}/login.html?definir=${u.id}.${tokenDefinirSenha(u.id)}`;
-    try {
-      await sendEmail({ to: u.email, subject: 'Redefina sua senha — Oferta Fit BR', html: emailDefinirSenha(u.nome, link) });
-    } catch (e) {
-      console.error('[EMAIL] recuperação de senha:', e.message);
-    }
-  }
-  res.json({ ok: true, mensagem: 'Se este e-mail tiver uma conta, enviamos o link de redefinição.' });
-});
-
-router.post('/sair', (req, res) => {
-  destruirSessao(req, res);
+router.post('/sair', async (req, res) => {
+  await destruirSessao(req, res);
   res.json({ ok: true });
 });
 
 // Perfil: editar nome e trocar senha (exige a senha atual)
-router.put('/perfil', requireMember, (req, res) => {
+router.put('/perfil', requireMember, async (req, res) => {
   const { nome, senhaAtual, senhaNova } = req.body || {};
-  const u = req.usuario;
+  const users = await read('users', []);
+  const u = users.find((x) => x.id === req.usuario.id);
 
   if (senhaNova) {
     if (!senhaAtual || !conferirSenha(senhaAtual, u.senhaSalt, u.senhaHash)) {
@@ -84,13 +54,47 @@ router.put('/perfil', requireMember, (req, res) => {
     u.senhaDefinida = true;
   }
   if (nome && nome.trim()) u.nome = nome.trim();
-  write('users', read('users', []));
+  await write('users', users);
   res.json({ ok: true, usuario: { id: u.id, nome: u.nome, email: u.email } });
 });
 
-router.get('/eu', requireMember, (req, res) => {
+// Define a senha a partir do link enviado por e-mail (pós-compra ou redefinição).
+router.post('/definir-senha', async (req, res) => {
+  const { token, senha } = req.body || {};
+  const userId = await consumirToken(token);
+  if (!userId) return res.status(400).json({ error: 'link inválido ou expirado' });
+  if (!senha || senha.length < 6) return res.status(400).json({ error: 'senha muito curta (mín. 6)' });
+  const users = await read('users', []);
+  const u = users.find((x) => x.id === userId);
+  if (!u) return res.status(404).json({ error: 'conta não encontrada' });
+  const { salt, hash } = hashSenha(senha);
+  u.senhaSalt = salt;
+  u.senhaHash = hash;
+  u.senhaDefinida = true;
+  await write('users', users);
+  await criarSessao(res, u.id, 'membro');
+  res.json({ ok: true });
+});
+
+// Esqueci minha senha: envia link de redefinição (resposta genérica de propósito).
+router.post('/recuperar-senha', async (req, res) => {
+  const email = String(req.body?.email || '').toLowerCase();
+  const u = (await read('users', [])).find((x) => x.email.toLowerCase() === email);
+  if (u) {
+    const link = `${baseUrl()}/login.html?definir=${u.id}.${tokenDefinirSenha(u.id)}`;
+    try {
+      await sendEmail({ to: u.email, subject: 'Redefina sua senha — Oferta Fit BR', html: emailDefinirSenha(u.nome, link) });
+    } catch (e) {
+      console.error('[EMAIL] recuperação de senha:', e.message);
+    }
+  }
+  res.json({ ok: true, mensagem: 'Se este e-mail tiver uma conta, enviamos o link de redefinição.' });
+});
+
+router.get('/eu', requireMember, async (req, res) => {
+  await liberarPendentesSeNecessario().catch(() => {});
   const u = req.usuario;
-  const liberadas = receitasLiberadas();
+  const [liberadas, proxima] = await Promise.all([receitasLiberadas(), proximaReceita()]);
   res.json({
     usuario: {
       id: u.id, nome: u.nome, email: u.email,
@@ -99,13 +103,9 @@ router.get('/eu', requireMember, (req, res) => {
       feitas: u.feitas || [],
     },
     receitas_liberadas: liberadas.length,
-    proxima: proximaReceita()
-      ? { nome: proximaReceita().nome, data: proximaReceita().data_liberacao, dias: diasAte(proximaReceita().data_liberacao) }
-      : null,
+    proxima: proxima ? { nome: proxima.nome, data: proxima.data_liberacao, dias: diasAte(proxima.data_liberacao) } : null,
   });
 });
-
-const diasAte = (data) => Math.max(0, Math.ceil((new Date(data) - Date.now()) / 864e5));
 
 // ---------- Receitas ----------
 const receitaPublica = (r, u) => ({
@@ -123,10 +123,11 @@ const receitaPublica = (r, u) => ({
   feita: (u?.feitas || []).some((f) => f.receitaId === r.id),
 });
 
-router.get('/receitas', requireMember, (req, res) => {
+router.get('/receitas', requireMember, async (req, res) => {
+  await liberarPendentesSeNecessario().catch(() => {});
   const { q, categoria, tags, tempo } = req.query;
   const u = req.usuario;
-  let lista = receitasLiberadas().map((r) => receitaPublica(r, u));
+  let lista = (await receitasLiberadas()).map((r) => receitaPublica(r, u));
 
   if (categoria) lista = lista.filter((r) => r.categoria === categoria);
   if (tags) {
@@ -142,47 +143,53 @@ router.get('/receitas', requireMember, (req, res) => {
       (r.tags || []).some((t) => t.toLowerCase().includes(termo))
     );
   }
-  res.json({ receitas: lista, proxima: proximaReceita() ? { nome: proximaReceita().nome, data: proximaReceita().data_liberacao, dias: diasAte(proximaReceita().data_liberacao) } : null });
+  const proxima = await proximaReceita();
+  res.json({
+    receitas: lista,
+    proxima: proxima ? { nome: proxima.nome, data: proxima.data_liberacao, dias: diasAte(proxima.data_liberacao) } : null,
+  });
 });
 
-router.get('/receitas/:id', requireMember, (req, res) => {
-  const r = receitasLiberadas().find((x) => x.id === req.params.id);
+router.get('/receitas/:id', requireMember, async (req, res) => {
+  const r = (await receitasLiberadas()).find((x) => x.id === req.params.id);
   if (!r) return res.status(404).json({ error: 'receita não encontrada ou ainda não liberada' });
   res.json({ receita: { ...receitaPublica(r, req.usuario), ingredientes: r.ingredientes || [], passos: r.passos || [], dicas: r.dicas || '' } });
 });
 
 // ---------- Favoritos ----------
-router.post('/favoritos/:id', requireMember, (req, res) => {
-  const u = req.usuario;
+router.post('/favoritos/:id', requireMember, async (req, res) => {
+  const users = await read('users', []);
+  const u = users.find((x) => x.id === req.usuario.id);
   u.favoritos = u.favoritos || [];
   const i = u.favoritos.indexOf(req.params.id);
   if (i >= 0) u.favoritos.splice(i, 1); else u.favoritos.push(req.params.id);
-  write('users', read('users', []));
+  await write('users', users);
   res.json({ ok: true, favoritos: u.favoritos });
 });
 
-router.get('/favoritos', requireMember, (req, res) => {
+router.get('/favoritos', requireMember, async (req, res) => {
   const u = req.usuario;
-  const lista = receitasLiberadas()
+  const lista = (await receitasLiberadas())
     .filter((r) => (u.favoritos || []).includes(r.id))
     .map((r) => receitaPublica(r, u));
   res.json({ receitas: lista });
 });
 
 // ---------- Histórico (receitas já feitas) ----------
-router.post('/feitas/:id', requireMember, (req, res) => {
-  const u = req.usuario;
+router.post('/feitas/:id', requireMember, async (req, res) => {
+  const users = await read('users', []);
+  const u = users.find((x) => x.id === req.usuario.id);
   u.feitas = u.feitas || [];
   const i = u.feitas.findIndex((f) => f.receitaId === req.params.id);
   if (i >= 0) u.feitas.splice(i, 1);
   else u.feitas.push({ receitaId: req.params.id, data: agora() });
-  write('users', read('users', []));
+  await write('users', users);
   res.json({ ok: true, feitas: u.feitas });
 });
 
-router.get('/historico', requireMember, (req, res) => {
+router.get('/historico', requireMember, async (req, res) => {
   const u = req.usuario;
-  const porId = Object.fromEntries(receitasLiberadas().map((r) => [r.id, r]));
+  const porId = Object.fromEntries((await receitasLiberadas()).map((r) => [r.id, r]));
   const lista = (u.feitas || [])
     .map((f) => ({ data: f.data, receita: porId[f.receitaId] ? receitaPublica(porId[f.receitaId], u) : null }))
     .filter((x) => x.receita)
@@ -192,10 +199,10 @@ router.get('/historico', requireMember, (req, res) => {
 
 // ---------- Lista de compras ----------
 // Gera a lista a partir de receitas selecionadas, agrupando ingredientes iguais.
-router.post('/lista/gerar', requireMember, (req, res) => {
+router.post('/lista/gerar', requireMember, async (req, res) => {
   const { receitaIds } = req.body || {};
   if (!Array.isArray(receitaIds) || !receitaIds.length) return res.status(400).json({ error: 'selecione ao menos uma receita' });
-  const receitas = receitasLiberadas().filter((r) => receitaIds.includes(r.id));
+  const receitas = (await receitasLiberadas()).filter((r) => receitaIds.includes(r.id));
   const mapa = new Map();
 
   receitas.forEach((r) => {
@@ -218,10 +225,11 @@ router.post('/lista/gerar', requireMember, (req, res) => {
   });
 
   const itens = [...mapa.values()].map(({ qtdNum, ...resto }) => resto);
-  const u = req.usuario;
+  const users = await read('users', []);
+  const u = users.find((x) => x.id === req.usuario.id);
   u.lista = itens;
-  write('users', read('users', []));
-  track({ tipo: 'lista_gerada', receitaId: receitaIds[0], origem: 'membros' });
+  await write('users', users);
+  await track({ tipo: 'lista_gerada', receitaId: receitaIds[0], origem: 'membros' });
   res.json({ ok: true, itens });
 });
 
@@ -229,35 +237,40 @@ router.get('/lista', requireMember, (req, res) => {
   res.json({ itens: req.usuario.lista || [] });
 });
 
-router.post('/lista/item', requireMember, (req, res) => {
+router.post('/lista/item', requireMember, async (req, res) => {
   const { texto } = req.body || {};
   if (!texto) return res.status(400).json({ error: 'informe o item' });
-  const u = req.usuario;
+  const users = await read('users', []);
+  const u = users.find((x) => x.id === req.usuario.id);
   u.lista = u.lista || [];
   u.lista.push({ qtd: '', unidade: '', item: texto, receitas: ['adicionado à mão'], marcado: false });
-  write('users', read('users', []));
+  await write('users', users);
   res.json({ ok: true, itens: u.lista });
 });
 
-router.post('/lista/marcar', requireMember, (req, res) => {
+router.post('/lista/marcar', requireMember, async (req, res) => {
   const { index, marcado } = req.body || {};
-  const u = req.usuario;
+  const users = await read('users', []);
+  const u = users.find((x) => x.id === req.usuario.id);
   if (!u.lista || !u.lista[index]) return res.status(404).json({ error: 'item não encontrado' });
   u.lista[index].marcado = !!marcado;
-  write('users', read('users', []));
+  await write('users', users);
   res.json({ ok: true, itens: u.lista });
 });
 
-router.delete('/lista/item/:index', requireMember, (req, res) => {
-  const u = req.usuario;
+router.delete('/lista/item/:index', requireMember, async (req, res) => {
+  const users = await read('users', []);
+  const u = users.find((x) => x.id === req.usuario.id);
   if (u.lista) u.lista.splice(Number(req.params.index), 1);
-  write('users', read('users', []));
+  await write('users', users);
   res.json({ ok: true, itens: u.lista || [] });
 });
 
-router.delete('/lista', requireMember, (req, res) => {
-  req.usuario.lista = [];
-  write('users', read('users', []));
+router.delete('/lista', requireMember, async (req, res) => {
+  const users = await read('users', []);
+  const u = users.find((x) => x.id === req.usuario.id);
+  u.lista = [];
+  await write('users', users);
   res.json({ ok: true });
 });
 
