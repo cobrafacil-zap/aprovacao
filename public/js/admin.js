@@ -154,6 +154,10 @@
     }));
   }
 
+  // Guarda APENAS a foto escolhida agora (o input guarda a última seleção
+  // e isso reenviava fotos antigas por cima ao salvar outras receitas).
+  let fotoNovaSelecionada = false;
+
   // Editors de ingredientes e passos
   const addIngrediente = (qtd = '', un = '', item = '') => {
     const div = document.createElement('div');
@@ -178,6 +182,8 @@
 
   $('#btn-nova-receita').addEventListener('click', () => {
     receitaEditando = null;
+    $('#input-foto').value = '';
+    fotoNovaSelecionada = false;
     $('#titulo-form-receita').textContent = 'Nova receita';
     $('#form-receita').reset();
     $('#rec-id').value = '';
@@ -199,6 +205,8 @@
     const r = lista.find((x) => x.id === id);
     if (!r) return;
     receitaEditando = r;
+    $('#input-foto').value = '';
+    fotoNovaSelecionada = false;
     $('#titulo-form-receita').textContent = `Editando: ${r.nome}`;
     $('#rec-id').value = r.id;
     $('#rec-nome').value = r.nome;
@@ -235,6 +243,7 @@
   $('#input-foto').addEventListener('change', (e) => {
     const f = e.target.files[0];
     if (!f) return;
+    fotoNovaSelecionada = true;
     const url = URL.createObjectURL(f);
     $('#preview-foto').src = url;
     $('#preview-foto').classList.remove('oculto');
@@ -269,13 +278,15 @@
       : await post('/api/admin/receitas', corpo);
     if (!r.ok) return alert(r.error || 'Erro ao salvar receita');
 
-    // Upload da foto (se houver arquivo novo)
-    const arquivo = $('#input-foto').files[0];
+    // Upload da foto APENAS se o usuário escolheu uma agora
+    const arquivo = fotoNovaSelecionada ? $('#input-foto').files[0] : null;
     if (arquivo) {
       const fd = new FormData();
       fd.append('foto', arquivo);
       await fetch(`/api/admin/receitas/${r.receita.id}/foto`, { method: 'POST', body: fd });
     }
+    $('#input-foto').value = '';
+    fotoNovaSelecionada = false;
 
     alert(receitaEditando ? 'Receita atualizada!' : 'Receita criada!');
     $('#form-receita-card').classList.add('oculto');
