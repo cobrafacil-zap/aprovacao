@@ -229,6 +229,22 @@ function acharAlimento(item) {
   return null;
 }
 
+// detecta a unidade quando ela vem no texto (ex.: "3 colheres de...", "500 g de...")
+function detectarUnidade(texto) {
+  const t = semAcento(texto);
+  if (t.includes('grama') || /\d\s*g\b/.test(t)) return 'g';
+  if (t.includes('quilo') || /\d\s*kg\b/.test(t)) return 'kg';
+  if (t.includes('xicara') || t.includes('xic')) return 'xíc';
+  if (t.includes('sopa')) return 'cs';
+  if (t.includes('cha') || t.includes('sobremesa')) return 'cd';
+  if (t.includes('colher')) return 'cs';
+  if (t.includes('pitada')) return 'pn';
+  if (t.includes('fatia')) return 'fatia';
+  if (t.includes('dente')) return 'dente';
+  if (t.includes('mililitro') || /\d\s*ml\b/.test(t)) return 'ml';
+  return '';
+}
+
 function paraGramas(qtd, unidade, entrada) {
   const n = parseFloat(String(qtd ?? '').replace(',', '.'));
   if (Number.isNaN(n)) return null;
@@ -254,7 +270,8 @@ export function calcularNutricao(ingredientes = [], porcoes = 1) {
     const item = ing?.item || String(ing);
     const entrada = acharAlimento(item);
     if (!entrada) continue;
-    let gramas = paraGramas(ing.qtd, ing.unidade, entrada);
+    const unidade = String(ing.unidade || '').trim() || detectarUnidade(`${ing.qtd || ''} ${item}`);
+    let gramas = paraGramas(ing.qtd, unidade, entrada);
     if (gramas == null) continue;
     // "a gosto"/pitadas: temperos contam pouco (máx. 5 g)
     if (/a gosto|pitada|se quiser|opcional/i.test(String(item))) gramas = Math.min(gramas, 5);
