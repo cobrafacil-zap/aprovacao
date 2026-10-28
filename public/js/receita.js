@@ -199,7 +199,11 @@
         }))
         .sort((a, b) => b.score - a.score)
         .slice(0, 3);
-      $('#recomendacoes').innerHTML = outras.map((x) => `
+      $('#recomendacoes').innerHTML = outras.map((x) => {
+        const n = x.nutricao_aprox || {};
+        const kcal = n.kcal_por_porcao && n.total_ingredientes && n.ingredientes_calculados / n.total_ingredientes >= 0.6
+          ? n.kcal_por_porcao : null;
+        return `
         <a class="receita-card" href="receita.html?id=${x.id}">
           <div class="foto-wrap">
             <img class="foto" src="${x.foto || '/assets/receitas/bowl-frango-quinoa.jpg'}" alt="${x.nome}" />
@@ -207,9 +211,12 @@
           </div>
           <div class="corpo">
             <h3>${x.nome}</h3>
-            <div class="meta">${x.tempo_preparo_min ? `<span class="meta-chip">⏱ ${x.tempo_preparo_min} min</span>` : ''}</div>
+            <div class="meta">
+              <span class="meta-chip">⏱ ${x.tempo_preparo_min ?? '—'} min</span>
+              ${kcal ? `<span class="meta-chip kcal">🔥 ~${kcal} kcal</span>` : ''}
+            </div>
           </div>
-        </a>`).join('');
+        </a>`;}).join('');
     } catch {}
   }
 

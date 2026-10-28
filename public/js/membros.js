@@ -183,11 +183,22 @@
   const recemLiberada = (r) =>
     r.data_liberacao && Date.now() - new Date(r.data_liberacao).getTime() < 7 * 864e5;
 
+  // kcal só quando o cálculo é confiável (>=60% dos ingredientes reconhecidos)
+  function kcalConfiavel(r) {
+    const n = r.nutricao_aprox;
+    if (!n || !n.kcal_por_porcao || !n.total_ingredientes) return null;
+    return n.ingredientes_calculados / n.total_ingredientes >= 0.6 ? n.kcal_por_porcao : null;
+  }
+
+  // Card PADRONIZADO: selos na foto, título com altura fixa, info sempre igual
   function cardReceita(r) {
+    const nova = recemLiberada(r);
+    const kcal = kcalConfiavel(r);
     return `
       <article class="receita-card" data-id="${r.id}">
         <div class="foto-wrap">
-          ${r.feita ? '<span class="feita-selo">✓ já feita</span>' : ''}
+          ${nova ? '<span class="nova-selo">🆕 Nova da semana</span>' : ''}
+          ${r.feita ? `<span class="feita-selo ${nova ? 'com-nova' : ''}">✓ já feita</span>` : ''}
           <button class="favorito" data-fav="${r.id}" aria-label="Favoritar">${r.favorito ? '❤️' : '🤍'}</button>
           <img class="foto" src="${r.foto || '/assets/receitas/bowl-frango-quinoa.jpg'}" alt="${r.nome}" />
           <span class="cat-badge">${(r.categoria || '').replace(/-/g, ' ')}</span>
@@ -195,9 +206,8 @@
         <div class="corpo">
           <h3>${r.nome}</h3>
           <div class="meta">
-            ${recemLiberada(r) ? '<span class="meta-chip nova">🆕 Nova da semana</span>' : ''}
-            ${r.tempo_preparo_min ? `<span class="meta-chip">⏱ ${r.tempo_preparo_min} min</span>` : ''}
-            ${r.nutricao_aprox?.kcal_por_porcao ? `<span class="meta-chip kcal">🔥 ~${r.nutricao_aprox.kcal_por_porcao} kcal</span>` : ''}
+            <span class="meta-chip">⏱ ${r.tempo_preparo_min ?? '—'} min</span>
+            ${kcal ? `<span class="meta-chip kcal">🔥 ~${kcal} kcal</span>` : ''}
           </div>
         </div>
       </article>`;
