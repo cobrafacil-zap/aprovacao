@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Checkout — Oferta Fit BR</title>
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/vendas.css" />
+  <style>
+    .checkout-wrap { max-width: 980px; margin: 0 auto; padding: 26px 20px 60px; display: grid; gap: 22px; }
+    @media (min-width: 900px) { .checkout-wrap { grid-template-columns: 1.15fr 0.85fr; align-items: start; } }
+    .checkout-card { background: #fff; border-radius: var(--raio-grande); box-shadow: var(--sombra); border: 1px solid var(--borda); overflow: hidden; }
+    .checkout-card .cabeca { background: var(--azul); color: #fff; padding: 20px 24px; }
+    .checkout-card .corpo-c { padding: 24px; }
+    .pagamento-opcoes { display: grid; gap: 10px; margin: 8px 0 20px; }
+    .pagamento-opcao {
+      display: flex; align-items: center; gap: 12px; padding: 15px 18px; border: 2px solid var(--borda);
+      border-radius: 16px; cursor: pointer; font-weight: 600; transition: all 0.15s;
+    }
+    .pagamento-opcao.ativo { border-color: var(--azul); background: var(--azul-claro); }
+    .pagamento-opcao input { accent-color: var(--azul); width: 18px; height: 18px; }
+    .pagamento-opcao .detalhe { font-size: 0.78rem; color: var(--cinza); font-weight: 400; display: block; }
+    .resumo-item { display: flex; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--borda); }
+    .resumo-item img { width: 72px; height: 72px; border-radius: 14px; object-fit: cover; }
+    .resumo-total { display: flex; justify-content: space-between; align-items: center; padding: 18px 0 6px; font-size: 1.25rem; font-weight: 800; }
+    .selos-seguranca { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; margin-top: 16px; font-size: 0.8rem; color: var(--cinza); }
+    .painel-pagamento { background: var(--fundo); border-radius: var(--raio); padding: 22px; margin-top: 18px; }
+    .pix-caixa { background: #fff; border: 2px dashed var(--verde); border-radius: 16px; padding: 18px; margin-top: 12px; }
+    .pix-codigo { word-break: break-all; font-size: 0.78rem; background: var(--fundo); padding: 12px; border-radius: 10px; margin: 10px 0; color: var(--cinza); }
+    .qr-demo {
+      width: 170px; height: 170px; margin: 12px auto; border-radius: 16px;
+      background: repeating-conic-gradient(var(--tinta) 0% 25%, #fff 0% 50%) 0 0/22px 22px;
+      border: 8px solid #fff; box-shadow: var(--sombra);
+    }
+    .garantia-mini { display: flex; gap: 12px; align-items: center; background: #E4F8EE; border-radius: 14px; padding: 14px 18px; margin-top: 16px; font-size: 0.88rem; color: #0B7A48; }
+    .demo-aviso { background: var(--amarelo-claro); border-radius: 12px; padding: 12px 16px; font-size: 0.82rem; color: var(--cinza); margin-top: 14px; }
+  </style>
+</head>
+<body>
+
+  <div class="barra-topo">🔒 Compra segura • Garantia de 7 dias • Pagamento único de R$ 19,90</div>
+
+  <header class="topo" style="padding-bottom:26px">
+    <div class="container">
+      <nav class="nav" style="padding-bottom:8px">
+        <img class="logo" src="assets/logo.svg" alt="Oferta Fit BR" />
+        <a class="btn btn--contorno" href="index.html">← Voltar à página</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="checkout-wrap">
+    <!-- ===== Dados + pagamento ===== -->
+    <section class="checkout-card">
+      <div class="cabeca">
+        <h2 style="font-size:1.25rem">Finalize seu pedido</h2>
+        <p style="opacity:.85;font-size:.88rem">Preencha seus dados e escolha a forma de pagamento</p>
+      </div>
+      <div class="corpo-c">
+        <div id="erro-checkout" class="erro-box oculto"></div>
+
+        <div class="campo">
+          <label for="nome">Nome completo</label>
+          <input id="nome" type="text" placeholder="Como devemos te chamar?" autocomplete="name" />
+        </div>
+        <div class="campo">
+          <label for="email">E-mail de acesso</label>
+          <input id="email" type="email" placeholder="voce@email.com" autocomplete="email" />
+          <p class="pequeno cinza mt-1">Enviamos o acesso da área de membros para este e-mail.</p>
+        </div>
+
+        <h3 class="mt-3 mb-2" style="font-size:1.05rem">Forma de pagamento</h3>
+        <div class="pagamento-opcoes">
+          <label class="pagamento-opcao ativo" data-metodo="pix">
+            <input type="radio" name="metodo" value="pix" checked />
+            <span>⚡ Pix <span class="detalhe">Aprovação na hora • 5% de desconto já aplicado</span></span>
+          </label>
+          <label class="pagamento-opcao" data-metodo="cartao">
+            <input type="radio" name="metodo" value="cartao" />
+            <span>💳 Cartão de crédito <span class="detalhe">Em até 2x sem juros</span></span>
+          </label>
+          <label class="pagamento-opcao" data-metodo="boleto">
+            <input type="radio" name="metodo" value="boleto" />
+            <span>📄 Boleto bancário <span class="detalhe">Compensação em até 2 dias úteis</span></span>
+          </label>
+        </div>
+
+        <!-- Campos do cartão (aparecem só no cartão) -->
+        <div id="campos-cartao" class="oculto">
+          <div class="campo"><label for="cartao-numero">Número do cartão</label><input id="cartao-numero" inputmode="numeric" placeholder="0000 0000 0000 0000" /></div>
+          <div class="duas" style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+            <div class="campo"><label for="cartao-validade">Validade</label><input id="cartao-validade" placeholder="MM/AA" /></div>
+            <div class="campo"><label for="cartao-cvv">CVV</label><input id="cartao-cvv" placeholder="123" /></div>
+          </div>
+        </div>
+
+        <button class="btn btn--cta btn--bloco mt-2" id="btn-pagar">Finalizar compra — R$ 19,90</button>
+
+        <div class="garantia-mini">
+          <span style="font-size:1.6rem">🛡️</span>
+          <div><strong>Garantia de 7 dias.</strong> Não gostou? Devolvemos 100% do seu dinheiro, sem burocracia.</div>
+        </div>
+        <div class="selos-seguranca">
+          <span>🔒 Ambiente seguro</span><span>⚡ Pix aprovado na hora</span><span>✅ Acesso imediato após o pagamento</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Resumo do pedido ===== -->
+    <aside class="checkout-card">
+      <div class="cabeca" style="background:var(--azul-escuro)">
+        <h2 style="font-size:1.15rem">Resumo do pedido</h2>
+      </div>
+      <div class="corpo-c">
+        <div class="resumo-item">
+          <img src="assets/receitas/panqueca-banana-aveia.svg" alt="Oferta Fit BR" />
+          <div>
+            <strong>Acesso vitalício — Oferta Fit BR</strong>
+            <p class="pequeno cinza">Biblioteca completa + 1 receita nova toda semana + bônus</p>
+          </div>
+        </div>
+        <div class="resumo-total"><span>Total</span><span id="valor-total">R$ 19,90</span></div>
+        <p class="pequeno cinza">Pagamento único • sem assinatura • sem cobranças recorrentes</p>
+
+        <div class="painel-pagamento oculto" id="painel-pagamento">
+          <!-- preenchido pelo JS após criar o pedido -->
+        </div>
+        <div class="demo-aviso" id="demo-aviso">
+          ℹ️ Ambiente em <strong>modo demonstração</strong>: o pagamento é simulado. Em produção, a cobrança é gerada
+          automaticamente no Mercado Pago (Pix, cartão ou boleto).
+        </div>
+      </div>
+    </aside>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="disclaimer">
+        <strong>Aviso importante:</strong> o conteúdo da área de membros é informativo e educacional e não substitui
+        acompanhamento de nutricionista ou médico. Resultados variam de pessoa para pessoa e não são garantidos.
+      </div>
+      <p class="mt-2">© 2026 Oferta Fit BR • Suporte: suporte@ofertafitbr.com</p>
+    </div>
+  </footer>
+
+  <script src="js/track.js"></script>
+  <script src="js/checkout.js"></script>
+</body>
+</html>

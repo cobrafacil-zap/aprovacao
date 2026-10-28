@@ -1,0 +1,600 @@
+[
+  {
+    "id": "rec_panqueca_banana_aveia",
+    "nome": "Panqueca de Banana com Aveia",
+    "descricao": "Café da manhã macio, saboroso e que fica pronto em 15 minutos — perfeita para dias corridos.",
+    "categoria": "cafe-manha",
+    "tags": [
+      "sem-lactose",
+      "vegetariano",
+      "rapido"
+    ],
+    "tempo_preparo_min": 15,
+    "porcoes": 2,
+    "ingredientes": [
+      {
+        "qtd": "1",
+        "unidade": "un",
+        "item": "banana madura"
+      },
+      {
+        "qtd": "2",
+        "unidade": "un",
+        "item": "ovos"
+      },
+      {
+        "qtd": "4",
+        "unidade": "cs",
+        "item": "aveia em flocos"
+      },
+      {
+        "qtd": "1",
+        "unidade": "cp",
+        "item": "canela em pó"
+      },
+      {
+        "qtd": "1",
+        "unidade": "cd",
+        "item": "óleo de coco para untar"
+      }
+    ],
+    "passos": [
+      "Amasse a banana com um garfo até formar um purê.",
+      "Misture os ovos, a aveia e a canela até ficar homogêneo.",
+      "Aqueça uma frigideira antiaderente untada com óleo de coco em fogo médio.",
+      "Despeje porções da massa e doure 2 a 3 minutos de cada lado.",
+      "Sirva com frutas frescas ou um fio de mel."
+    ],
+    "nutricao": {
+      "calorias": 245,
+      "carboidratos_g": 32,
+      "proteinas_g": 11,
+      "gorduras_g": 8
+    },
+    "dicas": "Fica ainda melhor com uma colher de pasta de amendoim por cima para mais saciedade.",
+    "foto": "/assets/receitas/panqueca-banana-aveia.svg",
+    "data_liberacao": "2026-09-07T08:00:00-03:00",
+    "liberada": true,
+    "ativo": true
+  },
+  {
+    "id": "rec_bowl_frango_quinoa",
+    "nome": "Bowl de Frango com Quinoa",
+    "descricao": "Almoço completo, equilibrado e colorido — proteína, carboidrato bom e legumes em uma travessa só.",
+    "categoria": "almoco",
+    "tags": [
+      "alto-proteico",
+      "sem-lactose"
+    ],
+    "tempo_preparo_min": 30,
+    "porcoes": 2,
+    "ingredientes": [
+      {
+        "qtd": "300",
+        "unidade": "g",
+        "item": "peito de frango em cubos"
+      },
+      {
+        "qtd": "1",
+        "unidade": "xíc",
+        "item": "quinoa cozida"
+      },
+      {
+        "qtd": "1",
+        "unidade": "un",
+        "item": "abobrinha em meias-luas"
+      },
+      {
+        "qtd": "1",
+        "unidade": "un",
+        "item": "cenoura em cubos"
+      },
+      {
+        "qtd": "1",
+        "unidade": "cs",
+        "item": "azeite de oliva"
+      },
+      {
+        "qtd": "1",
+        "unidade": "un",
+        "item": "limão (suco)"
+      },
+      {
+        "qtd": "1",
+        "unidade": "un",
+        "item": "sal, pimenta e ervas a gosto"
+      }
+    ],
+    "passos": [
+      "Tempere o frango com sal, pimenta, suco de limão e ervas.",
+      "Doure o frango em uma frigideira com azeite, em fogo médio-alto, por 8 a 10 minutos.",
+      "Refogue a abobrinha e a cenoura por 5 minutos, mantendo o ponto al dente.",
+      "Monte o bowl: base de quinoa, frango e legumes por cima.",
+      "Finalize com sementes de gergelim ou um fio de azeite."
+    ],
+    "nutricao": {
+      "calorias": 420,
+      "carboidratos_g": 38,
+      "proteinas_g": 36,
+      "gorduras_g": 12
+    },
+    "dicas": "Faça o dobro de frango e guarde para montar o bowl em menos tempo no dia seguinte.",
+    "foto": "/assets/receitas/bowl-frango-quinoa.svg",
+    "data_liberacao": "2026-09-14T08:00:00-03:00",
+    "liberada": true,
+    "ativo": true
+  },
+  {
+    "id": "rec_omelete_forno_legumes",
+    "nome": "Omelete de Forno com Legumes",
+    "descricao": "Jantar prático, leve e proteico — você prepara, coloca no forno e esquece até ficar pronto.",
+    "categoria": "jantar",
+    "tags": [
+      "low-carb",
+      "alto-proteico",
+      "sem-gluten"
+    ],
+    "tempo_preparo_min": 25,
+    "porcoes": 3,
+    "ingredientes": [
+      {
+        "qtd": "6",
+        "unidade": "un",
+        "item": "ovos"
+      },
+      {
+        "qtd": "1",
+        "unidade": "un",
+        "item": "tomate sem sementes em cubos"
+      },
+      {
+        "qtd": "1",
+        "unidade": "un",
+        "item": "cebola pequena picada"
+      },
+      {
+        "qtd": "1",
+        "unidade": "xíc",
+        "item": "espinafre fresco"
+      },
+      {
+        "qtd": "50",
+        "unidade": "g",
+        "item": "queijo branco em cubos (opcional)"
+      },
+      {
+        "qtd": "1",
+        "unidade": "cs",
+        "item": "azeite de oliva"
+      },
+      {
+        "qtd": "1",
+        "unidade": "un",
+        "item": "sal e pimenta-do-reino a gosto"
+      }
+    ],
+    "passos": [
+      "Aqueça o forno a 200 °C e unte uma forma pequena com azeite.",
+      "Bata os ovos com sal e pimenta.",
+      "Misture os legumes e o queijo aos ovos batidos.",
+      "Despeje na forma e asse por 18 a 20 minutos, até firmar e dourar levemente.",
+      "Sirva quente com uma salada verde ao lado."
+    ],
+    "nutricao": {
+      "calorias": 230,
+      "carboidratos_g": 8,
+      "proteinas_g": 19,
+      "gorduras_g": 14
+    },
+    "dicas": "Sobrou? Corte em fatias e leve como lanche no dia seguinte — vai bem fria também.",
+    "foto": "/assets/receitas/omelete-forno-legumes.svg",
+    "data_liberacao": "2026-09-21T08:00:00-03:00",
+    "liberada": true,
+    "ativo": true
+  },
+  {
+    "id": "rec_mix_castanhas_mel",
+    "nome": "Mix de Castanhas com Mel",
+    "descricao": "Lanche rápido para matar a fome entre as refeições com energia de qualidade.",
+    "categoria": "lanche",
+    "tags": [
+      "vegetariano",
+      "rapido",
+      "sem-lactose"
+    ],
+    "tempo_preparo_min": 5,
+    "porcoes": 4,
+    "ingredientes": [
+      {
+        "qtd": "100",
+        "unidade": "g",
+        "item": "mix de castanhas (amêndoas, castanha-de-caju, nozes)"
+      },
+      {
+        "qtd": "1",
+        "unidade": "cs",
+        "item": "mel"
+      },
+      {
+        "qtd": "1",
+        "unidade": "cp",
+        "item": "canela em pó"
+      },
+      {
+        "qtd": "1",
+        "unidade": "pn",
+        "item": "sal marinho"
+      }
+    ],
+    "passos": [
+      "Misture as castanhas em uma tigela com o mel.",
+      "Polvilhe a canela e uma pitada de sal marinho.",
+      "Misture bem até cobrir todas as castanhas.",
+      "Divida em potinhos para levar na bolsa ou na marmita."
+    ],
+    "nutricao": {
+      "calorias": 190,
+      "carboidratos_g": 12,
+      "proteinas_g": 5,
+      "gorduras_g": 14
+    },
+    "dicas": "Uma porção (cerca de 2 colheres de sopa) costuma ser suficiente para matar a fome.",
+    "foto": "/assets/receitas/mix-castanhas-mel.svg",
+    "data_liberacao": "2026-09-28T08:00:00-03:00",
+    "liberada": true,
+    "ativo": true
+  },
+  {
+    "id": "rec_mousse_abacate_cacau",
+    "nome": "Mousse de Abacate com Cacau",
+    "descricao": "Sobremesa cremosa, saborosa e sem lactose — para matar a vontade de doce sem culpa.",
+    "categoria": "sobremesa",
+    "tags": [
+      "sem-lactose",
+      "vegetariano",
+      "rapido",
+      "low-carb"
+    ],
+    "tempo_preparo_min": 10,
+    "porcoes": 2,
+    "ingredientes": [
+      {
+        "qtd": "1",
+        "unidade": "un",
+        "item": "abacate maduro pequeno"
+      },
+      {
+        "qtd": "2",
+        "unidade": "cs",
+        "item": "cacau 100% em pó"
+      },
+      {
+        "qtd": "2",
+        "unidade": "cs",
+        "item": "mel ou xarope de bordo"
+      },
+      {
+        "qtd": "1",
+        "unidade": "cd",
+        "item": "essência de baunilha"
+      }
+    ],
+    "passos": [
+      "Coloque todos os ingredientes no liquidificador ou use um garfo para amassar bem.",
+      "Bata até ficar completamente cremoso e homogêneo.",
+      "Leve à geladeira por pelo menos 30 minutos para firmar.",
+      "Sirva com frutas vermelhas por cima."
+    ],
+    "nutricao": {
+      "calorias": 210,
+      "carboidratos_g": 22,
+      "proteinas_g": 3,
+      "gorduras_g": 13
+    },
+    "dicas": "Quanto mais maduro o abacate, mais cremoso e doce fica o mousse.",
+    "foto": "/assets/receitas/mousse-abacate-cacau.svg",
+    "data_liberacao": "2026-10-05T08:00:00-03:00",
+    "liberada": true,
+    "ativo": true
+  },
+  {
+    "id": "rec_tapioca_ovo_queijo",
+    "nome": "Tapioca com Ovo e Queijo Branco",
+    "descricao": "Café da manhã ou lanche prático, sem glúten e com boa proteína para começar bem o dia.",
+    "categoria": "cafe-manha",
+    "tags": [
+      "sem-gluten",
+      "rapido",
+      "alto-proteico"
+    ],
+    "tempo_preparo_min": 10,
+    "porcoes": 1,
+    "ingredientes": [
+      {
+        "qtd": "3",
+        "unidade": "cs",
+        "item": "goma de tapioca"
+      },
+      {
+        "qtd": "1",
+        "unidade": "un",
+        "item": "ovo"
+      },
+      {
+        "qtd": "30",
+        "unidade": "g",
+        "item": "queijo branco em fatias"
+      },
+      {
+        "qtd": "1",
+        "unidade": "un",
+        "item": "sal e orégano a gosto"
+      }
+    ],
+    "passos": [
+      "Espalhe a goma de tapioca em uma frigideira quente e seca, formando um disco.",
+      "Quando a massa firmar, vire com uma espátula.",
+      "Frite o ovo à parte e coloque sobre a tapioca.",
+      "Acrescente o queijo branco, tempere com sal e orégano e dobre ao meio."
+    ],
+    "nutricao": {
+      "calorias": 280,
+      "carboidratos_g": 30,
+      "proteinas_g": 16,
+      "gorduras_g": 10
+    },
+    "dicas": "Fica ótima com tomate em rodelas e um toque de azeitona.",
+    "foto": "/assets/receitas/tapioca-ovo-queijo.svg",
+    "data_liberacao": "2026-10-12T08:00:00-03:00",
+    "liberada": true,
+    "ativo": true
+  },
+  {
+    "id": "rec_salmao_mandioquinha",
+    "nome": "Salmão com Purê de Mandioquinha",
+    "descricao": "Jantar especial de fim de semana, elegante e simples de preparar.",
+    "categoria": "jantar",
+    "tags": [
+      "alto-proteico",
+      "sem-gluten"
+    ],
+    "tempo_preparo_min": 35,
+    "porcoes": 2,
+    "ingredientes": [
+      {
+        "qtd": "2",
+        "unidade": "un",
+        "item": "filés de salmão (150 g cada)"
+      },
+      {
+        "qtd": "400",
+        "unidade": "g",
+        "item": "mandioquinha cozida"
+      },
+      {
+        "qtd": "1",
+        "unidade": "cs",
+        "item": "azeite de oliva"
+      },
+      {
+        "qtd": "1",
+        "unidade": "un",
+        "item": "limão (raspas e suco)"
+      },
+      {
+        "qtd": "1",
+        "unidade": "un",
+        "item": "dente de alho amassado"
+      },
+      {
+        "qtd": "1",
+        "unidade": "un",
+        "item": "sal, pimenta e salsa a gosto"
+      }
+    ],
+    "passos": [
+      "Cozinhe a mandioquinha em água com sal até ficar macia; escorra e amasse com um garfo.",
+      "Tempere o salmão com sal, pimenta, alho, raspas e suco de limão.",
+      "Sele o salmão em fogo médio-alto com azeite, 3 a 4 minutos de cada lado.",
+      "Aqueça o purê com um fio de azeite e retifique o sal.",
+      "Sirva o salmão sobre o purê e finalize com salsa picada."
+    ],
+    "nutricao": {
+      "calorias": 480,
+      "carboidratos_g": 34,
+      "proteinas_g": 38,
+      "gorduras_g": 20
+    },
+    "dicas": "Prefira selar o salmão sem mexer: é o segredo para uma casquinha dourada.",
+    "foto": "/assets/receitas/salmao-mandioquinha.svg",
+    "data_liberacao": "2026-10-19T08:00:00-03:00",
+    "liberada": true,
+    "ativo": true
+  },
+  {
+    "id": "rec_salada_grao_bico_tahine",
+    "nome": "Salada de Grão-de-Bico com Tahine",
+    "descricao": "Almoço vegetariano, nutritivo e que aguenta bem a marmita.",
+    "categoria": "almoco",
+    "tags": [
+      "vegetariano",
+      "sem-lactose",
+      "sem-gluten"
+    ],
+    "tempo_preparo_min": 20,
+    "porcoes": 2,
+    "ingredientes": [
+      {
+        "qtd": "2",
+        "unidade": "xíc",
+        "item": "grão-de-bico cozido"
+      },
+      {
+        "qtd": "1",
+        "unidade": "un",
+        "item": "pepino em cubos"
+      },
+      {
+        "qtd": "1",
+        "unidade": "un",
+        "item": "tomate em cubos"
+      },
+      {
+        "qtd": "1",
+        "unidade": "un",
+        "item": "cebola-roxa em meias-luas finas"
+      },
+      {
+        "qtd": "2",
+        "unidade": "cs",
+        "item": "tahine"
+      },
+      {
+        "qtd": "1",
+        "unidade": "un",
+        "item": "limão (suco)"
+      },
+      {
+        "qtd": "1",
+        "unidade": "cs",
+        "item": "salsinha picada"
+      }
+    ],
+    "passos": [
+      "Escorra e lave bem o grão-de-bico.",
+      "Misture o grão-de-bico com pepino, tomate e cebola-roxa.",
+      "Misture o tahine com o suco de limão e um pouco de água até virar um molho cremoso.",
+      "Regue a salada com o molho e finalize com salsinha."
+    ],
+    "nutricao": {
+      "calorias": 350,
+      "carboidratos_g": 42,
+      "proteinas_g": 14,
+      "gorduras_g": 13
+    },
+    "dicas": "O molho de tahine fica na geladeira por até 5 dias — faça uma porção maior.",
+    "foto": "/assets/receitas/salada-grao-bico-tahine.svg",
+    "data_liberacao": "2026-10-26T08:00:00-03:00",
+    "liberada": true,
+    "ativo": true
+  },
+  {
+    "id": "rec_barra_cereal_caseira",
+    "nome": "Barra de Cereal Caseira",
+    "descricao": "Lanche prático para levar na bolsa, no trabalho ou antes do treino.",
+    "categoria": "lanche",
+    "tags": [
+      "vegetariano",
+      "rapido"
+    ],
+    "tempo_preparo_min": 20,
+    "porcoes": 8,
+    "ingredientes": [
+      {
+        "qtd": "2",
+        "unidade": "xíc",
+        "item": "aveia em flocos"
+      },
+      {
+        "qtd": "1",
+        "unidade": "xíc",
+        "item": "mix de castanhas picadas"
+      },
+      {
+        "qtd": "1",
+        "unidade": "un",
+        "item": "banana amassada"
+      },
+      {
+        "qtd": "3",
+        "unidade": "cs",
+        "item": "mel"
+      },
+      {
+        "qtd": "2",
+        "unidade": "cs",
+        "item": "pasta de amendoim"
+      },
+      {
+        "qtd": "1",
+        "unidade": "cp",
+        "item": "canela em pó"
+      }
+    ],
+    "passos": [
+      "Misture todos os ingredientes em uma tigela grande até formar uma massa úmida.",
+      "Forre uma forma pequena com papel manteiga e espalhe a massa, pressionando bem.",
+      "Asse em forno preaquecido a 180 °C por 15 a 18 minutos, até dourar as bordas.",
+      "Deixe esfriar completamente antes de cortar em barras.",
+      "Guarde em pote fechado por até 7 dias."
+    ],
+    "nutricao": {
+      "calorias": 195,
+      "carboidratos_g": 26,
+      "proteinas_g": 6,
+      "gorduras_g": 8
+    },
+    "dicas": "Corte antes de esfriar para não quebrar. Para mais proteína, acrescente whey ou mais castanhas.",
+    "foto": "/assets/receitas/barra-cereal-caseira.svg",
+    "data_liberacao": "2026-11-02T08:00:00-03:00",
+    "liberada": false,
+    "ativo": true
+  },
+  {
+    "id": "rec_pudim_chia_frutas",
+    "nome": "Pudim de Chia com Frutas",
+    "descricao": "Sobremesa ou café da manhã preparado na véspera — cremoso, sem lactose e cheio de fibras.",
+    "categoria": "sobremesa",
+    "tags": [
+      "sem-lactose",
+      "vegetariano",
+      "sem-gluten"
+    ],
+    "tempo_preparo_min": 10,
+    "porcoes": 2,
+    "ingredientes": [
+      {
+        "qtd": "4",
+        "unidade": "cs",
+        "item": "sementes de chia"
+      },
+      {
+        "qtd": "1",
+        "unidade": "xíc",
+        "item": "bebida vegetal (coco, amêndoas ou aveia)"
+      },
+      {
+        "qtd": "1",
+        "unidade": "cs",
+        "item": "mel ou xarope de bordo"
+      },
+      {
+        "qtd": "1",
+        "unidade": "cd",
+        "item": "essência de baunilha"
+      },
+      {
+        "qtd": "1",
+        "unidade": "xíc",
+        "item": "frutas vermelhas ou frutas da estação"
+      }
+    ],
+    "passos": [
+      "Misture a chia, a bebida vegetal, o mel e a baunilha em um pote com tampa.",
+      "Mexa bem nos primeiros 5 minutos para evitar grumos.",
+      "Leve à geladeira por pelo menos 4 horas (ou a noite inteira).",
+      "Sirva com as frutas por cima."
+    ],
+    "nutricao": {
+      "calorias": 175,
+      "carboidratos_g": 24,
+      "proteinas_g": 6,
+      "gorduras_g": 6
+    },
+    "dicas": "Faça 3 potinhos de uma vez: café da manhã resolvido para metade da semana.",
+    "foto": "/assets/receitas/pudim-chia-frutas.svg",
+    "data_liberacao": "2026-11-09T08:00:00-03:00",
+    "liberada": false,
+    "ativo": true
+  }
+]

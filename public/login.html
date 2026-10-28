@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Entrar — Oferta Fit BR</title>
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/membros.css" />
+</head>
+<body>
+  <div class="login-wrap">
+    <div class="login-card">
+      <img class="logo" src="assets/logo.svg" alt="Oferta Fit BR" />
+
+      <div class="abas-login" id="abas-login">
+        <button class="ativo" data-aba="entrar">Entrar</button>
+        <button data-aba="criar">Criar conta</button>
+      </div>
+
+      <div id="erro-login" class="erro-box oculto"></div>
+
+      <!-- ===== Login ===== -->
+      <form id="form-entrar">
+        <div class="campo">
+          <label for="email-entrar">E-mail</label>
+          <input id="email-entrar" type="email" placeholder="voce@email.com" autocomplete="email" required />
+        </div>
+        <div class="campo">
+          <label for="senha-entrar">Senha</label>
+          <input id="senha-entrar" type="password" placeholder="Sua senha" autocomplete="current-password" required />
+        </div>
+        <button class="btn btn--azul btn--bloco" type="submit">Entrar na área de membros</button>
+      </form>
+
+      <!-- ===== Cadastro ===== -->
+      <form id="form-criar" class="oculto">
+        <div class="campo">
+          <label for="nome-criar">Nome</label>
+          <input id="nome-criar" type="text" placeholder="Seu nome" autocomplete="name" required />
+        </div>
+        <div class="campo">
+          <label for="email-criar">E-mail</label>
+          <input id="email-criar" type="email" placeholder="voce@email.com" autocomplete="email" required />
+        </div>
+        <div class="campo">
+          <label for="senha-criar">Senha (mín. 6 caracteres)</label>
+          <input id="senha-criar" type="password" placeholder="Crie uma senha" autocomplete="new-password" required minlength="6" />
+        </div>
+        <button class="btn btn--azul btn--bloco" type="submit">Criar minha conta</button>
+      </form>
+
+      <!-- ===== Definir senha (link pós-compra) ===== -->
+      <form id="form-definir" class="oculto">
+        <p class="cinza pequeno mb-2">Defina a senha da sua conta para acessar a área de membros.</p>
+        <div class="campo">
+          <label for="senha-definir">Nova senha (mín. 6 caracteres)</label>
+          <input id="senha-definir" type="password" placeholder="Crie uma senha" required minlength="6" />
+        </div>
+        <div class="campo">
+          <label for="senha-definir2">Repita a senha</label>
+          <input id="senha-definir2" type="password" placeholder="Repita a senha" required minlength="6" />
+        </div>
+        <button class="btn btn--azul btn--bloco" type="submit">Salvar e entrar</button>
+      </form>
+
+      <p class="pequeno cinza texto-centro mt-3">
+        Ainda não comprou? <a href="index.html" style="color:var(--azul);font-weight:700">Conheça a oferta</a>
+      </p>
+    </div>
+  </div>
+
+  <script src="js/track.js"></script>
+  <script>
+    const $ = (s) => document.querySelector(s);
+    const erro = (m) => { const b = $('#erro-login'); b.textContent = m; b.classList.remove('oculto'); };
+    const irMembros = () => (location.href = 'membros.html');
+
+    // Troca de abas
+    $('#abas-login').addEventListener('click', (e) => {
+      const btn = e.target.closest('button');
+      if (!btn) return;
+      document.querySelectorAll('#abas-login button').forEach((b) => b.classList.toggle('ativo', b === btn));
+      $('#form-entrar').classList.toggle('oculto', btn.dataset.aba !== 'entrar');
+      $('#form-criar').classList.toggle('oculto', btn.dataset.aba !== 'criar');
+    });
+
+    const post = async (url, body) => {
+      const r = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+      return { ok: r.ok, ...(await r.json().catch(() => ({}))) };
+    };
+
+    $('#form-entrar').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const r = await post('/api/membros/login', { email: $('#email-entrar').value, senha: $('#senha-entrar').value });
+      r.ok ? irMembros() : erro(r.error || 'Não foi possível entrar');
+    });
+
+    $('#form-criar').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const r = await post('/api/membros/cadastro', {
+        nome: $('#nome-criar').value, email: $('#email-criar').value, senha: $('#senha-criar').value,
+      });
+      r.ok ? irMembros() : erro(r.error || 'Não foi possível criar a conta');
+    });
+
+    // Modo "definir senha" vindo do e-mail pós-compra
+    const tokenDefinir = new URLSearchParams(location.search).get('definir');
+    if (tokenDefinir) {
+      $('#abas-login').classList.add('oculto');
+      $('#form-entrar').classList.add('oculto');
+      $('#form-definir').classList.remove('oculto');
+      $('#form-definir').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const s1 = $('#senha-definir').value, s2 = $('#senha-definir2').value;
+        if (s1 !== s2) return erro('As senhas não coincidem');
+        const r = await post('/api/membros/definir-senha', { token: tokenDefinir, senha: s1 });
+        r.ok ? irMembros() : erro(r.error || 'Link inválido ou expirado');
+      });
+    }
+  </script>
+</body>
+</html>

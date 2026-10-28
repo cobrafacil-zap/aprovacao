@@ -1,0 +1,157 @@
+/* ============================================================
+   Oferta Fit BR — Design System
+   Paleta extraída da logo: azul (primária), amarelo (secundária),
+   vermelho/laranja (destaque/CTA). Mobile-first, arredondado e bold.
+   ============================================================ */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;0,800;1,800&display=swap');
+
+:root {
+  --azul: #2743D6;
+  --azul-escuro: #16266E;
+  --azul-claro: #E9EDFF;
+  --amarelo: #FFC61A;
+  --amarelo-claro: #FFF4CC;
+  --vermelho: #FF4B2E;
+  --vermelho-escuro: #E23A1F;
+  --tinta: #0E1330;
+  --cinza: #5B627E;
+  --fundo: #F7F8FC;
+  --branco: #fff;
+  --verde: #12B76A;
+  --borda: #E4E8F5;
+  --sombra: 0 10px 30px rgba(22, 38, 110, 0.10);
+  --sombra-forte: 0 16px 40px rgba(22, 38, 110, 0.18);
+  --raio: 18px;
+  --raio-grande: 26px;
+  --fonte: 'Poppins', system-ui, -apple-system, sans-serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--fonte);
+  color: var(--tinta);
+  background: var(--fundo);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+img { max-width: 100%; display: block; }
+a { color: inherit; text-decoration: none; }
+button { font-family: inherit; cursor: pointer; border: none; background: none; }
+
+.container { width: 100%; max-width: 1120px; margin: 0 auto; padding: 0 20px; }
+.secao { padding: 56px 0; }
+.secao--azul { background: var(--azul-claro); }
+.secao--amarela { background: var(--amarelo-claro); }
+.secao--escura { background: var(--azul-escuro); color: var(--branco); }
+
+/* ---------- Tipografia ---------- */
+h1, h2, h3 { line-height: 1.15; font-weight: 800; letter-spacing: -0.02em; }
+h1 { font-size: clamp(1.9rem, 6vw, 3.2rem); }
+h2 { font-size: clamp(1.55rem, 4.4vw, 2.35rem); }
+h3 { font-size: clamp(1.15rem, 3vw, 1.45rem); }
+.subtitulo { color: var(--cinza); font-size: clamp(1rem, 2.6vw, 1.2rem); margin-top: 12px; }
+.secao--escura .subtitulo { color: #C6CEF7; }
+.destaque { color: var(--azul); }
+.destaque-amarelo {
+  background: linear-gradient(180deg, transparent 55%, var(--amarelo) 55%);
+  padding: 0 4px;
+}
+.rotulo {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--amarelo); color: var(--azul-escuro);
+  font-size: 0.78rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.06em; padding: 6px 14px; border-radius: 999px;
+}
+.rotulo--azul { background: var(--azul); color: #fff; }
+.rotulo--verde { background: var(--verde); color: #fff; }
+
+/* ---------- Botões ---------- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  font-weight: 700; font-size: 1.02rem; padding: 16px 30px; border-radius: 999px;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+  text-align: center;
+}
+.btn:active { transform: scale(0.98); }
+.btn--cta {
+  background: var(--vermelho); color: #fff;
+  box-shadow: 0 12px 26px rgba(255, 75, 46, 0.38);
+}
+.btn--cta:hover { background: var(--vermelho-escuro); transform: translateY(-2px); }
+.btn--azul { background: var(--azul); color: #fff; box-shadow: 0 12px 26px rgba(39, 67, 214, 0.32); }
+.btn--azul:hover { transform: translateY(-2px); }
+.btn--contorno {
+  background: #fff; color: var(--azul); border: 2px solid var(--azul);
+}
+.btn--contorno:hover { background: var(--azul-claro); }
+.btn--bloco { display: flex; width: 100%; }
+.btn--pequeno { padding: 10px 18px; font-size: 0.88rem; }
+
+/* ---------- Cards ---------- */
+.card {
+  background: var(--branco); border-radius: var(--raio);
+  box-shadow: var(--sombra); padding: 26px; border: 1px solid var(--borda);
+}
+.card--icone .icone {
+  width: 52px; height: 52px; border-radius: 16px; display: grid; place-items: center;
+  font-size: 1.5rem; background: var(--azul-claro); margin-bottom: 14px;
+}
+.grade { display: grid; gap: 18px; grid-template-columns: 1fr; }
+@media (min-width: 640px) { .grade--2 { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 900px) { .grade--3 { grid-template-columns: repeat(3, 1fr); } .grade--4 { grid-template-columns: repeat(4, 1fr); } }
+
+/* ---------- Formulários ---------- */
+.campo { margin-bottom: 14px; }
+.campo label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 6px; color: var(--azul-escuro); }
+.campo input, .campo select, .campo textarea {
+  width: 100%; padding: 13px 16px; border-radius: 14px; border: 2px solid var(--borda);
+  font-family: inherit; font-size: 0.98rem; background: #fff; color: var(--tinta);
+}
+.campo input:focus, .campo select:focus, .campo textarea:focus {
+  outline: none; border-color: var(--azul); box-shadow: 0 0 0 4px rgba(39, 67, 214, 0.12);
+}
+
+/* ---------- Utilidades ---------- */
+.texto-centro { text-align: center; }
+.mt-1 { margin-top: 8px; } .mt-2 { margin-top: 16px; } .mt-3 { margin-top: 24px; } .mt-4 { margin-top: 40px; }
+.mb-2 { margin-bottom: 16px; } .mb-3 { margin-bottom: 24px; }
+.cinza { color: var(--cinza); }
+.pequeno { font-size: 0.83rem; }
+.linha-flex { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.espaçador { flex: 1; }
+.aviso {
+  background: var(--amarelo-claro); border-left: 4px solid var(--amarelo);
+  padding: 12px 16px; border-radius: 12px; font-size: 0.82rem; color: var(--cinza);
+}
+.selo-avaliacao { color: var(--amarelo); font-size: 1.05rem; letter-spacing: 2px; }
+.oculto { display: none !important; }
+
+/* ============================================================
+   BOTÃO DE COMPRA FIXO (mobile) — tráfego vem do Instagram
+   ============================================================ */
+.compra-fixa {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 90;
+  background: #fff; box-shadow: 0 -8px 24px rgba(22, 38, 110, 0.16);
+  padding: 10px 16px calc(10px + env(safe-area-inset-bottom));
+  display: flex; align-items: center; gap: 12px;
+  transform: translateY(110%); transition: transform 0.3s ease;
+}
+.compra-fixa.visivel { transform: translateY(0); }
+.compra-fixa .preco { line-height: 1.1; }
+.compra-fixa .preco strong { display: block; font-size: 1.25rem; color: var(--azul-escuro); }
+.compra-fixa .preco span { font-size: 0.72rem; color: var(--cinza); }
+.compra-fixa .btn { flex: 1; padding: 14px 18px; }
+@media (min-width: 900px) { .compra-fixa { display: none; } }
+
+/* ---------- Rodapé ---------- */
+footer {
+  background: var(--azul-escuro); color: #C6CEF7; padding: 40px 0 110px;
+  font-size: 0.85rem;
+}
+footer strong { color: var(--amarelo); }
+footer .disclaimer {
+  margin-top: 16px; padding: 14px 18px; background: rgba(255, 255, 255, 0.06);
+  border-radius: 14px; font-size: 0.78rem; line-height: 1.7;
+}
+@media (min-width: 900px) { footer { padding-bottom: 40px; } }

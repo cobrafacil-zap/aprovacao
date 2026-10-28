@@ -1,0 +1,82 @@
+/* ============================================================
+   Painel Administrativo — receitas, alunos, pedidos, métricas.
+   ============================================================ */
+
+.admin-topo {
+  background: var(--azul-escuro); color: #fff; padding: 14px 0;
+  position: sticky; top: 0; z-index: 50;
+}
+.admin-topo .logo { height: 34px; }
+.admin-topo .btn { padding: 8px 15px; font-size: 0.8rem; }
+
+.abas { display: flex; gap: 8px; overflow-x: auto; padding: 18px 0 6px; scrollbar-width: none; }
+.abas::-webkit-scrollbar { display: none; }
+.abas button {
+  padding: 11px 20px; border-radius: 999px; font-weight: 700; font-size: 0.9rem;
+  background: #fff; border: 2px solid var(--borda); color: var(--cinza); white-space: nowrap;
+}
+.abas button.ativo { background: var(--azul); border-color: var(--azul); color: #fff; }
+
+/* ---------- Métricas ---------- */
+.metrica-grid { display: grid; gap: 14px; grid-template-columns: repeat(2, 1fr); margin-top: 18px; }
+@media (min-width: 860px) { .metrica-grid { grid-template-columns: repeat(4, 1fr); } }
+.metrica-card { background: #fff; border-radius: var(--raio); padding: 20px; border: 1px solid var(--borda); box-shadow: var(--sombra); }
+.metrica-card .valor { font-size: 1.85rem; font-weight: 800; color: var(--azul-escuro); line-height: 1.1; }
+.metrica-card .rotulo-m { font-size: 0.8rem; color: var(--cinza); margin-top: 4px; }
+.metrica-card .delta { font-size: 0.78rem; font-weight: 700; margin-top: 8px; }
+.metrica-card .delta.pos { color: var(--verde); }
+.metrica-card .delta.neg { color: var(--vermelho); }
+
+.grafico-card { background: #fff; border-radius: var(--raio); border: 1px solid var(--borda); box-shadow: var(--sombra); padding: 22px; margin-top: 18px; }
+.grafico-card h3 { font-size: 1.05rem; margin-bottom: 16px; }
+.barras { display: flex; align-items: flex-end; gap: 6px; height: 180px; }
+.barras .barra-wrap { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px; height: 100%; justify-content: flex-end; }
+.barras .barra {
+  width: 100%; max-width: 34px; border-radius: 8px 8px 0 0; background: var(--azul);
+  min-height: 3px; transition: height 0.4s ease; position: relative;
+}
+.barras .barra.vendas { background: var(--vermelho); }
+.barras .barra.checkouts { background: var(--amarelo); }
+.barras .rotulo-b { font-size: 0.62rem; color: var(--cinza); transform: rotate(-40deg); white-space: nowrap; }
+.legenda { display: flex; gap: 16px; margin-top: 14px; font-size: 0.8rem; color: var(--cinza); }
+.legenda .ponto { width: 12px; height: 12px; border-radius: 4px; display: inline-block; margin-right: 6px; vertical-align: middle; }
+
+.lista-simples { margin-top: 12px; }
+.lista-simples .linha-o { display: flex; align-items: center; gap: 12px; padding: 11px 0; border-bottom: 1px solid var(--borda); font-size: 0.92rem; }
+.lista-simples .barra-o { flex: 1; height: 10px; border-radius: 999px; background: var(--fundo); overflow: hidden; }
+.lista-simples .barra-o i { display: block; height: 100%; background: var(--azul); border-radius: 999px; }
+
+/* ---------- Tabelas ---------- */
+.tabela { width: 100%; border-collapse: collapse; background: #fff; border-radius: var(--raio); overflow: hidden; border: 1px solid var(--borda); }
+.tabela th, .tabela td { padding: 13px 16px; text-align: left; font-size: 0.88rem; border-bottom: 1px solid var(--borda); }
+.tabela th { background: var(--azul-claro); color: var(--azul-escuro); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; }
+.tabela tr:last-child td { border-bottom: none; }
+.tabela .acoes { display: flex; gap: 6px; }
+.tabela .acoes button { padding: 6px 12px; font-size: 0.78rem; border-radius: 10px; font-weight: 600; }
+.btn-mini-azul { background: var(--azul-claro); color: var(--azul); }
+.btn-mini-vermelho { background: #FFECE8; color: var(--vermelho-escuro); }
+.btn-mini-verde { background: #E4F8EE; color: var(--verde); }
+.btn-mini-cinza { background: var(--fundo); color: var(--cinza); }
+.tabela-scroll { overflow-x: auto; margin-top: 16px; }
+
+.status-pill { font-size: 0.74rem; font-weight: 700; padding: 4px 11px; border-radius: 999px; }
+.status-pago { background: #E4F8EE; color: var(--verde); }
+.status-aguardando { background: var(--amarelo-claro); color: #8A6A00; }
+.status-abandonado { background: #FFECE8; color: var(--vermelho-escuro); }
+.status-agendada { background: var(--azul-claro); color: var(--azul); }
+.status-liberada { background: #E4F8EE; color: var(--verde); }
+
+/* ---------- Formulário de receita ---------- */
+.form-receita { display: grid; gap: 4px; }
+@media (min-width: 820px) { .form-receita .duas-colunas { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; } }
+.item-lista-editor { display: flex; gap: 8px; margin-bottom: 8px; }
+.item-lista-editor input { flex: 1; }
+.item-lista-editor .qtd-inp { max-width: 90px; }
+.item-lista-editor .un-inp { max-width: 110px; }
+.item-lista-editor button { padding: 8px 14px; border-radius: 12px; background: var(--fundo); color: var(--cinza); font-weight: 700; }
+.upload-foto {
+  border: 2px dashed var(--borda); border-radius: var(--raio); padding: 22px;
+  text-align: center; color: var(--cinza); cursor: pointer; background: var(--fundo);
+}
+.upload-foto img { max-height: 150px; margin: 0 auto 10px; border-radius: 12px; }
+.painel-card { background: #fff; border-radius: var(--raio); border: 1px solid var(--borda); box-shadow: var(--sombra); padding: 24px; margin-top: 18px; }

@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Painel — Oferta Fit BR</title>
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/admin.css" />
+</head>
+<body>
+  <!-- ===== Login do admin ===== -->
+  <div class="login-wrap" id="login-admin" style="min-height:100vh">
+    <div class="login-card" style="max-width:380px">
+      <img class="logo" src="assets/logo.svg" alt="Oferta Fit BR" style="height:48px;margin:0 auto 18px;display:block" />
+      <h2 style="font-size:1.25rem;text-align:center">Painel administrativo</h2>
+      <p class="cinza pequeno texto-centro mb-3">Área restrita do Oferta Fit BR</p>
+      <div id="erro-admin" class="erro-box oculto"></div>
+      <form id="form-admin">
+        <div class="campo">
+          <label for="senha-admin">Senha</label>
+          <input id="senha-admin" type="password" placeholder="Senha do painel" />
+        </div>
+        <button class="btn btn--azul btn--bloco" type="submit">Entrar</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===== Painel ===== -->
+  <div id="painel" class="oculto">
+    <header class="admin-topo">
+      <div class="container linha-flex">
+        <img class="logo" src="assets/logo.svg" alt="Oferta Fit BR" />
+        <span style="color:#C6CEF7;font-size:.85rem">Painel administrativo</span>
+        <div class="espaçador"></div>
+        <a class="btn btn--contorno" href="index.html" target="_blank" style="color:#fff;border-color:rgba(255,255,255,.35)">Ver site</a>
+        <button class="btn btn--contorno" id="btn-sair-admin" style="color:#fff;border-color:rgba(255,255,255,.35)">Sair</button>
+      </div>
+    </header>
+
+    <main class="container" style="padding-bottom:70px">
+      <div class="abas" id="abas-admin">
+        <button class="ativo" data-aba="metricas">📊 Métricas</button>
+        <button data-aba="receitas">🍽 Receitas</button>
+        <button data-aba="alunos">👥 Alunos &amp; acessos</button>
+        <button data-aba="pedidos">🧾 Pedidos</button>
+        <button data-aba="config">⚙️ Configurações</button>
+      </div>
+
+      <!-- ===== MÉTRICAS ===== -->
+      <section id="aba-metricas">
+        <div class="linha-flex mt-2">
+          <h2 style="font-size:1.35rem">Visão geral</h2>
+          <div class="espaçador"></div>
+          <select id="periodo-metricas" style="padding:10px 14px;border-radius:12px;border:2px solid var(--borda);font-family:inherit">
+            <option value="7">Últimos 7 dias</option>
+            <option value="14" selected>Últimos 14 dias</option>
+            <option value="30">Últimos 30 dias</option>
+          </select>
+        </div>
+
+        <div class="metrica-grid" id="metricas-cards"></div>
+
+        <div class="grafico-card">
+          <h3>Visitas, checkouts e vendas por dia</h3>
+          <div class="barras" id="grafico-diario"></div>
+          <div class="legenda">
+            <span><i class="ponto" style="background:var(--azul)"></i>Visitas</span>
+            <span><i class="ponto" style="background:var(--amarelo)"></i>Checkouts</span>
+            <span><i class="ponto" style="background:var(--vermelho)"></i>Vendas</span>
+          </div>
+        </div>
+
+        <div class="grade grade--2">
+          <div class="grafico-card">
+            <h3>Origem do tráfego</h3>
+            <div class="lista-simples" id="lista-origens"></div>
+          </div>
+          <div class="grafico-card">
+            <h3>Funil de conversão</h3>
+            <div class="lista-simples" id="lista-funil"></div>
+            <p class="pequeno cinza mt-2">Conversão da página = checkouts iniciados ÷ visualizações da página de vendas.
+            Abandono de checkout = pedidos sem pagamento após 30 minutos.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== RECEITAS ===== -->
+      <section id="aba-receitas" class="oculto">
+        <div class="linha-flex mt-2">
+          <h2 style="font-size:1.35rem">Receitas</h2>
+          <div class="espaçador"></div>
+          <button class="btn btn--azul btn--pequeno" id="btn-nova-receita">+ Nova receita</button>
+        </div>
+
+        <!-- Formulário de receita -->
+        <div class="painel-card oculto" id="form-receita-card">
+          <h3 id="titulo-form-receita">Nova receita</h3>
+          <form id="form-receita" class="form-receita mt-2">
+            <input type="hidden" id="rec-id" />
+            <div class="duas-colunas">
+              <div class="campo"><label for="rec-nome">Nome da receita</label><input id="rec-nome" required /></div>
+              <div class="campo"><label for="rec-categoria">Categoria</label>
+                <select id="rec-categoria">
+                  <option value="cafe-manha">Café da manhã</option>
+                  <option value="almoco">Almoço</option>
+                  <option value="jantar">Jantar</option>
+                  <option value="lanche">Lanche</option>
+                  <option value="sobremesa">Sobremesa</option>
+                </select>
+              </div>
+            </div>
+            <div class="campo"><label for="rec-descricao">Descrição curta</label><textarea id="rec-descricao" rows="2"></textarea></div>
+
+            <div class="duas-colunas">
+              <div class="campo"><label for="rec-tempo">Tempo de preparo (min)</label><input id="rec-tempo" type="number" min="1" value="20" /></div>
+              <div class="campo"><label for="rec-porcoes">Porções</label><input id="rec-porcoes" type="number" min="1" value="2" /></div>
+            </div>
+
+            <div class="duas-colunas">
+              <div class="campo"><label for="rec-data">Data de liberação (fica invisível até esta data)</label><input id="rec-data" type="datetime-local" required /></div>
+              <div class="campo"><label for="rec-tags">Tags (separadas por vírgula)</label><input id="rec-tags" placeholder="sem-gluten, alto-proteico, rapido" /></div>
+            </div>
+
+            <h4 style="margin:14px 0 8px;font-size:.95rem">Ingredientes</h4>
+            <div id="editor-ingredientes"></div>
+            <button type="button" class="btn btn--contorno btn--pequeno" id="btn-add-ingrediente">+ Ingrediente</button>
+
+            <h4 style="margin:14px 0 8px;font-size:.95rem">Modo de preparo (passos)</h4>
+            <div id="editor-passos"></div>
+            <button type="button" class="btn btn--contorno btn--pequeno" id="btn-add-passo">+ Passo</button>
+
+            <div class="duas-colunas mt-2">
+              <div class="campo"><label for="rec-calorias">Calorias (kcal)</label><input id="rec-calorias" type="number" placeholder="ex.: 320" /></div>
+              <div class="campo"><label for="rec-carbo">Carboidratos (g)</label><input id="rec-carbo" type="number" placeholder="ex.: 35" /></div>
+            </div>
+            <div class="duas-colunas">
+              <div class="campo"><label for="rec-proteina">Proteínas (g)</label><input id="rec-proteina" type="number" placeholder="ex.: 22" /></div>
+              <div class="campo"><label for="rec-gordura">Gorduras (g)</label><input id="rec-gordura" type="number" placeholder="ex.: 12" /></div>
+            </div>
+
+            <div class="campo">
+              <label>Foto do prato (jpg, png ou webp até 6MB)</label>
+              <div class="upload-foto" id="upload-foto">
+                <img id="preview-foto" class="oculto" alt="Prévia da foto" />
+                <div id="upload-texto">📷 Clique para enviar a foto do prato</div>
+                <input type="file" id="input-foto" accept="image/*" hidden />
+              </div>
+            </div>
+
+            <div class="linha-flex mt-2">
+              <button class="btn btn--azul" type="submit">Salvar receita</button>
+              <button class="btn btn--contorno" type="button" id="btn-cancelar-receita">Cancelar</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="tabela-scroll">
+          <table class="tabela" id="tabela-receitas">
+            <thead><tr><th>Receita</th><th>Categoria</th><th>Liberação</th><th>Status</th><th>Ações</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ===== ALUNOS ===== -->
+      <section id="aba-alunos" class="oculto">
+        <h2 class="mt-2" style="font-size:1.35rem">Alunos &amp; acessos</h2>
+        <div class="tabela-scroll">
+          <table class="tabela" id="tabela-alunos">
+            <thead><tr><th>Aluno</th><th>E-mail</th><th>Acesso</th><th>Cadastro</th><th>Última visita</th><th>Feitas</th><th>Ações</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ===== PEDIDOS ===== -->
+      <section id="aba-pedidos" class="oculto">
+        <h2 class="mt-2" style="font-size:1.35rem">Pedidos</h2>
+        <div class="tabela-scroll">
+          <table class="tabela" id="tabela-pedidos">
+            <thead><tr><th>Pedido</th><th>Cliente</th><th>Valor</th><th>Pagamento</th><th>Status</th><th>Data</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ===== CONFIG ===== -->
+      <section id="aba-config" class="oculto">
+        <h2 class="mt-2" style="font-size:1.35rem">Configurações</h2>
+        <div class="painel-card" style="max-width:620px">
+          <form id="form-config">
+            <div class="campo"><label for="cfg-nome">Nome do produto</label><input id="cfg-nome" /></div>
+            <div class="duas-colunas" style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+              <div class="campo"><label for="cfg-preco">Preço (R$)</label><input id="cfg-preco" type="number" step="0.01" /></div>
+              <div class="campo"><label for="cfg-preco-antigo">Preço “de” (R$)</label><input id="cfg-preco-antigo" type="number" step="0.01" /></div>
+            </div>
+            <div class="campo"><label for="cfg-garantia">Garantia (dias)</label><input id="cfg-garantia" type="number" /></div>
+            <div class="campo"><label for="cfg-suporte">E-mail de suporte</label><input id="cfg-suporte" type="email" /></div>
+            <div class="campo"><label for="cfg-admin-senha">Nova senha do painel (opcional)</label><input id="cfg-admin-senha" type="password" placeholder="Deixe em branco para manter" /></div>
+            <button class="btn btn--azul" type="submit">Salvar configurações</button>
+          </form>
+        </div>
+
+        <div class="painel-card" style="max-width:620px">
+          <h3>Testar envio de e-mail</h3>
+          <div class="linha-flex mt-2">
+            <input id="teste-email" type="email" placeholder="seu@email.com" style="flex:1;padding:13px 16px;border-radius:14px;border:2px solid var(--borda);font-family:inherit" />
+            <button class="btn btn--azul btn--pequeno" id="btn-teste-email">Enviar teste</button>
+          </div>
+          <p class="pequeno cinza mt-1" id="status-email"></p>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="js/track.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>

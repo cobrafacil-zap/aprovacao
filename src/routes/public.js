@@ -1,0 +1,65 @@
+// Rotas públicas: dados do produto para a LP, prévia de receitas e tracking de analytics.
+import { Router } from 'express';
+import { read } from '../lib/db.js';
+import { track } from '../lib/analytics.js';
+import { receitasLiberadas, proximaReceita } from '../lib/release.js';
+
+const router = Router();
+
+const PUBLIC_RECIPE_FIELDS = (r) => ({
+  id: r.id,
+  nome: r.nome,
+  descricao: r.descricao,
+  categoria: r.categoria,
+  tags: r.tags || [],
+  tempo_preparo_min: r.tempo_preparo_min,
+  porcoes: r.porcoes,
+  foto: r.foto || null,
+  data_liberacao: r.data_liberacao,
+});
+
+router.get('/produto', (req, res) => {
+  const s = read('settings', {});
+  res.json({
+    nome: s.nomeProduto || 'Oferta Fit BR',
+    preco: s.preco ?? 19.9,
+    precoAntigo: s.precoAntigo ?? 97,
+    moeda: 'BRL',
+    garantia_dias: s.garantiaDias ?? 7,
+    formas_pagamento: ['Pix', 'Cartão de crédito', 'Boleto'],
+    atualizacao: 'uma nova receita por semana',
+    acesso: 'vitalício',
+  });
+});
+
+// Prévia para a LP (prints do produto): 3 receitas já liberadas + contagem total.
+router.get('/receitas/preview', (req, res) => {
+  const liberadas = receitasLiberadas();
+  res.json({
+    total: liberadas.length,
+    itens: liberadas.slice(0, 3).map(PUBLIC_RECIPE_FIELDS),
+    proxima: proximaReceita() ? { nome: proximaReceita().nome, data: proximaReceita().data_liberacao } : null,
+  });
+});
+
+// Tracking público (LP e checkout). Nunca bloqueia a página.
+router.post('/track', (req, res) => {
+  try {
+    const b = req.body || {};
+    track({
+      tipo: b.tipo,
+      pagina: b.pagina,
+      sessao: b.sessao,
+      utm: b.utm,
+      referrer: b.referrer,
+      valor: b.valor,
+      pedidoId: b.pedidoId,
+      dispositivo: /mobile|android|iphone/i.test(req.headers['user-agent'] || '') ? 'mobile' : 'desktop',
+    });
+  } catch (e) {
+    console.error('[TRACK]', e.message);
+  }
+  res.json({ ok: true });
+});
+
+export default router;

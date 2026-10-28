@@ -1,0 +1,194 @@
+/* ============================================================
+   Página de VENDAS — layout novo, vibrante e mobile-first.
+   Ordem das seções definida no briefing (headline → ... → depoimentos).
+   ============================================================ */
+
+/* ---------- Topo / Hero ---------- */
+.topo {
+  background: linear-gradient(160deg, var(--azul) 0%, var(--azul-escuro) 100%);
+  color: #fff; padding: 18px 0 64px; position: relative; overflow: hidden;
+}
+.topo::after {
+  content: ''; position: absolute; right: -120px; top: -120px;
+  width: 340px; height: 340px; border-radius: 50%; background: rgba(255, 198, 26, 0.18);
+}
+.nav { display: flex; align-items: center; justify-content: space-between; padding: 6px 0 26px; }
+.nav .logo { height: 46px; }
+.nav .btn { padding: 11px 20px; font-size: 0.88rem; }
+
+.hero { position: relative; z-index: 1; }
+.hero .rotulo { margin-bottom: 16px; }
+.hero h1 em { font-style: italic; color: var(--amarelo); }
+.hero .subtitulo { color: #D6DCFB; max-width: 560px; }
+.hero-cta { display: flex; flex-direction: column; gap: 12px; margin-top: 26px; }
+.hero-cta .btn { width: 100%; }
+.hero-selos { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 18px; font-size: 0.85rem; color: #D6DCFB; }
+.hero-selos span::before { content: '✓ '; color: var(--amarelo); font-weight: 700; }
+
+.hero-visual {
+  margin-top: 34px; background: #fff; border-radius: var(--raio-grande);
+  padding: 14px; box-shadow: var(--sombra-forte); transform: rotate(-1.2deg);
+}
+.hero-visual img { border-radius: 16px; }
+.hero-faixa {
+  margin-top: 22px; background: var(--amarelo); color: var(--azul-escuro);
+  border-radius: 16px; padding: 14px 18px; font-weight: 700; font-size: 0.95rem;
+  display: flex; align-items: center; gap: 12px;
+}
+@media (min-width: 900px) {
+  .topo { padding-bottom: 90px; }
+  .hero { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 48px; align-items: center; }
+  .hero-cta { flex-direction: row; }
+  .hero-cta .btn { width: auto; }
+  .hero-visual { margin-top: 0; }
+}
+
+/* ---------- Dor do público ---------- */
+.dor-card { border-top: 5px solid var(--vermelho); }
+.dor-card .emoji { font-size: 2rem; margin-bottom: 10px; }
+.dor-final {
+  margin-top: 26px; background: var(--azul); color: #fff; border-radius: var(--raio-grande);
+  padding: 28px 24px; font-size: clamp(1.15rem, 3.4vw, 1.6rem); font-weight: 700; text-align: center;
+}
+.dor-final span { color: var(--amarelo); }
+
+/* ---------- Prévia do produto (prints) ---------- */
+.previa-grade { display: grid; gap: 18px; grid-template-columns: 1fr; margin-top: 30px; }
+@media (min-width: 720px) { .previa-grade { grid-template-columns: repeat(3, 1fr); } }
+.print-card {
+  background: #fff; border-radius: var(--raio); overflow: hidden; box-shadow: var(--sombra);
+  border: 1px solid var(--borda);
+}
+.print-card img { aspect-ratio: 4/3; object-fit: cover; width: 100%; }
+.print-card .corpo { padding: 16px; }
+.print-card h3 { font-size: 1.02rem; }
+.print-card .meta { font-size: 0.8rem; color: var(--cinza); margin: 6px 0 10px; }
+.print-card .tags { display: flex; gap: 6px; flex-wrap: wrap; }
+.tag {
+  background: var(--azul-claro); color: var(--azul-escuro); font-size: 0.7rem;
+  font-weight: 600; padding: 4px 10px; border-radius: 999px;
+}
+
+/* ---------- O que está incluso ---------- */
+.incluso-item {
+  display: flex; gap: 14px; align-items: flex-start; background: #fff;
+  border-radius: var(--raio); padding: 20px; border: 1px solid var(--borda);
+}
+.incluso-item .check {
+  flex-shrink: 0; width: 34px; height: 34px; border-radius: 12px; background: var(--verde);
+  color: #fff; display: grid; place-items: center; font-weight: 800;
+}
+.incluso-item p { color: var(--cinza); font-size: 0.92rem; margin-top: 2px; }
+
+/* ---------- Cronograma semanal ---------- */
+.cronograma { position: relative; margin-top: 30px; }
+.cron-item {
+  display: flex; gap: 16px; background: #fff; border-radius: var(--raio);
+  padding: 18px 20px; margin-bottom: 14px; border: 1px solid var(--borda); align-items: center;
+}
+.cron-item .selo {
+  flex-shrink: 0; width: 58px; height: 58px; border-radius: 18px;
+  background: var(--amarelo); color: var(--azul-escuro); display: grid; place-items: center;
+  font-weight: 800; font-size: 0.82rem; text-align: center; line-height: 1.1;
+}
+.cron-item.atual { border: 2px solid var(--azul); box-shadow: var(--sombra); }
+.cron-item.atual .selo { background: var(--azul); color: #fff; }
+.cron-item p { color: var(--cinza); font-size: 0.9rem; }
+
+/* ---------- Diferenciais ---------- */
+.diferencial {
+  background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: var(--raio); padding: 24px;
+}
+.diferencial .icone { font-size: 1.9rem; margin-bottom: 10px; }
+.diferencial p { color: #C6CEF7; font-size: 0.93rem; margin-top: 6px; }
+
+/* ---------- Bônus ---------- */
+.bonus-card {
+  position: relative; background: #fff; border: 2px dashed var(--amarelo);
+  border-radius: var(--raio); padding: 24px; overflow: hidden;
+}
+.bonus-card .valor {
+  position: absolute; top: 14px; right: 14px; background: var(--amarelo-claro);
+  color: var(--cinza); font-size: 0.75rem; font-weight: 600; padding: 5px 12px; border-radius: 999px;
+  text-decoration: line-through;
+}
+.bonus-card .icone { font-size: 1.8rem; margin-bottom: 8px; }
+.bonus-card p { color: var(--cinza); font-size: 0.9rem; }
+
+/* ---------- Preço ---------- */
+.preco-card {
+  max-width: 520px; margin: 0 auto; background: #fff; border-radius: var(--raio-grande);
+  box-shadow: var(--sombra-forte); overflow: hidden; border: 3px solid var(--amarelo);
+}
+.preco-card .topo-card { background: var(--azul); color: #fff; padding: 22px 26px; text-align: center; }
+.preco-card .topo-card .de { opacity: 0.75; font-size: 0.92rem; text-decoration: line-through; }
+.preco-card .topo-card .agora { font-size: clamp(2.4rem, 8vw, 3.4rem); font-weight: 800; line-height: 1.05; }
+.preco-card .topo-card .agora small { font-size: 1.1rem; font-weight: 600; }
+.preco-card .topo-card .parcela { color: var(--amarelo); font-weight: 600; font-size: 0.95rem; }
+.preco-card .corpo-card { padding: 26px; }
+.preco-card ul { list-style: none; margin: 18px 0; }
+.preco-card li { display: flex; gap: 10px; padding: 7px 0; font-size: 0.95rem; }
+.preco-card li::before { content: '✓'; color: var(--verde); font-weight: 800; }
+.pagamentos { display: flex; justify-content: center; gap: 10px; margin-top: 16px; flex-wrap: wrap; }
+.pagamentos span {
+  background: var(--fundo); border: 1px solid var(--borda); border-radius: 12px;
+  padding: 8px 14px; font-size: 0.82rem; font-weight: 600;
+}
+.compra-unica {
+  text-align: center; margin-top: 14px; background: var(--amarelo-claro);
+  border-radius: 14px; padding: 12px 16px; font-weight: 700; color: var(--azul-escuro); font-size: 0.92rem;
+}
+
+/* ---------- Garantia ---------- */
+.garantia {
+  display: flex; gap: 20px; align-items: center; background: var(--verde);
+  color: #fff; border-radius: var(--raio-grande); padding: 28px; flex-direction: column; text-align: center;
+}
+.garantia .selo-garantia {
+  width: 92px; height: 92px; border-radius: 50%; background: #fff; color: var(--verde);
+  display: grid; place-items: center; font-size: 1.7rem; font-weight: 800; flex-shrink: 0;
+  border: 4px dashed var(--verde);
+}
+.garantia p { opacity: 0.95; margin-top: 6px; }
+@media (min-width: 720px) { .garantia { flex-direction: row; text-align: left; } }
+
+/* ---------- FAQ ---------- */
+.faq { max-width: 760px; margin: 0 auto; }
+.faq-item { background: #fff; border-radius: var(--raio); margin-bottom: 12px; border: 1px solid var(--borda); overflow: hidden; }
+.faq-item summary {
+  padding: 18px 22px; font-weight: 700; cursor: pointer; list-style: none;
+  display: flex; justify-content: space-between; gap: 12px; align-items: center;
+}
+.faq-item summary::after { content: '+'; font-size: 1.5rem; color: var(--azul); transition: transform 0.2s; }
+.faq-item[open] summary::after { transform: rotate(45deg); }
+.faq-item .resposta { padding: 0 22px 18px; color: var(--cinza); font-size: 0.95rem; }
+
+/* ---------- Depoimentos ---------- */
+.depo-card { background: #fff; border-radius: var(--raio); padding: 24px; border: 1px solid var(--borda); }
+.depo-card .estrelas { color: var(--amarelo); margin-bottom: 10px; letter-spacing: 2px; }
+.depo-card blockquote { font-size: 0.98rem; font-style: italic; color: var(--tinta); }
+.depo-card .autor { display: flex; align-items: center; gap: 12px; margin-top: 16px; }
+.depo-card .avatar {
+  width: 44px; height: 44px; border-radius: 50%; background: var(--azul-claro);
+  color: var(--azul); display: grid; place-items: center; font-weight: 800;
+}
+.depo-card .autor small { display: block; color: var(--cinza); font-size: 0.78rem; }
+.depo-aviso {
+  text-align: center; margin-top: 20px; font-size: 0.82rem; color: var(--cinza);
+  background: var(--amarelo-claro); border-radius: 12px; padding: 12px 18px;
+}
+
+/* ---------- CTA final ---------- */
+.cta-final {
+  background: linear-gradient(160deg, var(--azul) 0%, var(--azul-escuro) 100%);
+  color: #fff; border-radius: var(--raio-grande); padding: 44px 26px; text-align: center;
+}
+.cta-final .btn { margin-top: 22px; }
+.cta-final p { color: #D6DCFB; margin-top: 10px; }
+
+/* ---------- Barra de urgência ---------- */
+.barra-topo {
+  background: var(--amarelo); color: var(--azul-escuro); text-align: center;
+  font-weight: 700; font-size: 0.86rem; padding: 9px 16px;
+}
