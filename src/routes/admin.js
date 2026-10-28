@@ -19,8 +19,9 @@ const UPLOAD_DIR = path.join(__dirname, '..', '..', 'public', 'assets', 'receita
 // memória: o arquivo vai direto para o Blob (produção) ou para o disco (dev)
 const upload = multer({
   storage: multer.memoryStorage(),
-  limits: { fileSize: 6 * 1024 * 1024 },
-  fileFilter: (req, file, cb) => cb(null, /^image\//.test(file.mimetype)),
+  limits: { fileSize: 4 * 1024 * 1024 }, // a Vercel recusa payloads > ~4,5 MB
+  fileFilter: (req, file, cb) =>
+    cb(null, /^image\//.test(file.mimetype) || /\.(jpe?g|png|webp)$/i.test(file.originalname || '')),
 });
 
 const router = Router();

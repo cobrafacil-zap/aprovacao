@@ -157,6 +157,30 @@
   // Guarda APENAS a foto escolhida agora (o input guarda a última seleção
   // e isso reenviava fotos antigas por cima ao salvar outras receitas).
   let fotoNovaSelecionada = false;
+  let fotoParaEnviar = null;
+
+  // A Vercel recusa payloads acima de ~4,5 MB — comprimimos a imagem no
+  // navegador (máx. 1400px, JPG 82%) para caber sempre e carregar rápido.
+  async function comprimirImagem(arquivo, maxLado = 1400, qualidade = 0.82) {
+    const img = await new Promise((res, rej) => {
+      const i = new Image();
+      i.onload = () => res(i);
+      i.onerror = rej;
+      i.src = URL.createObjectURL(arquivo);
+    });
+    const escala = Math.min(1, maxLado / Math.max(img.width, img.height));
+    const w = Math.round(img.width * escala);
+    const h = Math.round(img.height * escala);
+    const canvas = document.createElement('canvas');
+    canvas.width = w; canvas.height = h;
+    const ctx = canvas.getContext('2d');
+    ctx.fillStyle = '#fff';
+    ctx.fillRect(0, 0, w, h);
+    ctx.drawImage(img, 0, 0, w, h);
+    const blob = await new Promise((res) => canvas.toBlob(res, 'image/jpeg', qualidade));
+    const nome = (arquivo.name.replace(/\.\w+$/, '') || 'foto') + '.jpg';
+    return blob ? new File([blob], nome, { type: 'image/jpeg' }) : arquivo;
+  }
 
   // Editors de ingredientes e passos
   const addIngrediente = (qtd = '', un = '', item = '') => {
@@ -240,14 +264,22 @@
 
   // Upload de foto (preview + envio)
   $('#upload-foto').addEventListener('click', () => $('#input-foto').click());
-  $('#input-foto').addEventListener('change', (e) => {
+  $('#input-foto').addEventListener('change', async (e) => {
     const f = e.target.files[0];
     if (!f) return;
     fotoNovaSelecionada = true;
-    const url = URL.createObjectURL(f);
-    $('#preview-foto').src = url;
-    $('#preview-foto').classList.remove('oculto');
-    $('#upload-texto').textContent = f.name;
+    $('#upload-texto').textContent = 'Processando imagem...';
+    try {
+      fotoParaEnviar = await comprimirImagem(f);
+      $('#preview-foto').src = URL.createObjectURL(fotoParaEnviar);
+      $('#preview-foto').classList.remove('oculto');
+      $('#upload-texto').textContent = `${fotoParaEnviar.name} — ${Math.round(fotoParaEnviar.size / 1024)} KB (comprimida)`;
+    } catch {
+      fotoParaEnviar = f;
+      $('#preview-foto').src = URL.createObjectURL(f);
+      $('#preview-foto').classList.remove('oculto');
+      $('#upload-texto').textContent = `${f.name} — ${Math.round(f.size / 1024)} KB`;
+    }
   });
 
   $('#form-receita').addEventListener('submit', async (e) => {
@@ -279,16 +311,21 @@
     if (!r.ok) return alert(r.error || 'Erro ao salvar receita');
 
     // Upload da foto APENAS se o usuário escolheu uma agora
-    const arquivo = fotoNovaSelecionada ? $('#input-foto').files[0] : null;
+    const arquivo = fotoNovaSelecionada ? (fotoParaEnviar || $('#input-foto').files[0]) : null;
+    let fotoOk = true;
     if (arquivo) {
       const fd = new FormData();
       fd.append('foto', arquivo);
-      await fetch(`/api/admin/receitas/${r.receita.id}/foto`, { method: 'POST', body: fd });
+      const up = await fetch(`/api/admin/receitas/${r.receita.id}/foto`, { method: 'POST', body: fd });
+      const ud = await up.json().catch(() => ({}));
+      fotoOk = up.ok;
+      if (!up.ok) alert('⚠️ A foto NÃO foi enviada: ' + (ud.error || `erro ${up.status}`) + '\nA receita foi salva sem a nova foto.');
     }
     $('#input-foto').value = '';
     fotoNovaSelecionada = false;
+    fotoParaEnviar = null;
 
-    alert(receitaEditando ? 'Receita atualizada!' : 'Receita criada!');
+    alert(fotoOk ? (receitaEditando ? 'Receita atualizada com a nova foto! 📸' : 'Receita criada com a foto! 📸') : 'Receita salva (sem a nova foto).');
     $('#form-receita-card').classList.add('oculto');
     carregarReceitas();
   });
