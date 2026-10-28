@@ -42,6 +42,7 @@
       <button class="menu-item" data-ir="lista">🛒 Lista de compras</button>
       <button class="menu-item" data-ir="historico">✅ Receitas que já fiz</button>
       <button class="menu-item" id="menu-perfil">👤 Meu perfil</button>
+      <button class="menu-item" id="menu-convite">💛 Convidar um amigo</button>
       <a class="menu-item" href="mailto:suporte@ofertafitbr.com">💬 Falar com o suporte</a>
       <button class="menu-item menu-item--sair" id="btn-sair">🚪 Sair da conta</button>
     </nav>
@@ -69,6 +70,18 @@
         <span>✅ <strong id="stat-feitas">0</strong> feitas</span>
         <span>❤️ <strong id="stat-favoritos">0</strong> favoritas</span>
       </div>
+    </section>
+
+    <!-- ===== Primeiros passos (onboarding) ===== -->
+    <section class="primeiros-passos oculto" id="primeiros-passos">
+      <div class="pp-cabeca">
+        <h3>✨ Primeiros passos</h3>
+        <button class="pp-fechar" id="pp-fechar" aria-label="Dispensar">✕</button>
+      </div>
+      <label class="pp-item"><input type="checkbox" data-pp="explorar" /> <span>Conhecer as receitas liberadas</span></label>
+      <label class="pp-item"><input type="checkbox" data-pp="favoritos" /> <span>Marcar minhas favoritas com ❤️</span></label>
+      <label class="pp-item"><input type="checkbox" data-pp="lista" /> <span>Gerar minha lista de compras</span></label>
+      <label class="pp-item"><input type="checkbox" data-pp="feita" /> <span>Cozinhar e marcar uma receita como feita</span></label>
     </section>
 
     <!-- ===== Abas ===== -->

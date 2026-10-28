@@ -142,6 +142,8 @@ Para trocar as cores, edite as variáveis em `public/css/base.css` (`:root`).
 - Fotos dos pratos: [Pexels](https://www.pexels.com) (licença gratuita para uso comercial, sem atribuição obrigatória)
 - Foto da tapioca: "Tapioca do Alto da Sé — Olinda-PE" por **Anizio (Olinda) da Silva**,
   via Wikimedia Commons — [CC BY-SA 2.0](https://creativecommons.org/licenses/by-sa/2.0/)
+- Foto do salmão: "Salmon and pommes purée" por **Studio Sarah Lou**,
+  via Wikimedia Commons — [CC BY 2.0](https://creativecommons.org/licenses/by/2.0/)
 
 ## ✍️ Regras de conteúdo (já aplicadas)
 

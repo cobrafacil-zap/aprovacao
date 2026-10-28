@@ -204,8 +204,26 @@
           "Omelete"
         ],
         "marcado": false
+      },
+      {
+        "qtd": "2",
+        "unidade": "xíc",
+        "item": "polvilho azedo",
+        "receitas": [
+          "Teste"
+        ],
+        "marcado": false
+      },
+      {
+        "qtd": "1",
+        "unidade": "un",
+        "item": "ovo",
+        "receitas": [
+          "Teste"
+        ],
+        "marcado": false
       }
     ],
-    "ultimaVisita": "2026-10-28T19:01:06.084Z"
+    "ultimaVisita": "2026-10-28T19:16:36.617Z"
   }
 ]

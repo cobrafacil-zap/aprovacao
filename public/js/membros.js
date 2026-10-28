@@ -179,6 +179,10 @@
     return l.sort((a, b) => new Date(b.data_liberacao) - new Date(a.data_liberacao));
   }
 
+  // receita liberada nos últimos 7 dias ganha o selo "Nova da semana"
+  const recemLiberada = (r) =>
+    r.data_liberacao && Date.now() - new Date(r.data_liberacao).getTime() < 7 * 864e5;
+
   function cardReceita(r) {
     return `
       <article class="receita-card" data-id="${r.id}">
@@ -191,6 +195,7 @@
         <div class="corpo">
           <h3>${r.nome}</h3>
           <div class="meta">
+            ${recemLiberada(r) ? '<span class="meta-chip nova">🆕 Nova da semana</span>' : ''}
             ${r.tempo_preparo_min ? `<span class="meta-chip">⏱ ${r.tempo_preparo_min} min</span>` : ''}
             ${r.nutricao?.calorias ? `<span class="meta-chip kcal">🔥 ${r.nutricao.calorias} kcal</span>` : ''}
           </div>
@@ -213,6 +218,7 @@
         e.stopPropagation();
         await post(`/api/membros/favoritos/${b.dataset.fav}`);
         toast('Favoritos atualizados ❤️');
+        marcarPasso('favoritos');
         await carregarReceitas();
         await carregarFavoritos();
       })
@@ -359,10 +365,12 @@
 
     $('#modal-receita').classList.remove('oculto');
     document.body.style.overflow = 'hidden';
+    marcarPasso('explorar');
 
     $('#btn-feita').addEventListener('click', async () => {
       await post(`/api/membros/feitas/${r.id}`);
       toast(r.feita ? 'Receita desmarcada' : 'Receita marcada como feita! 👨‍🍳');
+      if (!r.feita) marcarPasso('feita');
       fecharModal();
       await carregarReceitas(); await carregarHistorico(); await carregarFavoritos();
     });
@@ -485,6 +493,7 @@
     fecharModal();
     await carregarLista();
     toast('Lista de compras gerada! 🛒');
+    marcarPasso('lista');
     irParaAba('lista');
   });
 
@@ -569,6 +578,51 @@
     } catch (err) {
       if (err.message !== 'login' && err.message !== 'acesso') toast('Não foi possível salvar o perfil', 'erro');
     }
+  });
+
+  // ================= PRIMEIROS PASSOS (onboarding) =================
+  const PP_KEY = 'of_primeiros_passos';
+  const ppEstado = () => JSON.parse(localStorage.getItem(PP_KEY) || '{"feitos":{},"fechado":false}');
+  function renderizarPrimeirosPassos() {
+    const st = ppEstado();
+    const card = $('#primeiros-passos');
+    if (st.fechado) return card.classList.add('oculto');
+    card.classList.remove('oculto');
+    $$('#primeiros-passos input[data-pp]').forEach((c) => {
+      c.checked = !!st.feitos[c.dataset.pp];
+      c.onchange = () => {
+        const s = ppEstado();
+        s.feitos[c.dataset.pp] = c.checked;
+        localStorage.setItem(PP_KEY, JSON.stringify(s));
+        if (Object.values(s.feitos).filter(Boolean).length >= 4) {
+          card.classList.add('oculto');
+          toast('Parabéns! Você conheceu a área de membros 🎉');
+        }
+      };
+    });
+  }
+  $('#pp-fechar').addEventListener('click', () => {
+    const s = ppEstado();
+    s.fechado = true;
+    localStorage.setItem(PP_KEY, JSON.stringify(s));
+    $('#primeiros-passos').classList.add('oculto');
+  });
+  const marcarPasso = (chave) => {
+    const s = ppEstado();
+    s.feitos[chave] = true;
+    localStorage.setItem(PP_KEY, JSON.stringify(s));
+    renderizarPrimeirosPassos();
+  };
+  renderizarPrimeirosPassos();
+
+  // ================= CONVITE POR WHATSAPP =================
+  $('#menu-convite').addEventListener('click', async () => {
+    $('#menu-painel').classList.add('oculto');
+    const texto = '🥗 Olha que bacana: receitas fit prontas em até 20 minutos, com receita nova toda semana e acesso vitalício por R$ 19,90. Dá uma olhada: ' + location.origin + '/index.html';
+    if (navigator.share) {
+      try { await navigator.share({ text: texto }); return; } catch {}
+    }
+    window.open(`https://wa.me/?text=${encodeURIComponent(texto)}`, '_blank');
   });
 
   // Atalho: abre receita direto pelo link do e-mail (?receita=ID)

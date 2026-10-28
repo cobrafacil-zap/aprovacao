@@ -470,5 +470,245 @@
     "receitaId": null,
     "origem": "site",
     "dispositivo": "desktop"
+  },
+  {
+    "id": "evt_mvshp3q9jbi10k",
+    "ts": "2026-10-28T19:10:40.161Z",
+    "sessao": "s_jkg051s5hmmvse3p5b",
+    "tipo": "pageview",
+    "pagina": "/membros.html",
+    "utm": {
+      "source": null,
+      "medium": null,
+      "campaign": null,
+      "content": null,
+      "term": null
+    },
+    "referrer": "http://localhost:3000/_teste-largura.html",
+    "valor": null,
+    "pedidoId": null,
+    "receitaId": null,
+    "origem": "site",
+    "dispositivo": "desktop"
+  },
+  {
+    "id": "evt_mvshp3rpdsf5re",
+    "ts": "2026-10-28T19:10:40.213Z",
+    "sessao": "s_jkg051s5hmmvse3p5b",
+    "tipo": "pageview",
+    "pagina": "/index.html",
+    "utm": {
+      "source": null,
+      "medium": null,
+      "campaign": null,
+      "content": null,
+      "term": null
+    },
+    "referrer": "http://localhost:3000/_teste-largura.html",
+    "valor": null,
+    "pedidoId": null,
+    "receitaId": null,
+    "origem": "site",
+    "dispositivo": "desktop"
+  },
+  {
+    "id": "evt_mvshp3rqz5eypi",
+    "ts": "2026-10-28T19:10:40.214Z",
+    "sessao": "s_jkg051s5hmmvse3p5b",
+    "tipo": "lp_view",
+    "pagina": "/index.html",
+    "utm": {
+      "source": null,
+      "medium": null,
+      "campaign": null,
+      "content": null,
+      "term": null
+    },
+    "referrer": "http://localhost:3000/_teste-largura.html",
+    "valor": null,
+    "pedidoId": null,
+    "receitaId": null,
+    "origem": "site",
+    "dispositivo": "desktop"
+  },
+  {
+    "id": "evt_mvshp3rr1cnity",
+    "ts": "2026-10-28T19:10:40.215Z",
+    "sessao": "s_jkg051s5hmmvse3p5b",
+    "tipo": "pageview",
+    "pagina": "/checkout.html",
+    "utm": {
+      "source": null,
+      "medium": null,
+      "campaign": null,
+      "content": null,
+      "term": null
+    },
+    "referrer": "http://localhost:3000/_teste-largura.html",
+    "valor": null,
+    "pedidoId": null,
+    "receitaId": null,
+    "origem": "site",
+    "dispositivo": "desktop"
+  },
+  {
+    "id": "evt_mvshp3rr2l2xfp",
+    "ts": "2026-10-28T19:10:40.215Z",
+    "sessao": "s_jkg051s5hmmvse3p5b",
+    "tipo": "pageview",
+    "pagina": "/membros.html",
+    "utm": {
+      "source": null,
+      "medium": null,
+      "campaign": null,
+      "content": null,
+      "term": null
+    },
+    "referrer": "http://localhost:3000/_teste-largura.html",
+    "valor": null,
+    "pedidoId": null,
+    "receitaId": null,
+    "origem": "site",
+    "dispositivo": "desktop"
+  },
+  {
+    "id": "evt_mvshpp3z6x4paz",
+    "ts": "2026-10-28T19:11:07.871Z",
+    "sessao": "s_jkg051s5hmmvse3p5b",
+    "tipo": "pageview",
+    "pagina": "/membros.html",
+    "utm": {
+      "source": null,
+      "medium": null,
+      "campaign": null,
+      "content": null,
+      "term": null
+    },
+    "referrer": "http://localhost:3000/membros.html",
+    "valor": null,
+    "pedidoId": null,
+    "receitaId": null,
+    "origem": "site",
+    "dispositivo": "desktop"
+  },
+  {
+    "id": "evt_mvshqhf5v4qlws",
+    "ts": "2026-10-28T19:11:44.561Z",
+    "sessao": "s_jkg051s5hmmvse3p5b",
+    "tipo": "pageview",
+    "pagina": "/admin.html",
+    "utm": {
+      "source": null,
+      "medium": null,
+      "campaign": null,
+      "content": null,
+      "term": null
+    },
+    "referrer": "http://localhost:3000/_teste-largura.html",
+    "valor": null,
+    "pedidoId": null,
+    "receitaId": null,
+    "origem": "site",
+    "dispositivo": "desktop"
+  },
+  {
+    "id": "evt_mvshqinlvxqvfg",
+    "ts": "2026-10-28T19:11:46.161Z",
+    "sessao": "s_jkg051s5hmmvse3p5b",
+    "tipo": "pageview",
+    "pagina": "/login.html",
+    "utm": {
+      "source": null,
+      "medium": null,
+      "campaign": null,
+      "content": null,
+      "term": null
+    },
+    "referrer": "http://localhost:3000/_teste-largura.html",
+    "valor": null,
+    "pedidoId": null,
+    "receitaId": null,
+    "origem": "site",
+    "dispositivo": "desktop"
+  },
+  {
+    "id": "evt_mvshqjl99bpf0a",
+    "ts": "2026-10-28T19:11:47.373Z",
+    "sessao": "s_jkg051s5hmmvse3p5b",
+    "tipo": "pageview",
+    "pagina": "/membros.html",
+    "utm": {
+      "source": null,
+      "medium": null,
+      "campaign": null,
+      "content": null,
+      "term": null
+    },
+    "referrer": "http://localhost:3000/membros.html",
+    "valor": null,
+    "pedidoId": null,
+    "receitaId": null,
+    "origem": "site",
+    "dispositivo": "desktop"
+  },
+  {
+    "id": "evt_mvshrbax32lmeq",
+    "ts": "2026-10-28T19:12:23.289Z",
+    "sessao": "s_jkg051s5hmmvse3p5b",
+    "tipo": "pageview",
+    "pagina": "/membros.html",
+    "utm": {
+      "source": null,
+      "medium": null,
+      "campaign": null,
+      "content": null,
+      "term": null
+    },
+    "referrer": "http://localhost:3000/membros.html",
+    "valor": null,
+    "pedidoId": null,
+    "receitaId": null,
+    "origem": "site",
+    "dispositivo": "desktop"
+  },
+  {
+    "id": "evt_mvshwqp7obgnar",
+    "ts": "2026-10-28T19:16:36.523Z",
+    "sessao": "s_jkg051s5hmmvse3p5b",
+    "tipo": "pageview",
+    "pagina": "/login.html",
+    "utm": {
+      "source": null,
+      "medium": null,
+      "campaign": null,
+      "content": null,
+      "term": null
+    },
+    "referrer": null,
+    "valor": null,
+    "pedidoId": null,
+    "receitaId": null,
+    "origem": "site",
+    "dispositivo": "desktop"
+  },
+  {
+    "id": "evt_mvshwqv9jam9hg",
+    "ts": "2026-10-28T19:16:36.741Z",
+    "sessao": "s_jkg051s5hmmvse3p5b",
+    "tipo": "pageview",
+    "pagina": "/membros.html",
+    "utm": {
+      "source": null,
+      "medium": null,
+      "campaign": null,
+      "content": null,
+      "term": null
+    },
+    "referrer": null,
+    "valor": null,
+    "pedidoId": null,
+    "receitaId": null,
+    "origem": "site",
+    "dispositivo": "desktop"
   }
 ]
