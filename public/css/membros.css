@@ -203,6 +203,67 @@
 }
 .modal-acoes-barra .btn { flex: 1; min-width: 140px; padding: 13px 16px; font-size: 0.95rem; }
 
+/* ---------- Modal: porções, checks e passos ---------- */
+.ingredientes-topo {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px; flex-wrap: wrap; margin: 22px 0 10px;
+}
+.ingredientes-topo h4 { margin: 0; border: none; padding: 0; }
+.porcoes-stepper {
+  display: flex; align-items: center; gap: 4px;
+  background: var(--fundo); border-radius: 999px; padding: 5px;
+}
+.stepper-btn {
+  width: 38px; height: 38px; border-radius: 50%; background: var(--azul); color: #fff;
+  font-size: 1.35rem; font-weight: 700; line-height: 1;
+  display: grid; place-items: center; transition: transform 0.12s, background 0.15s;
+}
+.stepper-btn:hover { background: var(--azul-escuro); }
+.stepper-btn:active { transform: scale(0.9); }
+.stepper-valor {
+  min-width: 74px; text-align: center; line-height: 1.05;
+}
+.stepper-valor strong { display: block; font-size: 1.25rem; color: var(--azul-escuro); }
+.stepper-valor span { font-size: 0.68rem; color: var(--cinza); text-transform: lowercase; }
+
+.ingredientes-check li {
+  cursor: pointer; user-select: none; align-items: center;
+  transition: background 0.15s, opacity 0.15s;
+}
+.ingredientes-check li:hover { background: var(--azul-claro); }
+.check-box {
+  width: 24px; height: 24px; border-radius: 8px; border: 2px solid var(--borda);
+  display: grid; place-items: center; font-size: 0.82rem; color: transparent;
+  flex-shrink: 0; transition: all 0.15s; background: #fff;
+}
+.ing-check.marcado { opacity: 0.55; }
+.ing-check.marcado .ing-texto { text-decoration: line-through; }
+.ing-check.marcado .check-box {
+  background: var(--verde); border-color: var(--verde); color: #fff;
+}
+.ing-texto strong { color: var(--azul); margin-right: 4px; }
+
+.dica-check {
+  font-size: 0.75rem; color: var(--cinza); font-weight: 400;
+  border-left: none; padding: 0; margin-left: 8px;
+}
+.passos-check { list-style: none; padding-left: 0; counter-reset: none; }
+.passo-check {
+  display: flex; gap: 12px; align-items: flex-start; padding: 12px 14px;
+  border-radius: 14px; cursor: pointer; user-select: none;
+  transition: background 0.15s, opacity 0.15s;
+}
+.passo-check:hover { background: var(--fundo); }
+.passo-check .passo-n {
+  width: 30px; height: 30px; border-radius: 50%; background: var(--vermelho); color: #fff;
+  font-weight: 800; font-size: 0.9rem; display: grid; place-items: center; flex-shrink: 0;
+  transition: all 0.15s;
+}
+.passo-check.marcado { opacity: 0.55; }
+.passo-check.marcado .passo-texto { text-decoration: line-through; }
+.passo-check.marcado .passo-n { background: var(--verde); }
+.passo-texto { padding-top: 3px; }
+
 /* ---------- Lista de compras ---------- */
 .lista-card { background: #fff; border-radius: var(--raio); border: 1px solid var(--borda); box-shadow: var(--sombra); overflow: hidden; }
 .lista-card .cabeca { padding: 18px 22px; background: var(--amarelo-claro); display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }

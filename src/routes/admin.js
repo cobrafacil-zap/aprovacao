@@ -189,6 +189,21 @@ router.post('/alunos/:id/acesso', async (req, res) => {
   res.json({ ok: true, acesso: u.acesso });
 });
 
+// Define/resetar a senha de um aluno (para quem perdeu o acesso)
+router.post('/alunos/:id/senha', async (req, res) => {
+  const { senha } = req.body || {};
+  if (!senha || senha.length < 6) return res.status(400).json({ error: 'a senha precisa de pelo menos 6 caracteres' });
+  const users = await read('users', []);
+  const u = users.find((x) => x.id === req.params.id);
+  if (!u) return res.status(404).json({ error: 'aluno não encontrado' });
+  const { salt, hash } = hashSenha(senha);
+  u.senhaSalt = salt;
+  u.senhaHash = hash;
+  u.senhaDefinida = true;
+  await write('users', users);
+  res.json({ ok: true, email: u.email });
+});
+
 router.delete('/alunos/:id', async (req, res) => {
   await write('users', (await read('users', [])).filter((u) => u.id !== req.params.id));
   res.json({ ok: true });

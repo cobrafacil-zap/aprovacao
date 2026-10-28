@@ -153,7 +153,7 @@
         <div class="foto-wrap">
           ${r.feita ? '<span class="feita-selo">✓ já feita</span>' : ''}
           <button class="favorito" data-fav="${r.id}" aria-label="Favoritar">${r.favorito ? '❤️' : '🤍'}</button>
-          <img class="foto" src="${r.foto || '/assets/receitas/bowl-frango-quinoa.svg'}" alt="${r.nome}" />
+          <img class="foto" src="${r.foto || '/assets/receitas/bowl-frango-quinoa.jpg'}" alt="${r.nome}" />
           <span class="cat-badge">${(r.categoria || '').replace(/-/g, ' ')}</span>
         </div>
         <div class="corpo">
@@ -219,30 +219,57 @@
   });
 
   // ================= MODAL DA RECEITA =================
+  let receitaAtual = null;
+  let porcoesAtuais = 1;
+  let checksFeitos = new Set();
+
+  const formatarQtd = (n) => {
+    if (Math.abs(n - Math.round(n)) < 0.005) return String(Math.round(n));
+    return String(Math.round(n * 100) / 100).replace('.', ',');
+  };
+  // Escala a quantidade original pelo fator de porções (aceita "1/2", "0,5", "a gosto")
+  const escalarQtd = (qtd, fator) => {
+    const s = String(qtd ?? '').trim();
+    if (!s) return '';
+    const fracao = s.match(/^(\d+)\s*\/\s*(\d+)$/);
+    if (fracao) return formatarQtd((Number(fracao[1]) / Number(fracao[2])) * fator);
+    const n = parseFloat(s.replace(',', '.'));
+    return Number.isNaN(n) ? s : formatarQtd(n * fator);
+  };
+  const fatorAtual = () => porcoesAtuais / (receitaAtual?.porcoes || 1);
+
   async function abrirReceita(id) {
     const d = await api(`/api/membros/receitas/${id}`);
     const r = d.receita;
+    receitaAtual = r;
+    porcoesAtuais = r.porcoes || 1;
+    checksFeitos = new Set();
     const nutri = r.nutricao || {};
 
     $('#modal-conteudo').innerHTML = `
-      <img class="foto-capa" src="${r.foto || '/assets/receitas/bowl-frango-quinoa.svg'}" alt="${r.nome}" />
+      <img class="foto-capa" src="${r.foto || '/assets/receitas/bowl-frango-quinoa.jpg'}" alt="${r.nome}" />
       <div class="conteudo">
         <h2>${r.nome}</h2>
         <p class="cinza">${r.descricao || ''}</p>
         <div class="meta-flex">
           <span>⏱ ${r.tempo_preparo_min} min</span>
-          <span>🍽 ${r.porcoes} porção(ões)</span>
           <span>📂 ${r.categoria.replace(/-/g, ' ')}</span>
           ${(r.tags || []).map((t) => `<span>🏷 ${t.replace(/-/g, ' ')}</span>`).join('')}
         </div>
 
-        <h4>Ingredientes</h4>
-        <ul class="ingredientes">
-          ${(r.ingredientes || []).map((i) => `<li><strong>${i.qtd || ''} ${i.unidade || ''}</strong> ${i.item || i}</li>`).join('')}
-        </ul>
+        <div class="ingredientes-topo">
+          <h4>Ingredientes</h4>
+          <div class="porcoes-stepper" aria-label="Ajustar porções">
+            <button class="stepper-btn" id="menos-porcao" aria-label="Diminuir porções">−</button>
+            <div class="stepper-valor"><strong id="porcoes-qtd">${porcoesAtuais}</strong><span>porções</span></div>
+            <button class="stepper-btn" id="mais-porcao" aria-label="Aumentar porções">+</button>
+          </div>
+        </div>
+        <ul class="ingredientes ingredientes-check" id="lista-ingredientes"></ul>
+        <button class="btn btn--contorno btn--bloco" id="btn-add-lista-modal">🛒 Adicionar ingredientes à lista de compras</button>
 
-        <h4>Modo de preparo</h4>
-        <ol class="passos">${(r.passos || []).map((p) => `<li>${p}</li>`).join('')}</ol>
+        <h4>Modo de preparo <span class="dica-check">toque para marcar o que já foi feito</span></h4>
+        <ol class="passos passos-check" id="lista-passos"></ol>
 
         ${nutri.calorias ? `
         <h4>Informação nutricional aproximada (por porção)</h4>
@@ -256,8 +283,30 @@
         conforme ingredientes, marcas e porções. Este conteúdo é informativo e não substitui o acompanhamento
         de nutricionista ou médico.</div>` : ''}
 
-        ${r.dicas ? `<h4>Dicas</h4><p class="cinza">${r.dicas}</p>` : ''}
+        ${r.dicas ? `<h4>Anote aí</h4><p class="cinza">${r.dicas}</p>` : ''}
       </div>`;
+
+    renderIngredientes();
+    renderPassos();
+
+    $('#menos-porcao').addEventListener('click', () => {
+      if (porcoesAtuais > 1) { porcoesAtuais--; renderIngredientes(); }
+    });
+    $('#mais-porcao').addEventListener('click', () => {
+      if (porcoesAtuais < 50) { porcoesAtuais++; renderIngredientes(); }
+    });
+
+    $('#btn-add-lista-modal').addEventListener('click', async () => {
+      const fator = fatorAtual();
+      const itens = (r.ingredientes || []).map((i) => ({
+        qtd: escalarQtd(i.qtd, fator),
+        unidade: i.unidade || '',
+        item: i.item || String(i),
+      }));
+      await post('/api/membros/lista/adicionar', { itens, receita: r.nome });
+      toast(`Ingredientes (${porcoesAtuais} porção(ões)) na lista de compras! 🛒`);
+      await carregarLista();
+    });
 
     $('#modal-acoes').innerHTML = `
       <button class="btn btn--azul" id="btn-feita">${r.feita ? '✓ Já feita (desmarcar)' : '✅ Já fiz essa'}</button>
@@ -279,7 +328,39 @@
       fecharModal();
       await carregarReceitas(); await carregarFavoritos();
     });
-    $('#btn-imprimir').addEventListener('click', () => imprimirReceita(r));
+    $('#btn-imprimir').addEventListener('click', () => imprimirReceita(receitaAtual, fatorAtual()));
+  }
+
+  // Ingredientes com check clicável e quantidades recalculadas pelas porções
+  function renderIngredientes() {
+    const r = receitaAtual;
+    const fator = fatorAtual();
+    $('#porcoes-qtd').textContent = porcoesAtuais;
+    $('#lista-ingredientes').innerHTML = (r.ingredientes || []).map((i, idx) => `
+      <li class="ing-check ${checksFeitos.has(idx) ? 'marcado' : ''}" data-idx="${idx}">
+        <span class="check-box">✓</span>
+        <span class="ing-texto"><strong>${escalarQtd(i.qtd, fator)}${i.unidade ? ' ' + i.unidade : ''}</strong> ${i.item || i}</span>
+      </li>`).join('');
+    $$('#lista-ingredientes .ing-check').forEach((li) =>
+      li.addEventListener('click', () => {
+        const idx = Number(li.dataset.idx);
+        checksFeitos.has(idx) ? checksFeitos.delete(idx) : checksFeitos.add(idx);
+        li.classList.toggle('marcado');
+      })
+    );
+  }
+
+  // Passos numerados com check clicável (para acompanhar enquanto cozinha)
+  function renderPassos() {
+    const r = receitaAtual;
+    $('#lista-passos').innerHTML = (r.passos || []).map((p, i) => `
+      <li class="passo-check" data-idx="${i}">
+        <span class="passo-n">${i + 1}</span>
+        <span class="passo-texto">${p}</span>
+      </li>`).join('');
+    $$('#lista-passos .passo-check').forEach((li) =>
+      li.addEventListener('click', () => li.classList.toggle('marcado'))
+    );
   }
 
   function fecharModal() {
@@ -296,15 +377,15 @@
   $('#modal-perfil').addEventListener('click', (e) => { if (e.target.id === 'modal-perfil') fecharModal(); });
 
   // ================= MODO IMPRESSÃO =================
-  function imprimirReceita(r) {
+  function imprimirReceita(r, fator = 1) {
     const n = r.nutricao || {};
     $('#area-impressao').innerHTML = `
       <div class="imp-cabecalho">
         <div><h1>${r.nome}</h1><small>${r.descricao || ''}</small></div>
-        <div style="text-align:right"><strong>OFERTA FIT BR</strong><br><small>⏱ ${r.tempo_preparo_min} min • 🍽 ${r.porcoes} porção(ões)</small></div>
+        <div style="text-align:right"><strong>OFERTA FIT BR</strong><br><small>⏱ ${r.tempo_preparo_min} min • 🍽 ${Math.round((r.porcoes || 1) * fator)} porção(ões)</small></div>
       </div>
       <h2>Ingredientes</h2>
-      <ul>${(r.ingredientes || []).map((i) => `<li>${i.qtd || ''} ${i.unidade || ''} ${i.item || i}</li>`).join('')}</ul>
+      <ul>${(r.ingredientes || []).map((i) => `<li>${escalarQtd(i.qtd, fator)} ${i.unidade || ''} ${i.item || i}</li>`).join('')}</ul>
       <h2>Modo de preparo</h2>
       <ol>${(r.passos || []).map((p) => `<li>${p}</li>`).join('')}</ol>
       ${n.calorias ? `<h2>Informação nutricional aproximada (por porção)</h2>
@@ -334,7 +415,7 @@
     const lista = $('#lista-historico');
     lista.innerHTML = d.historico.map((h) => `
       <div class="historico-item">
-        <img src="${h.receita.foto || '/assets/receitas/bowl-frango-quinoa.svg'}" alt="${h.receita.nome}" />
+        <img src="${h.receita.foto || '/assets/receitas/bowl-frango-quinoa.jpg'}" alt="${h.receita.nome}" />
         <div><strong>${h.receita.nome}</strong><p class="pequeno cinza">${h.receita.tempo_preparo_min} min • ${h.receita.categoria.replace(/-/g, ' ')}</p></div>
         <div class="data">feito em<br>${new Date(h.data).toLocaleDateString('pt-BR')}</div>
       </div>`).join('');

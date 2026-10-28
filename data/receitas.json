@@ -52,7 +52,7 @@
       "gorduras_g": 8
     },
     "dicas": "Fica ainda melhor com uma colher de pasta de amendoim por cima para mais saciedade.",
-    "foto": "/assets/receitas/panqueca-banana-aveia.svg",
+    "foto": "/assets/receitas/panqueca-banana-aveia.jpg",
     "data_liberacao": "2026-09-07T08:00:00-03:00",
     "liberada": true,
     "ativo": true
@@ -119,7 +119,7 @@
       "gorduras_g": 12
     },
     "dicas": "Faça o dobro de frango e guarde para montar o bowl em menos tempo no dia seguinte.",
-    "foto": "/assets/receitas/bowl-frango-quinoa.svg",
+    "foto": "/assets/receitas/bowl-frango-quinoa.jpg",
     "data_liberacao": "2026-09-14T08:00:00-03:00",
     "liberada": true,
     "ativo": true
@@ -187,7 +187,7 @@
       "gorduras_g": 14
     },
     "dicas": "Sobrou? Corte em fatias e leve como lanche no dia seguinte — vai bem fria também.",
-    "foto": "/assets/receitas/omelete-forno-legumes.svg",
+    "foto": "/assets/receitas/omelete-forno-legumes.jpg",
     "data_liberacao": "2026-09-21T08:00:00-03:00",
     "liberada": true,
     "ativo": true
@@ -239,7 +239,7 @@
       "gorduras_g": 14
     },
     "dicas": "Uma porção (cerca de 2 colheres de sopa) costuma ser suficiente para matar a fome.",
-    "foto": "/assets/receitas/mix-castanhas-mel.svg",
+    "foto": "/assets/receitas/mix-castanhas-mel.jpg",
     "data_liberacao": "2026-09-28T08:00:00-03:00",
     "liberada": true,
     "ativo": true
@@ -292,7 +292,7 @@
       "gorduras_g": 13
     },
     "dicas": "Quanto mais maduro o abacate, mais cremoso e doce fica o mousse.",
-    "foto": "/assets/receitas/mousse-abacate-cacau.svg",
+    "foto": "/assets/receitas/mousse-abacate-cacau.jpg",
     "data_liberacao": "2026-10-05T08:00:00-03:00",
     "liberada": true,
     "ativo": true
@@ -344,7 +344,7 @@
       "gorduras_g": 10
     },
     "dicas": "Fica ótima com tomate em rodelas e um toque de azeitona.",
-    "foto": "/assets/receitas/tapioca-ovo-queijo.svg",
+    "foto": "/assets/receitas/tapioca-ovo-queijo.jpg",
     "data_liberacao": "2026-10-12T08:00:00-03:00",
     "liberada": true,
     "ativo": true
@@ -406,7 +406,7 @@
       "gorduras_g": 20
     },
     "dicas": "Prefira selar o salmão sem mexer: é o segredo para uma casquinha dourada.",
-    "foto": "/assets/receitas/salmao-mandioquinha.svg",
+    "foto": "/assets/receitas/salmao-mandioquinha.jpg",
     "data_liberacao": "2026-10-19T08:00:00-03:00",
     "liberada": true,
     "ativo": true
@@ -473,7 +473,7 @@
       "gorduras_g": 13
     },
     "dicas": "O molho de tahine fica na geladeira por até 5 dias — faça uma porção maior.",
-    "foto": "/assets/receitas/salada-grao-bico-tahine.svg",
+    "foto": "/assets/receitas/salada-grao-bico-tahine.jpg",
     "data_liberacao": "2026-10-26T08:00:00-03:00",
     "liberada": true,
     "ativo": true
@@ -535,7 +535,7 @@
       "gorduras_g": 8
     },
     "dicas": "Corte antes de esfriar para não quebrar. Para mais proteína, acrescente whey ou mais castanhas.",
-    "foto": "/assets/receitas/barra-cereal-caseira.svg",
+    "foto": "/assets/receitas/barra-cereal-caseira.jpg",
     "data_liberacao": "2026-11-02T08:00:00-03:00",
     "liberada": false,
     "ativo": true
@@ -592,7 +592,7 @@
       "gorduras_g": 6
     },
     "dicas": "Faça 3 potinhos de uma vez: café da manhã resolvido para metade da semana.",
-    "foto": "/assets/receitas/pudim-chia-frutas.svg",
+    "foto": "/assets/receitas/pudim-chia-frutas.jpg",
     "data_liberacao": "2026-11-09T08:00:00-03:00",
     "liberada": false,
     "ativo": true

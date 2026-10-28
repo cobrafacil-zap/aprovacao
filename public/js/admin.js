@@ -299,12 +299,20 @@
           <td>${dataBR(a.ultimaVisita)}</td>
           <td>${a.feitas} receitas</td>
           <td class="acoes">
+            <button class="btn-mini-cinza" data-senha="${a.id}">Senha</button>
             <button class="${a.acesso?.ativo ? 'btn-mini-vermelho' : 'btn-mini-verde'}" data-acesso="${a.id}" data-valor="${a.acesso?.ativo ? 'false' : 'true'}">
               ${a.acesso?.ativo ? 'Revogar acesso' : 'Liberar acesso'}
             </button>
           </td>
         </tr>`).join('')
       : '<tr><td colspan="7" class="cinza">Nenhum aluno cadastrado ainda.</td></tr>';
+
+    $$('#tabela-alunos [data-senha]').forEach((b) => b.addEventListener('click', async () => {
+      const senha = prompt('Defina a nova senha para este aluno (mín. 6 caracteres):');
+      if (!senha) return;
+      const r = await post(`/api/admin/alunos/${b.dataset.senha}/senha`, { senha });
+      alert(r.ok ? 'Senha definida com sucesso!' : r.error || 'Erro ao definir senha');
+    }));
 
     $$('#tabela-alunos [data-acesso]').forEach((b) => b.addEventListener('click', async () => {
       await post(`/api/admin/alunos/${b.dataset.acesso}/acesso`, { ativo: b.dataset.valor === 'true' });

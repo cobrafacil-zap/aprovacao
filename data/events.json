@@ -270,5 +270,125 @@
     "receitaId": "rec_panqueca_banana_aveia",
     "origem": "membros",
     "dispositivo": null
+  },
+  {
+    "id": "evt_mvsg8f1lkbe611",
+    "ts": "2026-10-28T18:29:42.057Z",
+    "sessao": "s_jkg051s5hmmvse3p5b",
+    "tipo": "pageview",
+    "pagina": "/login.html",
+    "utm": {
+      "source": null,
+      "medium": null,
+      "campaign": null,
+      "content": null,
+      "term": null
+    },
+    "referrer": null,
+    "valor": null,
+    "pedidoId": null,
+    "receitaId": null,
+    "origem": "site",
+    "dispositivo": "desktop"
+  },
+  {
+    "id": "evt_mvsg8f65hagj9p",
+    "ts": "2026-10-28T18:29:42.221Z",
+    "sessao": "s_jkg051s5hmmvse3p5b",
+    "tipo": "pageview",
+    "pagina": "/membros.html",
+    "utm": {
+      "source": null,
+      "medium": null,
+      "campaign": null,
+      "content": null,
+      "term": null
+    },
+    "referrer": null,
+    "valor": null,
+    "pedidoId": null,
+    "receitaId": null,
+    "origem": "site",
+    "dispositivo": "desktop"
+  },
+  {
+    "id": "evt_mvsg8ntjr20874",
+    "ts": "2026-10-28T18:29:53.431Z",
+    "sessao": "s_jkg051s5hmmvse3p5b",
+    "tipo": "pageview",
+    "pagina": "/",
+    "utm": {
+      "source": null,
+      "medium": null,
+      "campaign": null,
+      "content": null,
+      "term": null
+    },
+    "referrer": null,
+    "valor": null,
+    "pedidoId": null,
+    "receitaId": null,
+    "origem": "site",
+    "dispositivo": "desktop"
+  },
+  {
+    "id": "evt_mvsg8ntkaay4m5",
+    "ts": "2026-10-28T18:29:53.432Z",
+    "sessao": "s_jkg051s5hmmvse3p5b",
+    "tipo": "lp_view",
+    "pagina": "/",
+    "utm": {
+      "source": null,
+      "medium": null,
+      "campaign": null,
+      "content": null,
+      "term": null
+    },
+    "referrer": null,
+    "valor": null,
+    "pedidoId": null,
+    "receitaId": null,
+    "origem": "site",
+    "dispositivo": "desktop"
+  },
+  {
+    "id": "evt_mvsgmy5ut3fv09",
+    "ts": "2026-10-28T18:41:00.018Z",
+    "sessao": "s_jkg051s5hmmvse3p5b",
+    "tipo": "pageview",
+    "pagina": "/membros.html",
+    "utm": {
+      "source": null,
+      "medium": null,
+      "campaign": null,
+      "content": null,
+      "term": null
+    },
+    "referrer": null,
+    "valor": null,
+    "pedidoId": null,
+    "receitaId": null,
+    "origem": "site",
+    "dispositivo": "desktop"
+  },
+  {
+    "id": "evt_mvsgnaazmk37ds",
+    "ts": "2026-10-28T18:41:15.755Z",
+    "sessao": "s_jkg051s5hmmvse3p5b",
+    "tipo": "pageview",
+    "pagina": "/membros.html",
+    "utm": {
+      "source": null,
+      "medium": null,
+      "campaign": null,
+      "content": null,
+      "term": null
+    },
+    "referrer": null,
+    "valor": null,
+    "pedidoId": null,
+    "receitaId": null,
+    "origem": "site",
+    "dispositivo": "desktop"
   }
 ]

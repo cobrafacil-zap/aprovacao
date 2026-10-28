@@ -248,6 +248,45 @@ router.post('/lista/item', requireMember, async (req, res) => {
   res.json({ ok: true, itens: u.lista });
 });
 
+// Adiciona ingredientes de uma receita (com quantidades já ajustadas pelas
+// porções escolhidas) à lista, somando com o que já existe.
+router.post('/lista/adicionar', requireMember, async (req, res) => {
+  const { itens, receita } = req.body || {};
+  if (!Array.isArray(itens) || !itens.length) return res.status(400).json({ error: 'nenhum ingrediente enviado' });
+
+  const users = await read('users', []);
+  const u = users.find((x) => x.id === req.usuario.id);
+  u.lista = u.lista || [];
+
+  itens.forEach((ing) => {
+    const item = String(ing.item || '').trim();
+    if (!item) return;
+    const unidade = String(ing.unidade || '').trim();
+    const chave = `${item.toLowerCase()}|${unidade.toLowerCase()}`;
+    const qtdNum = parseFloat(String(ing.qtd ?? '').replace(',', '.'));
+
+    const existente = u.lista.find(
+      (l) => `${String(l.item).toLowerCase()}|${String(l.unidade || '').toLowerCase()}` === chave
+    );
+    if (existente) {
+      const atual = parseFloat(String(existente.qtd).replace(',', '.'));
+      if (!Number.isNaN(qtdNum) && !Number.isNaN(atual)) {
+        existente.qtd = String(Math.round((atual + qtdNum) * 100) / 100);
+      }
+      if (receita && !(existente.receitas || []).includes(receita)) existente.receitas.push(receita);
+    } else {
+      u.lista.push({
+        qtd: ing.qtd ?? '', unidade, item,
+        receitas: receita ? [receita] : ['adicionado à mão'],
+        marcado: false,
+      });
+    }
+  });
+
+  await write('users', users);
+  res.json({ ok: true, itens: u.lista });
+});
+
 router.post('/lista/marcar', requireMember, async (req, res) => {
   const { index, marcado } = req.body || {};
   const users = await read('users', []);

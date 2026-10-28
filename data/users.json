@@ -169,5 +169,43 @@
       }
     ],
     "ultimaVisita": null
+  },
+  {
+    "id": "usr_mvsg816lqdrujx",
+    "nome": "Usuário Teste",
+    "email": "usuario@ofertafit.com",
+    "senhaSalt": "e6fcf3b8a92e95be47c064b32551c1ac",
+    "senhaHash": "f7c59b90c7c00ede2b5dcd9dda7af1bf5ddc3e6d6e2963c41dc32006f04aac884b759e8b9ce03a61274da7b768d91c39de5fb722316b508d45e31bc5cadb4027",
+    "senhaDefinida": true,
+    "criadoEm": "2026-10-28T18:29:24.093Z",
+    "acesso": {
+      "ativo": true,
+      "liberadoEm": "2026-10-28T18:29:24.100Z",
+      "pedidoId": null
+    },
+    "favoritos": [],
+    "feitas": [],
+    "lista": [
+      {
+        "qtd": "2",
+        "unidade": "un",
+        "item": "banana madura",
+        "receitas": [
+          "Panqueca de Banana com Aveia"
+        ],
+        "marcado": false
+      },
+      {
+        "qtd": "6",
+        "unidade": "un",
+        "item": "ovos",
+        "receitas": [
+          "Panqueca de Banana com Aveia",
+          "Omelete"
+        ],
+        "marcado": false
+      }
+    ],
+    "ultimaVisita": "2026-10-28T18:41:15.561Z"
   }
 ]

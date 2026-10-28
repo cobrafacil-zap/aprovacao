@@ -12,7 +12,7 @@
       if (!grade || !d.itens?.length) return;
       grade.innerHTML = d.itens.map((rec) => `
         <article class="print-card">
-          <img src="${rec.foto || 'assets/receitas/bowl-frango-quinoa.svg'}" alt="${rec.nome}" />
+          <img src="${rec.foto || 'assets/receitas/bowl-frango-quinoa.jpg'}" alt="${rec.nome}" />
           <div class="corpo">
             <h3>${rec.nome}</h3>
             <div class="meta">⏱ ${rec.tempo_preparo_min} min • 🍽 ${rec.porcoes} porção(ões) • ${rec.categoria.replace('-', ' ')}</div>

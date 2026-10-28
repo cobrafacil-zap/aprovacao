@@ -6,3 +6,8 @@ data/*.tmp
 *.log
 .vercel
 .env*
+
+# segredos baixados da Vercel (nunca commitar)
+.env.production
+.env.local
+.env.development
