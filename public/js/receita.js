@@ -79,7 +79,9 @@
         <div class="nutri"><strong>${r.porcoes ?? '—'}</strong><span>porção(ões)</span></div>
         <div class="nutri"><strong>${(r.ingredientes || []).length}</strong><span>ingredientes</span></div>
         <div class="nutri"><strong>${(r.passos || []).length}</strong><span>etapas</span></div>
+        ${r.kcal_por_porcao ? `<div class="nutri"><strong>🔥 ${r.kcal_por_porcao}</strong><span>kcal/porção*</span></div>` : ''}
       </div>
+      ${r.kcal_por_porcao ? `<p class="pequeno cinza mt-1">* Valor <strong>estimado</strong>, calculado automaticamente a partir dos ingredientes — pode variar conforme marcas e porções.</p>` : ''}
       ${(r.dificuldade || r.custo) ? `
       <div class="nutricao mt-1">
         ${r.dificuldade ? `<div class="nutri"><strong>${rotulo[r.dificuldade] || r.dificuldade}</strong><span>dificuldade</span></div>` : ''}

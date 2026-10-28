@@ -197,6 +197,7 @@
           <div class="meta">
             ${recemLiberada(r) ? '<span class="meta-chip nova">🆕 Nova da semana</span>' : ''}
             ${r.tempo_preparo_min ? `<span class="meta-chip">⏱ ${r.tempo_preparo_min} min</span>` : ''}
+            ${r.kcal_por_porcao ? `<span class="meta-chip kcal">🔥 ${r.kcal_por_porcao} kcal</span>` : ''}
           </div>
         </div>
       </article>`;

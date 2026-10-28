@@ -14,6 +14,7 @@ import {
 } from '../lib/release.js';
 import { track } from '../lib/analytics.js';
 import { consumirToken, tokenDefinirSenha } from './checkout.js';
+import { calcularNutricao } from '../lib/nutricao.js';
 
 const router = Router();
 const diasAte = (data) => Math.max(0, Math.ceil((new Date(data) - Date.now()) / 864e5));
@@ -134,6 +135,7 @@ const receitaPublica = (r, u) => ({
   data_liberacao: r.data_liberacao,
   dificuldade: r.dificuldade || null,
   custo: r.custo || null,
+  kcal_por_porcao: calcularNutricao(r.ingredientes || [], r.porcoes || 1).kcal_por_porcao,
   favorito: (u?.favoritos || []).includes(r.id),
   feita: (u?.feitas || []).some((f) => f.receitaId === r.id),
 });
