@@ -7,7 +7,7 @@ import {
   requireMember, criarSessao, destruirSessao,
   hashSenha, conferirSenha,
 } from '../lib/auth.js';
-import { sendEmail, emailDefinirSenha } from '../lib/mail.js';
+import { sendEmail, emailDefinirSenha, emailLinkAcesso, urlMembros } from '../lib/mail.js';
 import { baseUrl } from '../lib/helpers.js';
 import {
   receitasLiberadas, proximaReceita, liberarPendentesSeNecessario,
@@ -19,6 +19,18 @@ const router = Router();
 const diasAte = (data) => Math.max(0, Math.ceil((new Date(data) - Date.now()) / 864e5));
 
 // ---------- Conta ----------
+// Envia "acesse por aqui" uma única vez, após o primeiro acesso do membro.
+// Só marca como enviado em caso de sucesso (falha → tenta de novo no próximo login).
+async function avisarLinkAcesso(u) {
+  if (u.linkAcessoEnviado) return;
+  try {
+    await sendEmail({ to: u.email, subject: 'Acesse por aqui da próxima vez 🔗', html: emailLinkAcesso(u.nome, urlMembros()) });
+    u.linkAcessoEnviado = true;
+  } catch (e) {
+    console.error('[EMAIL] link de acesso:', e.message);
+  }
+}
+
 router.post('/login', async (req, res) => {
   const { email, senha } = req.body || {};
   const users = await read('users', []);
@@ -28,6 +40,7 @@ router.post('/login', async (req, res) => {
   }
   await criarSessao(res, u.id, 'membro');
   u.ultimaVisita = agora();
+  await avisarLinkAcesso(u);
   await write('users', users);
   res.json({ ok: true, usuario: { id: u.id, nome: u.nome, email: u.email } });
 });
@@ -71,6 +84,7 @@ router.post('/definir-senha', async (req, res) => {
   u.senhaSalt = salt;
   u.senhaHash = hash;
   u.senhaDefinida = true;
+  await avisarLinkAcesso(u);
   await write('users', users);
   await criarSessao(res, u.id, 'membro');
   res.json({ ok: true });

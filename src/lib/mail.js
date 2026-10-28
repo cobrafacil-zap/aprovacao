@@ -152,7 +152,22 @@ export const emailNovaReceita = (nome, receita, urlReceita) =>
     ${corpo('<span style="color:#5B627E;font-size:13px">Na próxima semana chega mais uma. 🗓</span>')}
   `);
 
-// ---------- 5. Teste (painel admin) ----------
+// ---------- 5. Link de acesso (após o primeiro login) ----------
+export const emailLinkAcesso = (nome, urlAcesso) =>
+  shell(`Acesse por aqui da próxima vez, ${nome} 🔗`, `
+    ${corpo('Você acabou de entrar na sua área de membros. Para os seus <strong>próximos acessos</strong>, é só usar o botão abaixo:')}
+    ${botao(urlAcesso, 'Acessar minha área de membros')}
+    <p style="margin:6px 0 4px;font-size:15px;font-weight:bold;color:#0E1330">Dicas para nunca perder o acesso:</p>
+    <table width="100%" cellpadding="0" cellspacing="0" border="0">
+      ${passo(1, 'Salve este e-mail', 'Deixe-o marcado como favorito na sua caixa de entrada.')}
+      ${passo(2, 'Salve a página nos favoritos', 'Abra o link e adicione aos favoritos do navegador.')}
+      ${passo(3, 'Use sempre o mesmo e-mail', 'É com ele que sua conta e suas receitas ficam guardadas.')}
+    </table>
+    ${corpo('<span style="color:#5B627E;font-size:13px">Esqueceu a senha? Na tela de login, toque em “Esqueci minha senha” que enviamos um novo link na hora.</span>')}
+    ${assinatura()}
+  `);
+
+// ---------- 6. Teste (painel admin) ----------
 export const emailTeste = () =>
   shell('Seu e-mail está configurado! ✅', `
     ${corpo('Este é um e-mail de teste do <strong>Oferta Fit BR</strong>. Se você está lendo isso, a integração de e-mail está funcionando corretamente.')}

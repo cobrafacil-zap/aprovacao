@@ -248,18 +248,39 @@
     "id": "usr_mvsjby1uwnbck8",
     "nome": "Fluxo Real",
     "email": "delivered@resend.dev",
-    "senhaSalt": "f197288fd73d5942c2b12dda74092df5",
-    "senhaHash": "972575c22be7b49abce8049ce18a189ff0a87c5ce5f2a83db4939f836aa0e6d9521b8ccb936509927a31ef38cb251bb94418f3b6a7e835e6ef1fa65c62b56da6",
-    "senhaDefinida": false,
+    "senhaSalt": "37095d1ec08e59e2de432eabb069a662",
+    "senhaHash": "85bcea9d4d4aef09ed5e150981100faba3d2f672be5aff2c3cc071e36810c4572e6edd21209176dea464c7b86a5d6dd0606b2df4f3c7c896dac335bee65610b1",
+    "senhaDefinida": true,
     "criadoEm": "2026-10-28T19:56:25.506Z",
     "acesso": {
       "ativo": true,
       "liberadoEm": "2026-10-28T19:56:25.506Z",
-      "pedidoId": "ped_mvsjbwp0ffjyq3"
+      "pedidoId": "ped_mvsjbwp0ffjyq3",
+      "pendente": false
     },
     "favoritos": [],
     "feitas": [],
     "lista": [],
-    "ultimaVisita": null
+    "ultimaVisita": "2026-10-28T20:41:56.382Z",
+    "linkAcessoEnviado": true
+  },
+  {
+    "id": "usr_mvskz42217tt2q",
+    "nome": "Inbox Teste",
+    "email": "inbox.teste@resend.dev",
+    "senhaSalt": "bc544f19e0719014c12ff78a1f2c0702",
+    "senhaHash": "753dfc97d49fd93827931c9e18e41f56d05e552538b26ff8094f119454089ab67eb23788f7260f68b015984f6273c8c5477043416838fadf674a52c93da1f45f",
+    "senhaDefinida": true,
+    "criadoEm": "2026-10-28T20:42:25.994Z",
+    "acesso": {
+      "ativo": true,
+      "liberadoEm": "2026-10-28T20:42:25.996Z",
+      "pedidoId": null
+    },
+    "favoritos": [],
+    "feitas": [],
+    "lista": [],
+    "ultimaVisita": "2026-10-28T20:42:28.486Z",
+    "linkAcessoEnviado": true
   }
 ]

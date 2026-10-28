@@ -4,7 +4,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import {
-  emailCompra, emailDefinirSenha, emailBoasVindas, emailNovaReceita, emailTeste,
+  emailCompra, emailDefinirSenha, emailBoasVindas, emailNovaReceita, emailTeste, emailLinkAcesso,
 } from '../src/lib/mail.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -25,7 +25,8 @@ const paginas = {
   '2-definir-senha': emailDefinirSenha('Maria', `${base}/login.html?definir=usr_xxx.tk_xxx`),
   '3-boas-vindas': emailBoasVindas('Maria', `${base}/membros.html`),
   '4-nova-receita': emailNovaReceita('Maria', receitaExemplo, `${base}/membros.html?receita=rec_bowl_frango_quinoa`),
-  '5-teste': emailTeste(),
+  '5-link-acesso': emailLinkAcesso('Maria', `${base}/membros.html`),
+  '6-teste': emailTeste(),
 };
 
 for (const [nome, html] of Object.entries(paginas)) {
