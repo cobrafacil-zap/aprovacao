@@ -87,13 +87,40 @@
           </label>
         </div>
 
-        <!-- Campos do cartão (aparecem só no cartão) -->
+        <!-- Campos do cartão (tokenização via SDK do Mercado Pago) -->
         <div id="campos-cartao" class="oculto">
-          <div class="campo"><label for="cartao-numero">Número do cartão</label><input id="cartao-numero" inputmode="numeric" placeholder="0000 0000 0000 0000" /></div>
+          <div class="campo"><label for="form-checkout__cardholderName">Nome impresso no cartão</label><input id="form-checkout__cardholderName" type="text" placeholder="COMO ESTÁ NO CARTÃO" /></div>
+          <div class="campo"><label for="form-checkout__cardNumber">Número do cartão</label><input id="form-checkout__cardNumber" inputmode="numeric" placeholder="0000 0000 0000 0000" /></div>
           <div class="duas" style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
-            <div class="campo"><label for="cartao-validade">Validade</label><input id="cartao-validade" placeholder="MM/AA" /></div>
-            <div class="campo"><label for="cartao-cvv">CVV</label><input id="cartao-cvv" placeholder="123" /></div>
+            <div class="campo"><label for="form-checkout__expirationDate">Validade</label><input id="form-checkout__expirationDate" placeholder="MM/AA" /></div>
+            <div class="campo"><label for="form-checkout__securityCode">CVV</label><input id="form-checkout__securityCode" placeholder="123" /></div>
           </div>
+          <div class="duas" style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+            <div class="campo"><label for="form-checkout__identificationType">Tipo de doc.</label>
+              <select id="form-checkout__identificationType"><option value="CPF">CPF</option></select>
+            </div>
+            <div class="campo"><label for="form-checkout__identificationNumber">CPF</label><input id="form-checkout__identificationNumber" inputmode="numeric" placeholder="000.000.000-00" /></div>
+          </div>
+          <div class="campo oculto" id="campo-parcelas-wrap">
+            <label for="form-checkout__installments">Parcelas</label>
+            <select id="form-checkout__installments"></select>
+          </div>
+          <input type="hidden" id="form-checkout__issuer" value="" />
+        </div>
+
+        <!-- Campos do boleto (exigidos pelo Mercado Pago) -->
+        <div id="campos-boleto" class="oculto">
+          <div class="campo"><label for="boleto-cpf">CPF (para emitir o boleto)</label><input id="boleto-cpf" inputmode="numeric" placeholder="000.000.000-00" /></div>
+          <div class="duas" style="display:grid;grid-template-columns:1fr 2fr;gap:12px">
+            <div class="campo"><label for="boleto-cep">CEP</label><input id="boleto-cep" inputmode="numeric" placeholder="00000-000" /></div>
+            <div class="campo"><label for="boleto-rua">Rua</label><input id="boleto-rua" placeholder="Rua, avenida..." /></div>
+          </div>
+          <div class="duas" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px">
+            <div class="campo"><label for="boleto-numero">Nº</label><input id="boleto-numero" placeholder="123" /></div>
+            <div class="campo"><label for="boleto-bairro">Bairro</label><input id="boleto-bairro" placeholder="Bairro" /></div>
+            <div class="campo"><label for="boleto-uf">UF</label><input id="boleto-uf" maxlength="2" placeholder="SP" /></div>
+          </div>
+          <div class="campo"><label for="boleto-cidade">Cidade</label><input id="boleto-cidade" placeholder="Cidade" /></div>
         </div>
 
         <button class="btn btn--cta btn--bloco mt-2" id="btn-pagar">Finalizar compra — R$ 19,90</button>

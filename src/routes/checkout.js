@@ -9,6 +9,7 @@ import { track } from '../lib/analytics.js';
 import { garantirConta } from '../lib/auth.js';
 import { sendEmail, emailCompra, emailDefinirSenha, urlMembros } from '../lib/mail.js';
 import { baseUrl } from '../lib/helpers.js';
+import { mpAtivo, criarOrder } from '../lib/mercadopago.js';
 
 const router = Router();
 const VALOR = async () => (await read('settings', {})).preco ?? 19.9;
@@ -33,21 +34,72 @@ async function novoPedido({ nome, email, metodo, utm }) {
 }
 
 router.post('/pedidos', async (req, res) => {
-  const { nome, email, metodo, utm, sessao } = req.body || {};
+  const { nome, email, metodo, utm, sessao, cartao } = req.body || {};
   if (!nome || !email?.includes('@')) return res.status(400).json({ error: 'preencha nome e e-mail válidos' });
   if (!['pix', 'cartao', 'boleto'].includes(metodo)) return res.status(400).json({ error: 'escolha a forma de pagamento' });
+  if (metodo === 'cartao' && mpAtivo() && !cartao?.token) {
+    return res.status(400).json({ error: 'dados do cartão não processados — tente novamente' });
+  }
+  if (metodo === 'boleto' && mpAtivo() && !req.body?.documento) {
+    return res.status(400).json({ error: 'para emitir o boleto precisamos do seu CPF e endereço' });
+  }
 
   const pedido = await novoPedido({ nome, email, metodo, utm });
   await track({ tipo: 'checkout_start', sessao, utm, pedidoId: pedido.id, valor: pedido.valor });
 
-  // Em produção aqui entra a chamada ao Mercado Pago (preferência/cobrança).
-  const demo = !process.env.MP_ACCESS_TOKEN;
+  // ---------- PRODUÇÃO: Orders API do Mercado Pago ----------
+  if (mpAtivo()) {
+    try {
+      const [primeiro, ...resto] = String(nome).trim().split(' ');
+      const resultado = await criarOrder({
+        pedido,
+        metodo,
+        cartao,
+        payer: {
+          email,
+          nome: primeiro,
+          sobrenome: resto.join(' ') || primeiro,
+          documento: req.body.documento,
+          cep: req.body.cep,
+          rua: req.body.rua,
+          numero: req.body.numero,
+          bairro: req.body.bairro,
+          cidade: req.body.cidade,
+          uf: req.body.uf,
+        },
+      });
+      // importante: mutar e salvar a MESMA leitura (o banco relê o disco a cada read)
+      const pedidosAtuais = await read('orders', []);
+      const registro = pedidosAtuais.find((x) => x.id === pedido.id);
+      if (registro) {
+        registro.mpOrderId = resultado.mpOrderId;
+        registro.mpStatus = resultado.mpStatus;
+      }
+      await write('orders', pedidosAtuais);
+
+      return res.json({
+        ok: true,
+        pedido: { id: pedido.id, valor: pedido.valor, metodo, status: pedido.status },
+        demo: false,
+        pix: resultado.pix,
+        boleto: resultado.boleto,
+        cartao: metodo === 'cartao' ? { status: resultado.mpStatus, detalhe: resultado.mpStatusDetail } : null,
+      });
+    } catch (e) {
+      console.error('[MP] falha ao criar order:', e.message);
+      await write('orders', (await read('orders', [])).filter((p) => p.id !== pedido.id));
+      return res.status(502).json({ error: 'Não foi possível gerar o pagamento no Mercado Pago. Tente novamente.' });
+    }
+  }
+
+  // ---------- MODO DEMO ----------
+  const demo = true;
   res.json({
     ok: true,
     pedido: { id: pedido.id, valor: pedido.valor, metodo, status: pedido.status },
     demo,
-    pix: metodo === 'pix' ? { copiaECola: pixCopiaECola(pedido), qr: 'demo-qr' } : null,
-    boleto: metodo === 'boleto' ? { linhaDigitavel: '34191.79001 01043.510047 91020.150008 9 99990000001990' } : null,
+    pix: metodo === 'pix' ? { copiaECola: pixCopiaECola(pedido), qrBase64: null, link: null } : null,
+    boleto: metodo === 'boleto' ? { linhaDigitavel: '34191.79001 01043.510047 91020.150008 9 99990000001990', link: null } : null,
   });
 });
 

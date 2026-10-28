@@ -39,5 +39,55 @@
     },
     "acessoLiberado": true,
     "pagoEm": "2026-10-28T17:59:59.254Z"
+  },
+  {
+    "id": "ped_mvsikqx7lwr3kd",
+    "nome": "Teste Integracao",
+    "email": "teste.integracao@example.com",
+    "produto": "Acesso vitalício — Oferta Fit BR",
+    "valor": 19.9,
+    "metodo": "pix",
+    "status": "aguardando",
+    "criadoEm": "2026-10-28T19:35:16.556Z",
+    "utm": null,
+    "acessoLiberado": false
+  },
+  {
+    "id": "ped_mvsin0uxgshq36",
+    "nome": "Teste Boleto",
+    "email": "teste.boleto@example.com",
+    "produto": "Acesso vitalício — Oferta Fit BR",
+    "valor": 19.9,
+    "metodo": "boleto",
+    "status": "aguardando",
+    "criadoEm": "2026-10-28T19:37:02.745Z",
+    "utm": null,
+    "acessoLiberado": false
+  },
+  {
+    "id": "ped_mvsipfuu7dnfrv",
+    "nome": "Teste Limpeza",
+    "email": "teste.limpeza@example.com",
+    "produto": "Acesso vitalício — Oferta Fit BR",
+    "valor": 19.9,
+    "metodo": "pix",
+    "status": "aguardando",
+    "criadoEm": "2026-10-28T19:38:55.495Z",
+    "utm": null,
+    "acessoLiberado": false
+  },
+  {
+    "id": "ped_mvsiqxhe9hjaan",
+    "nome": "Teste Persistencia",
+    "email": "teste.persistencia@example.com",
+    "produto": "Acesso vitalício — Oferta Fit BR",
+    "valor": 19.9,
+    "metodo": "pix",
+    "status": "aguardando",
+    "criadoEm": "2026-10-28T19:40:04.994Z",
+    "utm": null,
+    "acessoLiberado": false,
+    "mpOrderId": "ORD01M620DQXZWNFFFVJJ3SJZMT9K",
+    "mpStatus": "action_required"
   }
 ]

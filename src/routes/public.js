@@ -29,6 +29,8 @@ router.get('/produto', async (req, res) => {
     formas_pagamento: ['Pix', 'Cartão de crédito', 'Boleto'],
     atualizacao: 'uma nova receita por semana',
     acesso: 'vitalício',
+    mp_public_key: process.env.MP_PUBLIC_KEY || null,
+    mp_ativo: !!process.env.MP_ACCESS_TOKEN,
   });
 });
 
