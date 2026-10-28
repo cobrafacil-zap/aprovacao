@@ -930,5 +930,45 @@
     "receitaId": null,
     "origem": "site",
     "dispositivo": "desktop"
+  },
+  {
+    "id": "evt_mvsrluzyzxq0s2",
+    "ts": "2026-10-28T23:48:05.038Z",
+    "sessao": "s_s60s3jvaqymvsqajct",
+    "tipo": "pageview",
+    "pagina": "/login.html",
+    "utm": {
+      "source": null,
+      "medium": null,
+      "campaign": null,
+      "content": null,
+      "term": null
+    },
+    "referrer": null,
+    "valor": null,
+    "pedidoId": null,
+    "receitaId": null,
+    "origem": "site",
+    "dispositivo": "desktop"
+  },
+  {
+    "id": "evt_mvsrlv460vowlc",
+    "ts": "2026-10-28T23:48:05.190Z",
+    "sessao": "s_s60s3jvaqymvsqajct",
+    "tipo": "pageview",
+    "pagina": "/receita.html",
+    "utm": {
+      "source": null,
+      "medium": null,
+      "campaign": null,
+      "content": null,
+      "term": null
+    },
+    "referrer": null,
+    "valor": null,
+    "pedidoId": null,
+    "receitaId": null,
+    "origem": "site",
+    "dispositivo": "desktop"
   }
 ]

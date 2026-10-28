@@ -45,7 +45,7 @@ frutas vermelhas|45|10|0.8|0.3|xc:150;aliase:frutas,fruta
 
 leite integral|61|4.7|3.2|3.3|xc:240;cs:15
 leite desnatado|35|5|3.4|0.2|xc:240;aliase:leite sem lactose
-leite condensado|313|57|7.4|6.7|xc:300;cs:19
+leite condensado|313|57|7.4|6.7|xc:300;cs:19;lata:395
 leite em po|475|38|25|27|cs:15;aliase:leite em pó,ninho
 iogurte|51|4.7|4|1.5|xc:240;cs:15;aliase:iogurte natural,iogurte grego,iogurte desnatado,iogurte bebivel
 requeijao|257|3.5|9.6|22.5|cs:15;aliase:requeijão
@@ -53,12 +53,12 @@ queijo minas frescal|264|3.2|17.4|20.6|xc:120;aliase:queijo branco,queijo fresca
 queijo mussarela|330|3|25|25|un:30;xc:110;aliase:muçarela,mussarela,queijo fatia
 queijo parmesao|392|1.7|35.6|25|cs:6;aliase:parmesão,queijo ralado
 queijo prato|360|2|25|28|un:30
-ricota|140|3.5|11|9.5|xc:120;cs:15
+ricota|140|3.5|11|9.5|xc:120;cs:15;aliase:creme de ricota,cream cheese light
 cottage|98|3.4|11|4.3|xc:120
 queijo coalho|315|2.5|22|24|un:30
 cream cheese|250|4|10|22|cs:15
 manteiga|720|0.1|0.4|82|cs:14;cd:5
-creme de leite|337|3|2|35|xc:240;cs:15
+creme de leite|337|3|2|35|xc:240;cs:15;lata:200;aliase:caixa de creme de leite
 margarina|720|0.2|0.3|82|cs:14
 whey protein|400|8|80|6|cs:12;aliase:whey
 
@@ -80,7 +80,7 @@ hamburguer|250|5|14|19|un:100;aliase:hambúrguer
 
 salmao|208|0|20|13|un:150;aliase:salmão,salmao grelhado
 tilapia|128|0|26|3|un:130;aliase:tilápia,peixe,peixe grelhado,filé de peixe
-atum|116|0|25|1|aliase:atum em lata
+atum|116|0|25|1|lata:170;aliase:atum em lata,atum em oleo
 sardinha|175|0|23|9|un:40;aliase:sardinha em lata
 merluza|90|0|18|1|un:150
 camarao|99|0.5|21|1|un:10;aliase:camarão,camarões
@@ -116,7 +116,7 @@ cuscuz|112|25|4|0.2|xc:150;aliase:cuscuz marroquino,pequeno milho
 fubá|353|79|7|2|xc:120;cs:10;aliase:fuba,flocão,fubá mimoso,milho verde,milho
 farinha de trigo|364|75|9.8|1.4|xc:120;cs:8;aliase:farinha,farinha de aveia,farinha integral
 farinha de mandioca|330|78|1.5|0.3|xc:120;cs:8;aliase:flocao,farinha de mandioca,goma
-goma de tapioca|358|88|0.2|0.1|xc:100;cs:10;aliase:tapioca,polvilho,polvilho azedo,polvilho doce,tapioca pronta,tortilha,wrap
+goma de tapioca|358|88|0.2|0.1|xc:100;cs:10;aliase:tapioca,polvilho,polvilho azedo,polvilho doce,tapioca hidratada,tapioca pronta
 aveia|389|66|14|7|xc:80;cs:20;aliase:aveia em flocos,flocos de aveia,farelo de aveia,granola
 granola|471|65|12|20|xc:120;cs:15
 barra de cereal|380|65|8|12|un:35;aliase:barra de cereal caseira,cereal bar
@@ -126,7 +126,7 @@ mandioquinha|92|21|1.2|0.1|un:120;xc:150;aliase:batata baroa,purê de mandioquin
 inhame|97|23|1.5|0.1|un:120
 mandioca|125|30|0.6|0.3|un:150;aliase:aipim,macaxeira
 pao frances|300|58|8|7|un:50;aliase:pão,pão francês,pao de queijo,pão de queijo
-pao integral|247|45|9|4|un:50
+pao integral|247|45|9|4|un:35;aliase:rap10,wrap,wrap integral,tortilha integral,pão integral
 pao de forma|270|50|8|4|un:40
 biscoito|450|75|6|15|un:12;aliase:biscoito integral,cookie,gotas de chocolate
 
@@ -149,7 +149,7 @@ mostarda|66|6|4|3|cs:15
 shoyu|53|5|8|0|cs:15;aliase:shoyo,molho de soja
 vinagre|18|3|0|0|cs:15
 sal|0|0|0|0|cd:6;aliase:sal marinho,sal grosso
-pimenta|255|64|10|12|cd:2;aliase:pimenta do reino,pimenta-do-reino
+pimenta|255|64|10|12|cd:2;aliase:pimenta do reino,pimenta-do-reino,noz moscada,noz-moscada,paprica,páprica,cominho,curry,manjericao
 oregano|265|69|9|4|cd:2;aliase:orégano,ervas,ervas finas,manjericao,manjericão,basilico
 alho|149|33|6.4|0.5|un:5;aliase:dente de alho,alho amassado
 cebola|40|9|1.1|0.1|un:80;aliase:cebola pequena,cebola roxa,cebola-roxa
@@ -166,7 +166,7 @@ refrigerante|41|10|0|0|xc:240;aliase:coca,soda
 cerveja|43|3|0.5|0|xc:240
 vinho|75|2|0.1|0|xc:240
 
-alface|15|2.8|1.3|0.2|xc:50;aliase:salada,folhas verdes,rucula,rúcula,escarola
+alface|15|2.8|1.3|0.2|xc:50;aliase:salada,folhas verdes,rucula,rúcula,escarola,salada verde,salada mista
 couve|27|4.3|2.9|0.5|xc:30;aliase:couve manteiga
 espinafre|23|3.8|2.9|0.4|xc:30;aliase:espinafre fresco
 brocolis|34|7|2.8|0.4|xc:90;aliase:brócolis
@@ -183,9 +183,9 @@ abobora|26|6|1|0.1|xc:120;aliase:abóbora,abóbora cabotiá
 repolho|25|5.4|1.3|0.1|xc:70
 vagem|25|5|1.8|0.2|xc:80
 cogumelo|22|3.3|3.1|0.3|xc:70;aliase:champignon,shimeji
-milho verde|86|20|3.2|1.2|xc:160
+milho verde|86|20|3.2|1.2|xc:160;lata:200
 azeitona|115|5.2|1.1|10.9|cs:10;aliase:azeitonas,azeitona verde
-palmito|28|4.6|2.5|0.3|xc:120
+palmito|28|4.6|2.5|0.3|xc:120;vidro:300
 broto|23|3.5|3|0.2;aliase:broto de alfalfa,alfalfa
 quiabo|30|6.2|1.9|0.1
 nabo|22|4.5|1.1|0.1
@@ -212,12 +212,37 @@ const TABELA = DADOS.trim().split('\n').map((linha) => {
   return entrada;
 });
 
+// Interpreta o ingrediente vindo como texto natural:
+// "1 lata de atum" → qtd 1 | unidade lata | alimento "atum"
+const RE_MEDIDA = /^(?:de\s+|das?\s+)?(?:xicaras?(?:\s+de\s+cha)?|colheres?(?:\s+de\s+(?:sopa|cha|cafe|sobremesa))?|gramas?|quilogramas?|quilos?|kg|ml|mililitros?|litros?|lats?|latas?|caixas?|caixinhas?|pacotes?|sacos?|vidros?|potes?|fatias?|dentes?|folhas?|pitadas?|punhados?|unidades?|und|un|fardos?|duzias?)\b\s*(?:de\s+|da\s+|do\s+)?/i;
+
+export function interpretar(ing, bruto) {
+  let texto = String(bruto || '').trim();
+  let qtd = parseFloat(String(ing?.qtd ?? '').replace(',', '.'));
+  if (Number.isNaN(qtd)) {
+    const m = texto.match(/^\s*(\d+\s*\/\s*\d+|\d+(?:[.,]\d+)?)\s*(.*)$/);
+    if (m) {
+      const [num, den] = m[1].split('/').map((x) => Number(x.trim()));
+      qtd = den ? num / den : Number(String(m[1]).replace(',', '.'));
+      texto = m[2];
+    } else if (detectarUnidade(texto)) {
+      qtd = 1; // "Colher de sopa de X" sem número = 1 medida
+    }
+  }
+  let unidade = String(ing?.unidade || '').trim();
+  if (!unidade) unidade = detectarUnidade(texto);
+  const itemLimpo = texto.replace(RE_MEDIDA, '').trim();
+  return { qtd: Number.isNaN(qtd) ? null : qtd, unidade, itemLimpo };
+}
+
 function acharAlimento(item) {
   // textos entre parênteses são descrições/alternativas — atrapalham o match
   const semParenteses = String(item || '').replace(/\([^)]*\)/g, ' ');
   const original = semAcento(semParenteses).replace(/[()]/g, ' ').replace(/\s+/g, ' ').trim();
   const limpo = original.replace(RUIDO, ' ').replace(/\s+/g, ' ').trim();
-  const candidatos = [original, limpo];
+  // variações: sem hífens e sem plurais
+  const singular = limpo.replace(/-/g, ' ').replace(/\b([a-z]+)s\b/g, '$1').replace(/\s+/g, ' ').trim();
+  const candidatos = [original, limpo, singular];
   for (const e of TABELA) {
     const nomes = [e.nome, ...e.aliase];
     if (candidatos.some((c) => c && nomes.includes(c))) return e;
@@ -236,11 +261,20 @@ function detectarUnidade(texto) {
   if (t.includes('quilo') || /\d\s*kg\b/.test(t)) return 'kg';
   if (t.includes('xicara') || t.includes('xic')) return 'xíc';
   if (t.includes('sopa')) return 'cs';
+  if (t.includes('cafe')) return 'cd';
   if (t.includes('cha') || t.includes('sobremesa')) return 'cd';
   if (t.includes('colher')) return 'cs';
   if (t.includes('pitada')) return 'pn';
+  if (t.includes('lata')) return 'lata';
+  if (t.includes('caixa') || t.includes('caixinha')) return 'caixa';
+  if (t.includes('pacote') || t.includes('saco')) return 'pacote';
+  if (t.includes('vidro')) return 'vidro';
+  if (t.includes('pote')) return 'pote';
   if (t.includes('fatia')) return 'fatia';
   if (t.includes('dente')) return 'dente';
+  if (t.includes('folha')) return 'folha';
+  if (t.includes('punhado') || t.includes('maço') || t.includes('maco')) return 'punhado';
+  if (t.includes('duzia') || t.includes('dúzia')) return 'duzia';
   if (t.includes('mililitro') || /\d\s*ml\b/.test(t)) return 'ml';
   return '';
 }
@@ -256,7 +290,18 @@ function paraGramas(qtd, unidade, entrada) {
   if (un.startsWith('xic') || un.startsWith('xíc')) return n * entrada.xc;
   if (un === 'cs' || un.includes('sopa')) return n * entrada.cs;
   if (un === 'cd' || un === 'cp' || un.includes('cha') || un.includes('sobremesa')) return n * entrada.cd;
-  if (un === 'pn' || un === 'pitada' || un === 'ponta' || un === 'folha' || un === 'ramo' || un === 'unidade a gosto') return n;
+  if (un === 'pn' || un === 'pitada' || un === 'ponta' || un === 'ramo' || un === 'unidade a gosto') return n;
+  if (un === 'lata') return n * (entrada.lata || 200);
+  if (un === 'caixa' || un === 'caixinha') return n * 200;
+  if (un === 'pacote' || un === 'saco') return n * 250;
+  if (un === 'vidro') return n * (entrada.vidro || 300);
+  if (un === 'pote') return n * 200;
+  if (un === 'punhado' || un === 'maço') return n * 30;
+  if (un === 'duzia') return n * 12 * entrada.un;
+  if (un === 'folha') {
+    const wrap = entrada.nome.includes('pao') || (entrada.aliase || []).some((a) => /rap10|wrap|tortilha/.test(a));
+    return n * (wrap ? 35 : 2);
+  }
   if (un === 'fatia' || un === 'fatias' || un === 'pedaco' || un === 'pedaço') return n * 30;
   if (un === 'dente' || un === 'dentes') return n * 5;
   if (un === 'un' || un === 'unidade' || un === 'unidades' || un === '') return n * entrada.un;
@@ -267,14 +312,14 @@ function paraGramas(qtd, unidade, entrada) {
 export function calcularNutricao(ingredientes = [], porcoes = 1) {
   let kcal = 0, carb = 0, prot = 0, gord = 0, encontrados = 0;
   for (const ing of ingredientes) {
-    const item = ing?.item || String(ing);
-    const entrada = acharAlimento(item);
-    if (!entrada) continue;
-    const unidade = String(ing.unidade || '').trim() || detectarUnidade(`${ing.qtd || ''} ${item}`);
-    let gramas = paraGramas(ing.qtd, unidade, entrada);
-    if (gramas == null) continue;
-    // "a gosto"/pitadas: temperos contam pouco (máx. 5 g)
-    if (/a gosto|pitada|se quiser|opcional/i.test(String(item))) gramas = Math.min(gramas, 5);
+    const item = String(ing?.item ?? ing ?? '');
+    const { qtd, unidade, itemLimpo } = interpretar(ing, item);
+    const entrada = acharAlimento(itemLimpo || item);
+    if (!entrada || qtd == null) continue;
+    let gramas = paraGramas(qtd, unidade, entrada);
+    if (gramas == null || gramas <= 0) continue;
+    // "a gosto"/pitadas/untar: temperos contam pouco (máx. 5 g)
+    if (/a gosto|pitada|se quiser|opcional|para untar/i.test(item)) gramas = Math.min(gramas, 5);
     const f = gramas / 100;
     encontrados++;
     kcal += f * entrada.kcal100;

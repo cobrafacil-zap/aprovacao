@@ -14,7 +14,7 @@ import {
 } from '../lib/release.js';
 import { track } from '../lib/analytics.js';
 import { consumirToken, tokenDefinirSenha } from './checkout.js';
-import { calcularNutricao } from '../lib/nutricao.js';
+import { calcularNutricao, interpretar } from '../lib/nutricao.js';
 
 const router = Router();
 const diasAte = (data) => Math.max(0, Math.ceil((new Date(data) - Date.now()) / 864e5));
@@ -170,7 +170,19 @@ router.get('/receitas', requireMember, async (req, res) => {
 router.get('/receitas/:id', requireMember, async (req, res) => {
   const r = (await receitasLiberadas()).find((x) => x.id === req.params.id);
   if (!r) return res.status(404).json({ error: 'receita não encontrada ou ainda não liberada' });
-  res.json({ receita: { ...receitaPublica(r, req.usuario), ingredientes: r.ingredientes || [], passos: r.passos || [], dicas: r.dicas || '' } });
+  // ingredientes normalizados: texto original + qtd/unidade/item interpretados
+  // (permite escalar as porções mesmo quando a receita vem como texto corrido)
+  const ingredientes = (r.ingredientes || []).map((i) => {
+    const texto = String(i?.item ?? i ?? '');
+    const p = interpretar(i, texto);
+    return {
+      texto,
+      qtd: p.qtd != null ? String(p.qtd).replace('.', ',') : '',
+      unidade: p.unidade || '',
+      item: p.itemLimpo || texto,
+    };
+  });
+  res.json({ receita: { ...receitaPublica(r, req.usuario), ingredientes, passos: r.passos || [], dicas: r.dicas || '' } });
 });
 
 // ---------- Favoritos ----------

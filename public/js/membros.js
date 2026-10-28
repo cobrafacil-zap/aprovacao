@@ -183,11 +183,10 @@
   const recemLiberada = (r) =>
     r.data_liberacao && Date.now() - new Date(r.data_liberacao).getTime() < 7 * 864e5;
 
-  // kcal só quando o cálculo é confiável (>=60% dos ingredientes reconhecidos)
+  // kcal sempre que houver cálculo (as receitas são preenchidas do mesmo jeito)
   function kcalConfiavel(r) {
     const n = r.nutricao_aprox;
-    if (!n || !n.kcal_por_porcao || !n.total_ingredientes) return null;
-    return n.ingredientes_calculados / n.total_ingredientes >= 0.6 ? n.kcal_por_porcao : null;
+    return n && n.kcal_por_porcao > 0 ? n.kcal_por_porcao : null;
   }
 
   // Card PADRONIZADO: selos na foto, título com altura fixa, info sempre igual
@@ -205,6 +204,7 @@
         </div>
         <div class="corpo">
           <h3>${r.nome}</h3>
+          <div class="tags-linha">${(r.tags || []).slice(0, 2).map((t) => `<span class="tag">${t.replace(/-/g, ' ')}</span>`).join('')}</div>
           <div class="meta">
             <span class="meta-chip">⏱ ${r.tempo_preparo_min ?? '—'} min</span>
             ${kcal ? `<span class="meta-chip kcal">🔥 ~${kcal} kcal</span>` : ''}

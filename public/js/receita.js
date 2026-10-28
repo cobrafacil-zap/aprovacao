@@ -80,15 +80,14 @@
         <div class="nutri"><strong>${(r.ingredientes || []).length}</strong><span>ingredientes</span></div>
         <div class="nutri"><strong>${(r.passos || []).length}</strong><span>etapas</span></div>
       </div>
-
-      <h2 class="titulo-secao">Informação nutricional (aproximada)</h2>
-      ${nutricaoHtml(r)}
       ${(r.dificuldade || r.custo) ? `
       <div class="nutricao mt-1">
         ${r.dificuldade ? `<div class="nutri"><strong>${rotulo[r.dificuldade] || r.dificuldade}</strong><span>dificuldade</span></div>` : ''}
         ${r.custo ? `<div class="nutri"><strong>${rotulo[r.custo] || r.custo}</strong><span>custo estimado</span></div>` : ''}
       </div>` : ''}
 
+      <h2 class="titulo-secao">Informação nutricional (aproximada)</h2>
+      ${nutricaoHtml(r)}
       <div class="ingredientes-topo">
         <h2 class="titulo-secao">Ingredientes</h2>
         <div class="porcoes-stepper" aria-label="Ajustar porções">
@@ -116,7 +115,9 @@
     $('#mais-porcao').addEventListener('click', () => { if (porcoes < 50) { porcoes++; renderIngredientes(); } });
     $('#btn-add-lista').addEventListener('click', async () => {
       const itens = (r.ingredientes || []).map((i) => ({
-        qtd: escalarQtd(i.qtd, fatorAtual()), unidade: i.unidade || '', item: i.item || String(i),
+        qtd: i.qtd ? escalarQtd(i.qtd, fatorAtual()) : '',
+        unidade: i.unidade || '',
+        item: i.item || i.texto || String(i),
       }));
       await post('/api/membros/lista/adicionar', { itens, receita: r.nome });
       toast(`Ingredientes (${porcoes} porção(ões)) na lista de compras! 🛒`);
@@ -145,7 +146,6 @@
 
   function nutricaoHtml(r) {
     const n = r.nutricao_aprox || {};
-    if (!n.kcal_por_porcao) return '<p class="cinza">Cálculo disponível para esta receita.</p>';
     return `
       <div class="nutricao">
         <div class="nutri"><strong>🔥 ${n.kcal_por_porcao}</strong><span>kcal/porção</span></div>
@@ -159,11 +159,18 @@
 
   function renderIngredientes() {
     $('#porcoes-qtd').textContent = porcoes;
-    $('#lista-ingredientes').innerHTML = (receita.ingredientes || []).map((i, idx) => `
+    $('#lista-ingredientes').innerHTML = (receita.ingredientes || []).map((i, idx) => {
+      // ingrediente normalizado: qtd/unidade/item vêm do servidor; se não houver
+      // quantidade reconhecida, exibe o texto original sem escalar
+      const temQtd = i.qtd || i.unidade;
+      const linha = temQtd
+        ? `<strong>${escalarQtd(i.qtd || 1, fatorAtual())}${i.unidade ? ' ' + i.unidade : ''}</strong> ${i.item || ''}`
+        : `${i.texto || i.item || ''}`;
+      return `
       <li class="ing-check ${checks.has(idx) ? 'marcado' : ''}" data-idx="${idx}">
         <span class="check-box">✓</span>
-        <span class="ing-texto"><strong>${escalarQtd(i.qtd, fatorAtual())}${i.unidade ? ' ' + i.unidade : ''}</strong> ${i.item || i}</span>
-      </li>`).join('');
+        <span class="ing-texto">${linha}</span>
+      </li>`;}).join('');
     $$('#lista-ingredientes .ing-check').forEach((li) =>
       li.addEventListener('click', () => {
         const idx = Number(li.dataset.idx);
@@ -211,6 +218,7 @@
           </div>
           <div class="corpo">
             <h3>${x.nome}</h3>
+            <div class="tags-linha">${(x.tags || []).slice(0, 2).map((t) => `<span class="tag">${t.replace(/-/g, ' ')}</span>`).join('')}</div>
             <div class="meta">
               <span class="meta-chip">⏱ ${x.tempo_preparo_min ?? '—'} min</span>
               ${kcal ? `<span class="meta-chip kcal">🔥 ~${kcal} kcal</span>` : ''}
