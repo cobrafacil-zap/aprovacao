@@ -47,10 +47,11 @@
     "produto": "Acesso vitalício — Oferta Fit BR",
     "valor": 19.9,
     "metodo": "pix",
-    "status": "aguardando",
+    "status": "abandonado",
     "criadoEm": "2026-10-28T19:35:16.556Z",
     "utm": null,
-    "acessoLiberado": false
+    "acessoLiberado": false,
+    "abandonadoEm": "2026-10-28T20:11:21.521Z"
   },
   {
     "id": "ped_mvsin0uxgshq36",
@@ -59,10 +60,11 @@
     "produto": "Acesso vitalício — Oferta Fit BR",
     "valor": 19.9,
     "metodo": "boleto",
-    "status": "aguardando",
+    "status": "abandonado",
     "criadoEm": "2026-10-28T19:37:02.745Z",
     "utm": null,
-    "acessoLiberado": false
+    "acessoLiberado": false,
+    "abandonadoEm": "2026-10-28T20:11:21.521Z"
   },
   {
     "id": "ped_mvsipfuu7dnfrv",
@@ -71,10 +73,11 @@
     "produto": "Acesso vitalício — Oferta Fit BR",
     "valor": 19.9,
     "metodo": "pix",
-    "status": "aguardando",
+    "status": "abandonado",
     "criadoEm": "2026-10-28T19:38:55.495Z",
     "utm": null,
-    "acessoLiberado": false
+    "acessoLiberado": false,
+    "abandonadoEm": "2026-10-28T20:11:21.522Z"
   },
   {
     "id": "ped_mvsiqxhe9hjaan",
@@ -83,12 +86,13 @@
     "produto": "Acesso vitalício — Oferta Fit BR",
     "valor": 19.9,
     "metodo": "pix",
-    "status": "aguardando",
+    "status": "abandonado",
     "criadoEm": "2026-10-28T19:40:04.994Z",
     "utm": null,
     "acessoLiberado": false,
     "mpOrderId": "ORD01M620DQXZWNFFFVJJ3SJZMT9K",
-    "mpStatus": "action_required"
+    "mpStatus": "action_required",
+    "abandonadoEm": "2026-10-28T20:11:21.522Z"
   },
   {
     "id": "ped_mvsj05lrx6ibbr",

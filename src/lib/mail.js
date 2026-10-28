@@ -78,7 +78,7 @@ export function shell(titulo, corpo) {
             ${corpo}
           </td></tr>
           <tr><td style="background:#16266E;border-radius:0 0 18px 18px;padding:20px 28px;font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:1.7;color:#C6CEF7">
-            <strong style="color:#FFC61A">Oferta Fit BR</strong> — comer melhor sem complicar.<br />
+            <strong style="color:#FFC61A">Livro de Receitas Digital da Núbia</strong> — comer melhor sem complicar.<br />
             Dúvidas? Responda este e-mail ou escreva para ${process.env.FROM_EMAIL || 'suporte@ofertafitbr.com'}.<br /><br />
             <span style="opacity:.85">Este conteúdo é informativo e não substitui acompanhamento de nutricionista ou médico.</span>
           </td></tr>
@@ -91,10 +91,18 @@ export function shell(titulo, corpo) {
 const corpo = (html) => `
   <p style="margin:0 0 12px;font-size:15px;color:#0E1330;line-height:1.65">${html}</p>`;
 
+// Assinatura pessoal da criadora do produto
+const assinatura = () => `
+  <p style="margin:18px 0 0;font-size:15px;color:#0E1330;line-height:1.65">
+    Com carinho,<br />
+    <strong style="font-size:16px;color:#2743D6">Núbia</strong><br />
+    <span style="color:#5B627E;font-size:13px">Livro de Receitas Digital da Núbia • Oferta Fit BR</span>
+  </p>`;
+
 // ---------- 1. Pagamento aprovado ----------
 export const emailCompra = (nome, urlAcesso) =>
   shell(`Pagamento aprovado — bem-vindo(a), ${nome}! 🎉`, `
-    ${corpo('Seu pagamento foi confirmado e seu acesso à área de membros <strong>já está liberado</strong>.')}
+    ${corpo('Seu pagamento foi confirmado e o acesso ao <strong>Livro de Receitas Digital da Núbia</strong> <strong>já está liberado</strong>.')}
     ${botao(urlAcesso, 'Entrar na área de membros')}
     <p style="margin:6px 0 4px;font-size:15px;font-weight:bold;color:#0E1330">O que fazer agora:</p>
     <table width="100%" cellpadding="0" cellspacing="0" border="0">
@@ -103,12 +111,13 @@ export const emailCompra = (nome, urlAcesso) =>
       ${passo(3, 'Gere sua lista de compras', 'Selecione as receitas e a lista sai pronta para a feira.')}
     </table>
     ${corpo('E fique atenta(o): <strong>toda semana entra uma receita nova</strong> na sua conta — você recebe um aviso por e-mail quando ela for liberada.')}
+    ${assinatura()}
   `);
 
 // ---------- 2. Definir senha (primeiro acesso / redefinição) ----------
 export const emailDefinirSenha = (nome, url) =>
   shell(`Crie seu acesso, ${nome} 🔑`, `
-    ${corpo('Sua conta já está criada. É só definir uma senha para entrar na área de membros.')}
+    ${corpo('Sua conta já está criada. É só definir uma senha para entrar na área de membros do <strong>Livro de Receitas Digital da Núbia</strong>.')}
     ${botao(url, 'Definir minha senha')}
     ${corpo('<span style="color:#5B627E;font-size:13px">O link é válido por 7 dias. Se você já tem senha, é só ignorar este e-mail e entrar normalmente.</span>')}
   `);
@@ -124,6 +133,7 @@ export const emailBoasVindas = (nome, urlAcesso) =>
       ${passo(3, 'Cozinhe e registre', 'Marque as receitas como feitas e acompanhe sua evolução na cozinha.')}
     </table>
     ${corpo('Qualquer dúvida, é só responder este e-mail — estamos aqui para ajudar.')}
+    ${assinatura()}
   `);
 
 // ---------- 4. Nova receita da semana ----------

@@ -19,7 +19,7 @@ async function novoPedido({ nome, email, metodo, utm }) {
     id: id('ped'),
     nome,
     email: String(email).toLowerCase(),
-    produto: 'Acesso vitalício — Oferta Fit BR',
+    produto: (await read('settings', {})).nomeProduto || 'Livro de Receitas Digital da Núbia',
     valor: await VALOR(),
     metodo, // pix | cartao | boleto
     status: 'aguardando', // aguardando | pago | abandonado | estornado
