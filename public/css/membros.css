@@ -42,6 +42,27 @@
   color: var(--azul-escuro); font-weight: 800; display: grid; place-items: center; font-size: 0.95rem;
 }
 .perfil-nome { font-size: 0.86rem; font-weight: 600; max-width: 110px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* ---------- Menu de navegação ---------- */
+.menu-btn {
+  width: 42px; height: 42px; border-radius: 14px; background: rgba(255, 255, 255, 0.12);
+  color: #fff; font-size: 1.35rem; display: grid; place-items: center; flex-shrink: 0;
+}
+.menu-btn:hover { background: rgba(255, 255, 255, 0.22); }
+.menu-painel {
+  position: absolute; left: 12px; right: 12px; top: calc(100% + 8px); z-index: 60;
+  background: #fff; border-radius: 18px; box-shadow: var(--sombra-forte);
+  padding: 8px; display: flex; flex-direction: column;
+}
+@media (min-width: 720px) { .menu-painel { left: auto; right: 20px; width: 300px; } }
+.menu-item {
+  display: flex; align-items: center; gap: 12px; padding: 13px 16px;
+  border-radius: 12px; font-size: 0.98rem; font-weight: 600; color: var(--tinta);
+  text-align: left; width: 100%;
+}
+.menu-item:hover { background: var(--azul-claro); color: var(--azul-escuro); }
+.menu-item--sair { color: var(--vermelho); }
+.menu-item--sair:hover { background: #FFECE8; color: var(--vermelho-escuro); }
 .btn-sair {
   color: #C6CEF7; font-size: 0.82rem; font-weight: 600; padding: 9px 12px;
   border-radius: 12px; transition: background 0.15s;

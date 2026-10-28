@@ -113,14 +113,41 @@
     location.href = 'login.html';
   });
 
-  // ================= ABAS =================
+  // ================= ABAS / NAVEGAÇÃO =================
+  function irParaAba(aba) {
+    $$('#abas-membros .chip').forEach((c) => c.classList.toggle('ativo', c.dataset.aba === aba));
+    ['receitas', 'favoritos', 'lista', 'historico'].forEach((a) =>
+      $(`#aba-${a}`).classList.toggle('oculto', a !== aba)
+    );
+  }
+
   $('#abas-membros').addEventListener('click', (e) => {
     const btn = e.target.closest('.chip');
     if (!btn) return;
-    $$('#abas-membros .chip').forEach((b) => b.classList.toggle('ativo', b === btn));
-    ['receitas', 'favoritos', 'lista', 'historico'].forEach((a) =>
-      $(`#aba-${a}`).classList.toggle('oculto', btn.dataset.aba !== a)
-    );
+    irParaAba(btn.dataset.aba);
+  });
+
+  // ================= MENU DE NAVEGAÇÃO =================
+  $('#btn-menu').addEventListener('click', (e) => {
+    e.stopPropagation();
+    $('#menu-painel').classList.toggle('oculto');
+  });
+  document.addEventListener('click', (e) => {
+    const painel = $('#menu-painel');
+    if (!painel.classList.contains('oculto') && !e.target.closest('#menu-painel') && !e.target.closest('#btn-menu')) {
+      painel.classList.add('oculto');
+    }
+  });
+  $$('#menu-painel [data-ir]').forEach((b) =>
+    b.addEventListener('click', () => {
+      $('#menu-painel').classList.add('oculto');
+      irParaAba(b.dataset.ir);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    })
+  );
+  $('#menu-perfil').addEventListener('click', () => {
+    $('#menu-painel').classList.add('oculto');
+    $('#btn-perfil').click();
   });
 
   // ================= RECEITAS =================
@@ -458,8 +485,7 @@
     fecharModal();
     await carregarLista();
     toast('Lista de compras gerada! 🛒');
-    $$('#abas-membros .chip').forEach((b) => b.classList.toggle('ativo', b.dataset.aba === 'lista'));
-    ['receitas', 'favoritos', 'lista', 'historico'].forEach((a) => $(`#aba-${a}`).classList.toggle('oculto', a !== 'lista'));
+    irParaAba('lista');
   });
 
   async function carregarLista() {

@@ -21,17 +21,30 @@
     </div>
   </div>
 
-  <!-- ===== Topo ===== -->
+  <!-- ===== Topo com menu de navegação ===== -->
   <header class="app-topo">
     <div class="container linha-flex">
-      <img class="logo" src="assets/logo.jpg" onerror="this.onerror=null;this.src='assets/logo.svg'" alt="Oferta Fit BR" />
+      <button class="menu-btn" id="btn-menu" aria-label="Abrir menu">☰</button>
+      <a href="index.html" title="Ir para o início do site">
+        <img class="logo" src="assets/logo.jpg" onerror="this.onerror=null;this.src='assets/logo.svg'" alt="Oferta Fit BR" />
+      </a>
       <div class="espaçador"></div>
       <button class="perfil-chip" id="btn-perfil" title="Meu perfil">
         <span class="avatar" id="avatar-inicial">?</span>
         <span class="perfil-nome" id="perfil-nome">Meu perfil</span>
       </button>
-      <button class="btn-sair" id="btn-sair">Sair</button>
     </div>
+
+    <nav class="menu-painel oculto" id="menu-painel">
+      <a class="menu-item" href="index.html">🏠 Início do site</a>
+      <button class="menu-item" data-ir="receitas">🍽 Receitas</button>
+      <button class="menu-item" data-ir="favoritos">❤️ Favoritos</button>
+      <button class="menu-item" data-ir="lista">🛒 Lista de compras</button>
+      <button class="menu-item" data-ir="historico">✅ Receitas que já fiz</button>
+      <button class="menu-item" id="menu-perfil">👤 Meu perfil</button>
+      <a class="menu-item" href="mailto:suporte@ofertafitbr.com">💬 Falar com o suporte</a>
+      <button class="menu-item menu-item--sair" id="btn-sair">🚪 Sair da conta</button>
+    </nav>
   </header>
 
   <main class="container" id="app" style="padding-bottom:80px">
