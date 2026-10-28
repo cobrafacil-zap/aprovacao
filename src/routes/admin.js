@@ -1,4 +1,4 @@
-// Painel administrativo: login, receitas (CRUD + foto + agendamento), alunos,
+// Painel administrativo: login, receitas (CRUD + foto + agendamento), membros,
 // pedidos, métricas e configurações.
 // Upload de foto: Vercel Blob em produção (BLOB_READ_WRITE_TOKEN);
 // sem token, grava em public/assets/receitas/ (desenvolvimento local).
@@ -11,7 +11,7 @@ import { read, write, id, agora } from '../lib/db.js';
 import { requireAdmin, criarSessao, destruirSessao, isSessaoAdmin, hashSenha } from '../lib/auth.js';
 import { resumo, track } from '../lib/analytics.js';
 import { liberarPendentes, receitasLiberadas, proximaReceita } from '../lib/release.js';
-import { sendEmail, emailNovaReceita, urlMembros } from '../lib/mail.js';
+import { sendEmail, emailNovaReceita, emailTeste, urlMembros } from '../lib/mail.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const UPLOAD_DIR = path.join(__dirname, '..', '..', 'public', 'assets', 'receitas');
@@ -166,8 +166,8 @@ router.post('/receitas/:id/publicar', async (req, res) => {
   res.json({ ok: true, receita: r, emails: membros.length });
 });
 
-// ---------- Alunos / acessos ----------
-router.get('/alunos', async (req, res) => {
+// ---------- Membros / acessos ----------
+router.get('/membros', async (req, res) => {
   const [usuarios, pedidos] = await Promise.all([read('users', []), read('orders', [])]);
   const lista = usuarios.map((u) => ({
     id: u.id, nome: u.nome, email: u.email, criadoEm: u.criadoEm,
@@ -175,13 +175,13 @@ router.get('/alunos', async (req, res) => {
     favoritos: (u.favoritos || []).length, feitas: (u.feitas || []).length,
     ultimoPedido: pedidos.filter((p) => p.email === u.email).slice(-1)[0] || null,
   }));
-  res.json({ alunos: lista });
+  res.json({ membros: lista });
 });
 
-router.post('/alunos/:id/acesso', async (req, res) => {
+router.post('/membros/:id/acesso', async (req, res) => {
   const users = await read('users', []);
   const u = users.find((x) => x.id === req.params.id);
-  if (!u) return res.status(404).json({ error: 'aluno não encontrado' });
+  if (!u) return res.status(404).json({ error: 'membro não encontrado' });
   u.acesso = u.acesso || {};
   u.acesso.ativo = req.body?.ativo !== false;
   if (u.acesso.ativo) {
@@ -192,13 +192,13 @@ router.post('/alunos/:id/acesso', async (req, res) => {
   res.json({ ok: true, acesso: u.acesso });
 });
 
-// Define/resetar a senha de um aluno (para quem perdeu o acesso)
-router.post('/alunos/:id/senha', async (req, res) => {
+// Define/resetar a senha de um membro (para quem perdeu o acesso)
+router.post('/membros/:id/senha', async (req, res) => {
   const { senha } = req.body || {};
   if (!senha || senha.length < 6) return res.status(400).json({ error: 'a senha precisa de pelo menos 6 caracteres' });
   const users = await read('users', []);
   const u = users.find((x) => x.id === req.params.id);
-  if (!u) return res.status(404).json({ error: 'aluno não encontrado' });
+  if (!u) return res.status(404).json({ error: 'membro não encontrado' });
   const { salt, hash } = hashSenha(senha);
   u.senhaSalt = salt;
   u.senhaHash = hash;
@@ -207,7 +207,7 @@ router.post('/alunos/:id/senha', async (req, res) => {
   res.json({ ok: true, email: u.email });
 });
 
-router.delete('/alunos/:id', async (req, res) => {
+router.delete('/membros/:id', async (req, res) => {
   await write('users', (await read('users', [])).filter((u) => u.id !== req.params.id));
   res.json({ ok: true });
 });
@@ -232,7 +232,7 @@ router.get('/metricas', async (req, res) => {
     liberadas: (await receitasLiberadas()).length,
     proxima: proxima ? { nome: proxima.nome, data: proxima.data_liberacao } : null,
   };
-  m.alunos = {
+  m.membros = {
     total: usuarios.length,
     ativos: usuarios.filter((u) => u.acesso?.ativo).length,
   };
@@ -263,7 +263,7 @@ router.put('/config', async (req, res) => {
 router.post('/email/teste', async (req, res) => {
   const { email } = req.body || {};
   if (!email?.includes('@')) return res.status(400).json({ error: 'informe um e-mail válido' });
-  const r = await sendEmail({ to: email, subject: 'Teste — Oferta Fit BR ✅', html: '<p>Seu e-mail está configurado corretamente!</p>' });
+  const r = await sendEmail({ to: email, subject: 'Teste — Oferta Fit BR ✅', html: emailTeste() });
   res.json({ ok: true, ...r });
 });
 

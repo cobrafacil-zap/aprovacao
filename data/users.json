@@ -225,5 +225,23 @@
       }
     ],
     "ultimaVisita": "2026-10-28T19:16:36.617Z"
+  },
+  {
+    "id": "usr_mvsj05p0oaqkau",
+    "nome": "Teste Email",
+    "email": "email.teste@example.com",
+    "senhaSalt": "2830aa60dfa94d0c23fd6a6224caf574",
+    "senhaHash": "a90e1d77f91e7c08b1b0f0870913f93947633afc156128ba1347dc8ecaf2d3ca644a2e7137a8e512fcff9634071be452a4b831216185b1ed8ae84d89be459bd8",
+    "senhaDefinida": false,
+    "criadoEm": "2026-10-28T19:47:15.540Z",
+    "acesso": {
+      "ativo": true,
+      "liberadoEm": "2026-10-28T19:47:15.540Z",
+      "pedidoId": "ped_mvsj05lrx6ibbr"
+    },
+    "favoritos": [],
+    "feitas": [],
+    "lista": [],
+    "ultimaVisita": null
   }
 ]

@@ -11,3 +11,6 @@ data/*.tmp
 .env.production
 .env.local
 .env.development
+
+# artefatos de pré-visualização de e-mails
+public/_preview-emails/

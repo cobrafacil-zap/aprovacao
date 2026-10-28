@@ -1,5 +1,5 @@
 // Painel administrativo: login, métricas (analytics), receitas (CRUD + foto +
-// agendamento), alunos & acessos, pedidos e configurações.
+// agendamento), membros & acessos, pedidos e configurações.
 (() => {
   const $ = (s) => document.querySelector(s);
   const $$ = (s) => document.querySelectorAll(s);
@@ -49,7 +49,7 @@
     $('#painel').classList.remove('oculto');
     carregarMetricas();
     carregarReceitas();
-    carregarAlunos();
+    carregarMembros();
     carregarPedidos();
     carregarConfig();
   }
@@ -59,7 +59,7 @@
     const btn = e.target.closest('button');
     if (!btn) return;
     $$('#abas-admin button').forEach((b) => b.classList.toggle('ativo', b === btn));
-    ['metricas', 'receitas', 'alunos', 'pedidos', 'config'].forEach((a) =>
+    ['metricas', 'receitas', 'membros', 'pedidos', 'config'].forEach((a) =>
       $(`#aba-${a}`).classList.toggle('oculto', btn.dataset.aba !== a)
     );
   });
@@ -76,7 +76,7 @@
       ['🧾 Checkouts abandonados', m.checkouts_abandonados, `${m.abandono_checkout}% de abandono`],
       ['💰 Vendas', m.vendas, `${m.conversao_vendas}% conversão de vendas`],
       ['📈 Receita', fmt(m.receita), `ticket médio ${fmt(m.ticket_medio)}`],
-      ['👥 Alunos ativos', m.alunos?.ativos ?? 0, `${m.alunos?.total ?? 0} contas criadas`],
+      ['👥 Membros ativos', m.membros?.ativos ?? 0, `${m.membros?.total ?? 0} contas criadas`],
       ['📚 Receitas liberadas', m.receitas?.liberadas ?? 0, `${m.receitas?.total ?? 0} no total`],
       ['📅 Próxima receita', m.receitas?.proxima ? new Date(m.receitas.proxima.data).toLocaleDateString('pt-BR') : '—', m.receitas?.proxima?.nome || 'sem agendamento'],
     ].map(([rotulo, valor, sub]) => `
@@ -286,11 +286,11 @@
     carregarReceitas();
   });
 
-  // ================= ALUNOS =================
-  async function carregarAlunos() {
-    const d = await api('/api/admin/alunos');
-    $('#tabela-alunos tbody').innerHTML = d.alunos.length
-      ? d.alunos.map((a) => `
+  // ================= MEMBROS =================
+  async function carregarMembros() {
+    const d = await api('/api/admin/membros');
+    $('#tabela-membros tbody').innerHTML = d.membros.length
+      ? d.membros.map((a) => `
         <tr>
           <td><strong>${a.nome}</strong></td>
           <td>${a.email}</td>
@@ -305,18 +305,18 @@
             </button>
           </td>
         </tr>`).join('')
-      : '<tr><td colspan="7" class="cinza">Nenhum aluno cadastrado ainda.</td></tr>';
+      : '<tr><td colspan="7" class="cinza">Nenhum membro cadastrado ainda.</td></tr>';
 
-    $$('#tabela-alunos [data-senha]').forEach((b) => b.addEventListener('click', async () => {
-      const senha = prompt('Defina a nova senha para este aluno (mín. 6 caracteres):');
+    $$('#tabela-membros [data-senha]').forEach((b) => b.addEventListener('click', async () => {
+      const senha = prompt('Defina a nova senha para este membro (mín. 6 caracteres):');
       if (!senha) return;
-      const r = await post(`/api/admin/alunos/${b.dataset.senha}/senha`, { senha });
+      const r = await post(`/api/admin/membros/${b.dataset.senha}/senha`, { senha });
       alert(r.ok ? 'Senha definida com sucesso!' : r.error || 'Erro ao definir senha');
     }));
 
-    $$('#tabela-alunos [data-acesso]').forEach((b) => b.addEventListener('click', async () => {
-      await post(`/api/admin/alunos/${b.dataset.acesso}/acesso`, { ativo: b.dataset.valor === 'true' });
-      carregarAlunos();
+    $$('#tabela-membros [data-acesso]').forEach((b) => b.addEventListener('click', async () => {
+      await post(`/api/admin/membros/${b.dataset.acesso}/acesso`, { ativo: b.dataset.valor === 'true' });
+      carregarMembros();
     }));
   }
 

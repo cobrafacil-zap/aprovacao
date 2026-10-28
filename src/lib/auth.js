@@ -79,7 +79,7 @@ export async function garantirConta({ nome, email, senha, pedidoId }) {
     const { salt, hash } = senha ? hashSenha(senha) : hashSenha(crypto.randomBytes(16).toString('hex'));
     u = {
       id: id('usr'),
-      nome: nome || 'Aluno',
+      nome: nome || 'Membro',
       email: String(email).toLowerCase(),
       senhaSalt: salt,
       senhaHash: hash,

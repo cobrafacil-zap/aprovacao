@@ -89,5 +89,18 @@
     "acessoLiberado": false,
     "mpOrderId": "ORD01M620DQXZWNFFFVJJ3SJZMT9K",
     "mpStatus": "action_required"
+  },
+  {
+    "id": "ped_mvsj05lrx6ibbr",
+    "nome": "Teste Email",
+    "email": "email.teste@example.com",
+    "produto": "Acesso vitalício — Oferta Fit BR",
+    "valor": 19.9,
+    "metodo": "pix",
+    "status": "pago",
+    "criadoEm": "2026-10-28T19:47:15.423Z",
+    "utm": null,
+    "acessoLiberado": true,
+    "pagoEm": "2026-10-28T19:47:15.514Z"
   }
 ]

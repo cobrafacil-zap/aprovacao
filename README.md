@@ -44,7 +44,7 @@ Ofertafitreceitas/
 │       ├── public.js          # /api/produto, /api/receitas/preview, /api/track
 │       ├── checkout.js        # /api/checkout/pedidos (Pix/cartão/boleto), aprovação, /api/checkout/webhook
 │       ├── members.js         # /api/membros/* (conta, receitas, favoritos, lista, histórico)
-│       └── admin.js           # /api/admin/* (receitas, alunos, pedidos, métricas, config)
+│       └── admin.js           # /api/admin/* (receitas, membros, pedidos, métricas, config)
 │
 ├── public/                    # tudo que o navegador baixa (servido estaticamente)
 │   ├── index.html             # 📣 PÁGINA DE VENDAS (12 seções — ver abaixo)
@@ -52,7 +52,7 @@ Ofertafitreceitas/
 │   ├── obrigado.html          # ✅ Confirmação + próximo passo
 │   ├── login.html             # 🔑 Login / cadastro / definir senha (pós-compra)
 │   ├── membros.html           # 👥 ÁREA DE MEMBROS (receitas, favoritos, lista, histórico)
-│   ├── admin.html             # ⚙️ PAINEL ADMIN (métricas, receitas, alunos, pedidos, config)
+│   ├── admin.html             # ⚙️ PAINEL ADMIN (métricas, receitas, membros, pedidos, config)
 │   ├── css/                   # base.css (design system) + vendas.css + membros.css + admin.css
 │   ├── js/                    # track.js (analytics) + vendas.js + checkout.js + membros.js + admin.js
 │   └── assets/
@@ -62,7 +62,7 @@ Ofertafitreceitas/
 │
 ├── data/                      # "banco de dados" em JSON (criado/atualizado em tempo real)
 │   ├── receitas.json          # receitas (conteúdo completo + data de liberação)
-│   ├── users.json             # alunos (acesso, favoritos, histórico, lista de compras)
+│   ├── users.json             # membros (acesso, favoritos, histórico, lista de compras)
 │   ├── orders.json            # pedidos (Pix/cartão/boleto, status, origem UTM)
 │   ├── events.json            # eventos de analytics
 │   └── settings.json          # preço, garantia, e-mail de suporte, senha do admin
@@ -108,7 +108,7 @@ receita e da lista • histórico de receitas já feitas.
 ### 6. Painel administrativo (`public/admin.html`)
 Senha única (`.env` / `settings.json`). Criação e edição de receitas com **upload de foto**,
 **agendamento de publicação** (data/hora) e botão "publicar agora" (dispara o e-mail);
-gestão de alunos (liberar/revogar acesso); pedidos; métricas integradas ao analytics;
+gestão de membros (liberar/revogar acesso); pedidos; métricas integradas ao analytics;
 configurações (preço, garantia, suporte, senha) e teste de e-mail.
 
 ### 7. Analytics (`src/lib/analytics.js`)

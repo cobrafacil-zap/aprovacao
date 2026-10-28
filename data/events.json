@@ -794,5 +794,33 @@
     "receitaId": null,
     "origem": "site",
     "dispositivo": null
+  },
+  {
+    "id": "evt_mvsj05lscur5t8",
+    "ts": "2026-10-28T19:47:15.424Z",
+    "sessao": null,
+    "tipo": "checkout_start",
+    "pagina": null,
+    "utm": null,
+    "referrer": null,
+    "valor": 19.9,
+    "pedidoId": "ped_mvsj05lrx6ibbr",
+    "receitaId": null,
+    "origem": "site",
+    "dispositivo": null
+  },
+  {
+    "id": "evt_mvsj05p1voyurf",
+    "ts": "2026-10-28T19:47:15.541Z",
+    "sessao": null,
+    "tipo": "purchase",
+    "pagina": null,
+    "utm": null,
+    "referrer": null,
+    "valor": 19.9,
+    "pedidoId": "ped_mvsj05lrx6ibbr",
+    "receitaId": null,
+    "origem": "checkout",
+    "dispositivo": null
   }
 ]

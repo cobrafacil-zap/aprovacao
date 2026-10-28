@@ -1,7 +1,7 @@
 # ✅ Checklist de Testes — Oferta Fit BR
 
 Como rodar: `npm i && npm start` e abra `http://localhost:3000`.
-Marque cada item após validar. Use duas janelas (ou aba anônima) para simular o aluno.
+Marque cada item após validar. Use duas janelas (ou aba anônima) para simular o membro.
 
 ---
 
@@ -44,12 +44,12 @@ Marque cada item após validar. Use duas janelas (ou aba anônima) para simular 
 
 | # | Teste | Como fazer | Esperado | ✓ |
 |---|---|---|---|---|
-| 4.1 | Conta criada automaticamente | Concluir compra com e-mail novo | Conta aparece em Admin → Alunos com acesso **ativo** | ☐ |
+| 4.1 | Conta criada automaticamente | Concluir compra com e-mail novo | Conta aparece em Admin → Membros com acesso **ativo** | ☐ |
 | 4.2 | Login do comprador | `login.html` com o e-mail da compra e a senha definida pelo link | Entra na área de membros com a saudação pelo nome | ☐ |
 | 4.3 | Área protegida | Abrir `membros.html` em aba anônima sem login | Redireciona para `login.html` (API responde 401) | ☐ |
 | 4.4 | Compra com conta existente | Comprar de novo com e-mail já cadastrado | Acesso mantido/liberado; sem duplicar conta | ☐ |
-| 4.5 | Revogar acesso | Admin → Alunos → "Revogar acesso" | Membro não consegue mais usar as APIs (403 "acesso inativo") | ☐ |
-| 4.6 | Reembolso/garantia | Revogar acesso + (fora do sistema) estornar no gateway | Pedido pode ser marcado como `estornado`; aluno sem acesso | ☐ |
+| 4.5 | Revogar acesso | Admin → Membros → "Revogar acesso" | Membro não consegue mais usar as APIs (403 "acesso inativo") | ☐ |
+| 4.6 | Reembolso/garantia | Revogar acesso + (fora do sistema) estornar no gateway | Pedido pode ser marcado como `estornado`; membro sem acesso | ☐ |
 
 ## 5. 📱 Responsividade (mobile primeiro)
 

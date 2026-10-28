@@ -1,4 +1,4 @@
-// Utilitário: cria ou atualiza um usuário/aluno no banco (ativo, com senha).
+// Utilitário: cria ou atualiza um usuário/membro no banco (ativo, com senha).
 // Uso: node scripts/criar-usuario.mjs email senha [nome]
 // Com as variáveis do ambiente (ex.: --env-file=.env.production) grava em produção.
 import { read, write, id, agora, usaRedis } from '../src/lib/db.js';
