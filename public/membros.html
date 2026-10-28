@@ -4,33 +4,55 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Área de Membros — Oferta Fit BR</title>
+  <link rel="icon" type="image/jpeg" href="assets/logo.jpg" />
+  <link rel="icon" type="image/svg+xml" href="assets/logo.svg" />
   <link rel="stylesheet" href="css/base.css" />
   <link rel="stylesheet" href="css/membros.css" />
 </head>
-<body>
+<body class="app-membros">
+
+  <!-- ===== GATE DE ACESSO (login obrigatório antes de ver qualquer conteúdo) ===== -->
+  <div id="auth-gate">
+    <div class="gate-caixa">
+      <img class="gate-logo" src="assets/logo.jpg" onerror="this.onerror=null;this.src='assets/logo.svg'" alt="Oferta Fit BR" />
+      <div class="gate-spinner"></div>
+      <p id="gate-texto">Verificando seu acesso...</p>
+      <a class="btn btn--cta oculto" id="gate-entrar" href="login.html">Fazer login</a>
+    </div>
+  </div>
+
   <!-- ===== Topo ===== -->
   <header class="app-topo">
     <div class="container linha-flex">
-      <img class="logo" src="assets/logo.svg" alt="Oferta Fit BR" />
+      <img class="logo" src="assets/logo.jpg" onerror="this.onerror=null;this.src='assets/logo.svg'" alt="Oferta Fit BR" />
       <div class="espaçador"></div>
-      <div class="usuario" id="saudacao">Olá!</div>
-      <button class="btn btn--contorno" id="btn-sair" style="color:#fff;border-color:rgba(255,255,255,.35)">Sair</button>
+      <button class="perfil-chip" id="btn-perfil" title="Meu perfil">
+        <span class="avatar" id="avatar-inicial">?</span>
+        <span class="perfil-nome" id="perfil-nome">Meu perfil</span>
+      </button>
+      <button class="btn-sair" id="btn-sair">Sair</button>
     </div>
   </header>
 
-  <main class="container" style="padding-bottom:70px">
-    <!-- ===== Próxima receita ===== -->
-    <div class="proxima-banner mt-3" id="proxima-banner">
-      <div class="icone">📅</div>
+  <main class="container" id="app" style="padding-bottom:80px">
+
+    <!-- ===== Boas-vindas + estatísticas ===== -->
+    <section class="boas-vindas">
       <div>
-        <strong id="proxima-nome">Próxima receita chegando em breve!</strong>
-        <span class="pequeno" id="proxima-info">Toda semana entra uma receita nova na sua conta.</span>
+        <span class="rotulo">🥗 Sua cozinha fit</span>
+        <h1 id="saudacao">Olá!</h1>
+        <p class="bv-sub" id="bv-sub">Que tal preparar uma receita nova hoje?</p>
       </div>
-      <div class="contador" id="proxima-contador">—</div>
-    </div>
+      <div class="stats-grid">
+        <div class="stat"><strong id="stat-liberadas">0</strong><span>receitas liberadas</span></div>
+        <div class="stat"><strong id="stat-feitas">0</strong><span>você já fez</span></div>
+        <div class="stat"><strong id="stat-favoritos">0</strong><span>favoritas</span></div>
+        <div class="stat stat--destaque"><strong id="stat-proxima">—</strong><span id="stat-proxima-rotulo">próxima receita</span></div>
+      </div>
+    </section>
 
     <!-- ===== Abas ===== -->
-    <div class="filtros mt-3" id="abas-membros" style="margin-bottom:6px">
+    <div class="filtros abas-membros" id="abas-membros">
       <button class="chip ativo" data-aba="receitas">🍽 Receitas</button>
       <button class="chip" data-aba="favoritos">❤️ Favoritos</button>
       <button class="chip" data-aba="lista">🛒 Lista de compras</button>
@@ -41,7 +63,12 @@
     <section id="aba-receitas">
       <div class="busca-barra">
         <input type="search" id="busca" placeholder="🔍 Buscar receita, ingrediente ou tag..." />
-        <button class="btn btn--azul btn--pequeno" id="btn-lista">🛒 Gerar lista de compras</button>
+        <select id="ordenar" class="select-ordenar" aria-label="Ordenar receitas">
+          <option value="recentes">Mais recentes</option>
+          <option value="az">A – Z</option>
+          <option value="rapidas">Mais rápidas</option>
+        </select>
+        <button class="btn btn--cta btn--pequeno" id="btn-lista">🛒 Gerar lista</button>
       </div>
 
       <div class="filtros" id="filtros-categoria">
@@ -62,44 +89,66 @@
         <button class="chip" data-tag="rapido">Até 15 min</button>
       </div>
 
+      <div class="linha-resultado">
+        <span id="contador-resultados">Carregando receitas...</span>
+        <button class="link-limpar oculto" id="btn-limpar-filtros">✕ Limpar filtros</button>
+      </div>
+
       <div class="receita-grade" id="grade-receitas"></div>
-      <p class="cinza texto-centro mt-3 oculto" id="vazio-receitas">Nenhuma receita encontrada com esses filtros.</p>
+      <div class="estado-vazio oculto" id="vazio-receitas">
+        <div class="vazio-icone">🍳</div>
+        <h3>Nenhuma receita encontrada</h3>
+        <p class="cinza">Tente buscar outro termo ou limpar os filtros.</p>
+        <button class="btn btn--contorno btn--pequeno mt-2" onclick="document.querySelector('#btn-limpar-filtros').click()">Limpar filtros</button>
+      </div>
     </section>
 
     <!-- ===== ABA: FAVORITOS ===== -->
     <section id="aba-favoritos" class="oculto">
-      <h2 class="mt-3">Suas receitas favoritas ❤️</h2>
+      <h2 class="titulo-aba">Suas receitas favoritas ❤️</h2>
       <div class="receita-grade" id="grade-favoritos"></div>
-      <p class="cinza texto-centro mt-3 oculto" id="vazio-favoritos">Você ainda não marcou nenhuma receita como favorita. Toque no ❤️ de uma receita para salvá-la aqui.</p>
+      <div class="estado-vazio oculto" id="vazio-favoritos">
+        <div class="vazio-icone">❤️</div>
+        <h3>Nenhum favorito ainda</h3>
+        <p class="cinza">Toque no coração de uma receita para salvá-la aqui.</p>
+      </div>
     </section>
 
     <!-- ===== ABA: LISTA DE COMPRAS ===== -->
     <section id="aba-lista" class="oculto">
-      <h2 class="mt-3">Lista de compras 🛒</h2>
-      <p class="cinza pequeno">Gere a lista a partir das receitas que você vai fazer — os ingredientes iguais são somados automaticamente.</p>
+      <h2 class="titulo-aba">Lista de compras 🛒</h2>
+      <p class="cinza pequeno">Gere a lista a partir das receitas que você vai fazer — ingredientes iguais são somados automaticamente.</p>
 
       <div class="lista-card mt-2">
         <div class="cabeca">
           <h3>Minha lista da semana</h3>
           <div class="espaçador"></div>
-          <button class="btn btn--azul btn--pequeno" id="btn-imprimir-lista">🖨 Imprimir</button>
-          <button class="btn btn--contorno btn--pequeno" id="btn-limpar-lista">Limpar</button>
+          <button class="btn btn--contorno btn--pequeno" id="btn-imprimir-lista">🖨 Imprimir</button>
+          <button class="btn-mini-cinza" id="btn-limpar-lista">Limpar</button>
+        </div>
+        <div class="lista-progresso">
+          <div class="progresso-info"><span id="progresso-texto">0 de 0 itens</span><strong id="progresso-pct">0%</strong></div>
+          <div class="progresso-trilho"><i id="progresso-barra" style="width:0%"></i></div>
         </div>
         <div id="itens-lista"></div>
       </div>
 
       <div class="linha-flex mt-2">
-        <input id="novo-item" placeholder="Adicionar item à mão (ex.: 1 kg de tomate)" style="flex:1;padding:13px 16px;border-radius:14px;border:2px solid var(--borda);font-family:inherit" />
+        <input id="novo-item" placeholder="Adicionar item à mão (ex.: 1 kg de tomate)" class="input-flex" />
         <button class="btn btn--azul btn--pequeno" id="btn-add-item">Adicionar</button>
       </div>
     </section>
 
     <!-- ===== ABA: HISTÓRICO ===== -->
     <section id="aba-historico" class="oculto">
-      <h2 class="mt-3">Receitas que você já fez ✅</h2>
+      <h2 class="titulo-aba">Receitas que você já fez ✅</h2>
       <p class="cinza pequeno">Marque as receitas como feitas para acompanhar sua evolução na cozinha.</p>
       <div class="mt-2" id="lista-historico"></div>
-      <p class="cinza texto-centro mt-3 oculto" id="vazio-historico">Nenhuma receita marcada como feita ainda. Abra uma receita e toque em “Já fiz essa”.</p>
+      <div class="estado-vazio oculto" id="vazio-historico">
+        <div class="vazio-icone">👨‍🍳</div>
+        <h3>Nenhuma receita feita ainda</h3>
+        <p class="cinza">Abra uma receita e toque em “Já fiz essa” para começar seu histórico.</p>
+      </div>
     </section>
   </main>
 
@@ -108,6 +157,7 @@
     <div class="modal">
       <button class="fechar" id="fechar-modal">✕</button>
       <div id="modal-conteudo"></div>
+      <div class="modal-acoes-barra" id="modal-acoes"></div>
     </div>
   </div>
 
@@ -123,6 +173,40 @@
       </div>
     </div>
   </div>
+
+  <!-- ===== Modal perfil ===== -->
+  <div class="modal-fundo oculto" id="modal-perfil">
+    <div class="modal modal--pequeno">
+      <button class="fechar" id="fechar-modal-perfil">✕</button>
+      <div class="conteudo">
+        <h2>Meu perfil</h2>
+        <form id="form-perfil" class="mt-2">
+          <div class="campo">
+            <label for="perfil-email">E-mail</label>
+            <input id="perfil-email" type="email" disabled />
+          </div>
+          <div class="campo">
+            <label for="perfil-nome-input">Nome</label>
+            <input id="perfil-nome-input" type="text" required />
+          </div>
+          <hr style="border:none;border-top:1px solid var(--borda);margin:18px 0" />
+          <p class="pequeno cinza mb-2">Trocar senha (deixe em branco para não alterar)</p>
+          <div class="campo">
+            <label for="perfil-senha-atual">Senha atual</label>
+            <input id="perfil-senha-atual" type="password" autocomplete="current-password" />
+          </div>
+          <div class="campo">
+            <label for="perfil-senha-nova">Nova senha</label>
+            <input id="perfil-senha-nova" type="password" autocomplete="new-password" minlength="6" />
+          </div>
+          <button class="btn btn--azul btn--bloco" type="submit">Salvar alterações</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Toast ===== -->
+  <div id="toast" class="toast oculto"></div>
 
   <!-- ===== Área de impressão ===== -->
   <div class="area-impressao" id="area-impressao"></div>

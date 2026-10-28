@@ -144,6 +144,23 @@ h3 { font-size: clamp(1.15rem, 3vw, 1.45rem); }
 .compra-fixa .btn { flex: 1; padding: 14px 18px; }
 @media (min-width: 900px) { .compra-fixa { display: none; } }
 
+/* ============================================================
+   COMPONENTES DE LOGIN (usados por login.html e admin.html)
+   ============================================================ */
+.login-wrap { min-height: 100vh; display: grid; place-items: center; padding: 24px; background: linear-gradient(160deg, var(--azul) 0%, var(--azul-escuro) 100%); }
+.login-card { background: #fff; border-radius: var(--raio-grande); padding: 34px 28px; width: 100%; max-width: 420px; box-shadow: var(--sombra-forte); }
+.login-card .logo { height: 52px; margin: 0 auto 18px; }
+.abas-login { display: flex; background: var(--fundo); border-radius: 999px; padding: 5px; margin-bottom: 22px; }
+.abas-login button { flex: 1; padding: 11px; border-radius: 999px; font-weight: 700; font-size: 0.92rem; color: var(--cinza); }
+.abas-login button.ativo { background: var(--azul); color: #fff; }
+.erro-box { background: #FFECE8; color: var(--vermelho-escuro); border-radius: 12px; padding: 12px 16px; font-size: 0.87rem; margin-bottom: 14px; }
+.aviso-box { background: var(--amarelo-claro); color: #8A6A00; border-radius: 12px; padding: 12px 16px; font-size: 0.87rem; margin-bottom: 14px; }
+.btn-esqueci {
+  display: block; width: 100%; margin-top: 12px; color: var(--azul);
+  font-weight: 700; font-size: 0.88rem; padding: 8px; border-radius: 12px;
+}
+.btn-esqueci:hover { background: var(--azul-claro); }
+
 /* ---------- Rodapé ---------- */
 footer {
   background: var(--azul-escuro); color: #C6CEF7; padding: 40px 0 110px;

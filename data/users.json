@@ -1,1 +1,54 @@
-[]
+[
+  {
+    "id": "usr_mvse7jppm1ot4y",
+    "nome": "Curioso",
+    "email": "curioso@email.com",
+    "senhaSalt": "8103b90a882bd4febd7163707684e5b4",
+    "senhaHash": "2c5cf97ef2dd58820ade492c81fdc6caa403ca7415a1e3d954d66c9c597a258829a3965ca3e7531f9b6ea09fe74d3d3df9b1ee2939d5579f3d5d64b2eb8c5ef0",
+    "senhaDefinida": true,
+    "criadoEm": "2026-10-28T17:33:02.221Z",
+    "acesso": {
+      "ativo": false,
+      "liberadoEm": "2026-10-28T17:33:02.226Z",
+      "pedidoId": null,
+      "pendente": true
+    },
+    "favoritos": [],
+    "feitas": [],
+    "ultimaVisita": null
+  },
+  {
+    "id": "usr_mvse7jsdezn02c",
+    "nome": "Cliente Pago",
+    "email": "pago@email.com",
+    "senhaSalt": "35ff49702130b7c25bbe9a886363b358",
+    "senhaHash": "1e6f5608f7e1ea290e3cc73987937271b8d2f8eb92d170c86bc600b913141fbba4b5545c12ee7d78ca4d022584a65587826ef4ddfbe292996206764186ae3247",
+    "senhaDefinida": false,
+    "criadoEm": "2026-10-28T17:33:02.317Z",
+    "acesso": {
+      "ativo": true,
+      "liberadoEm": "2026-10-28T17:33:02.317Z",
+      "pedidoId": "ped_mvse7jqc0ngz0o"
+    },
+    "favoritos": [],
+    "feitas": [],
+    "ultimaVisita": null
+  },
+  {
+    "id": "usr_mvsef20711hvdo",
+    "nome": "Cliente Novo",
+    "email": "novo@email.com",
+    "senhaSalt": "00784cf0cebb7d2a293dfd5784f570fd",
+    "senhaHash": "353e55aa6583b93bedf34011339f2f7c138e646255adf3cf552f08cce0b3e1fdf536a5b78140f45b14ddca4aafa0ba7f2b02eb5271288a45ffc939a2ed34ded2",
+    "senhaDefinida": true,
+    "criadoEm": "2026-10-28T17:38:52.519Z",
+    "acesso": {
+      "ativo": true,
+      "liberadoEm": "2026-10-28T17:38:52.519Z",
+      "pedidoId": "ped_mvsef1y1nyqci6"
+    },
+    "favoritos": [],
+    "feitas": [],
+    "ultimaVisita": "2026-10-28T17:39:09.511Z"
+  }
+]

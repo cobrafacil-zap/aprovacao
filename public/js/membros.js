@@ -1,50 +1,94 @@
-// Área de membros: receitas liberadas, busca/filtros, favoritos, histórico,
-// lista de compras gerada e modo impressão de receita.
+// Área de membros: GATE DE LOGIN obrigatório, estatísticas, receitas liberadas,
+// busca/filtros/ordenação, favoritos, histórico, lista de compras com progresso,
+// modo impressão de receita e perfil (nome/senha).
 (() => {
   const $ = (s) => document.querySelector(s);
   const $$ = (s) => document.querySelectorAll(s);
+
+  // ================= API + GATE DE ACESSO =================
   const api = async (url, opts = {}) => {
     const r = await fetch(url, { headers: { 'Content-Type': 'application/json' }, ...opts });
-    if (r.status === 401) { location.href = 'login.html'; throw new Error('login'); }
+    if (r.status === 401) { negarAcesso('Faça login para continuar'); throw new Error('login'); }
+    if (r.status === 403) { negarAcesso('Seu acesso ainda não foi ativado'); throw new Error('acesso'); }
     return r.json();
   };
   const post = (url, body) => api(url, { method: 'POST', body: JSON.stringify(body || {}) });
+  const put = (url, body) => api(url, { method: 'PUT', body: JSON.stringify(body || {}) });
 
+  function negarAcesso(mensagem) {
+    const gate = $('#auth-gate');
+    gate.classList.remove('liberado');
+    $('#gate-texto').innerHTML = `<strong style="font-size:1.15rem;display:block;margin-bottom:6px">${mensagem}</strong>
+      <span style="font-size:.9rem">Entre com o e-mail usado na compra.<br>Comprou e não ativou? Fale com o suporte.</span>`;
+    gate.querySelector('.gate-spinner').style.display = 'none';
+    const btn = $('#gate-entrar');
+    btn.classList.remove('oculto');
+    btn.textContent = 'Ir para o login';
+  }
+
+  function liberarAcesso() {
+    $('#auth-gate').classList.add('liberado');
+    document.body.style.overflow = '';
+  }
+  document.body.style.overflow = 'hidden';
+
+  // ================= TOAST =================
+  let toastTimer;
+  function toast(mensagem, tipo = 'sucesso') {
+    const t = $('#toast');
+    t.textContent = mensagem;
+    t.className = `toast visivel ${tipo}`;
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove('visivel'), 2600);
+  }
+
+  // ================= ESTADO =================
   let usuario = null;
   let receitas = [];
-  let filtros = { q: '', categoria: '', tags: [] };
+  let filtros = { q: '', categoria: '', tags: [], ordenar: 'recentes' };
 
   // ================= BOOT =================
   (async () => {
     try {
       const eu = await api('/api/membros/eu');
       usuario = eu.usuario;
-      $('#saudacao').textContent = `Olá, ${usuario.nome.split(' ')[0]}! 👋`;
-      renderizarProxima(eu.proxima);
+      renderizarCabecalho();
+      renderizarStats(eu);
+      liberarAcesso();
       await carregarReceitas();
       await carregarFavoritos();
       await carregarHistorico();
       await carregarLista();
-    } catch {}
+    } catch {
+      /* o gate já cuida da mensagem */
+    }
   })();
+
+  function renderizarCabecalho() {
+    $('#avatar-inicial').textContent = (usuario.nome || '?').trim()[0].toUpperCase();
+    $('#perfil-nome').textContent = usuario.nome.split(' ')[0];
+    $('#saudacao').textContent = `Olá, ${usuario.nome.split(' ')[0]}! 👋`;
+  }
+
+  function renderizarStats(eu) {
+    $('#stat-liberadas').textContent = eu.receitas_liberadas;
+    $('#stat-feitas').textContent = (eu.usuario.feitas || []).length;
+    $('#stat-favoritos').textContent = (eu.usuario.favoritos || []).length;
+    if (eu.proxima) {
+      $('#stat-proxima').textContent = `${eu.proxima.dias}d`;
+      $('#stat-proxima-rotulo').textContent = `para "${eu.proxima.nome}"`;
+      $('#bv-sub').textContent = `A receita "${eu.proxima.nome}" libera em ${eu.proxima.dias} dia(s) — enquanto isso, que tal fazer uma das de hoje?`;
+    } else {
+      $('#stat-proxima').textContent = '✓';
+      $('#stat-proxima-rotulo').textContent = 'biblioteca completa';
+      $('#bv-sub').textContent = 'Toda a biblioteca já está liberada. Bom apetite!';
+    }
+  }
 
   $('#btn-sair').addEventListener('click', async () => {
     await post('/api/membros/sair');
     location.href = 'login.html';
   });
-
-  // ================= PRÓXIMA RECEITA =================
-  function renderizarProxima(prox) {
-    if (!prox) {
-      $('#proxima-nome').textContent = 'Biblioteca completa liberada! 🎉';
-      $('#proxima-info').textContent = 'Assim que uma nova receita for agendada, ela aparece aqui.';
-      $('#proxima-contador').textContent = '✓';
-      return;
-    }
-    $('#proxima-nome').textContent = `Próxima receita: ${prox.nome}`;
-    $('#proxima-info').textContent = `Será liberada automaticamente em ${new Date(prox.data).toLocaleDateString('pt-BR')} — você recebe um e-mail avisando.`;
-    $('#proxima-contador').textContent = prox.dias <= 0 ? 'hoje!' : `${prox.dias} dia${prox.dias > 1 ? 's' : ''}`;
-  }
 
   // ================= ABAS =================
   $('#abas-membros').addEventListener('click', (e) => {
@@ -63,20 +107,39 @@
     if (filtros.categoria) params.set('categoria', filtros.categoria);
     if (filtros.tags.length) params.set('tags', filtros.tags.join(','));
     const d = await api(`/api/membros/receitas?${params}`);
-    receitas = d.receitas;
+    receitas = ordenar(d.receitas);
+
     renderizarGrade('#grade-receitas', receitas, '#vazio-receitas');
-    if (d.proxima) renderizarProxima(d.proxima);
+    $('#contador-resultados').textContent =
+      `${receitas.length} receita${receitas.length !== 1 ? 's' : ''} encontrada${receitas.length !== 1 ? 's' : ''}`;
+    const filtrando = filtros.q || filtros.categoria || filtros.tags.length;
+    $('#btn-limpar-filtros').classList.toggle('oculto', !filtrando);
+    if (d.proxima) renderizarStats({ ...usuario, proxima: d.proxima, receitas_liberadas: receitas.length, usuario });
+  }
+
+  function ordenar(lista) {
+    const l = [...lista];
+    if (filtros.ordenar === 'az') return l.sort((a, b) => a.nome.localeCompare(b.nome, 'pt-BR'));
+    if (filtros.ordenar === 'rapidas') return l.sort((a, b) => a.tempo_preparo_min - b.tempo_preparo_min);
+    return l.sort((a, b) => new Date(b.data_liberacao) - new Date(a.data_liberacao));
   }
 
   function cardReceita(r) {
     return `
       <article class="receita-card" data-id="${r.id}">
-        ${r.feita ? '<span class="feita-selo">✓ já feita</span>' : ''}
-        <button class="favorito" data-fav="${r.id}" aria-label="Favoritar">${r.favorito ? '❤️' : '🤍'}</button>
-        <img class="foto" src="${r.foto || '/assets/receitas/bowl-frango-quinoa.svg'}" alt="${r.nome}" />
+        <div class="foto-wrap">
+          ${r.feita ? '<span class="feita-selo">✓ já feita</span>' : ''}
+          <button class="favorito" data-fav="${r.id}" aria-label="Favoritar">${r.favorito ? '❤️' : '🤍'}</button>
+          <img class="foto" src="${r.foto || '/assets/receitas/bowl-frango-quinoa.svg'}" alt="${r.nome}" />
+          <span class="cat-badge">${(r.categoria || '').replace(/-/g, ' ')}</span>
+        </div>
         <div class="corpo">
           <h3>${r.nome}</h3>
-          <div class="meta">⏱ ${r.tempo_preparo_min} min • 🍽 ${r.porcoes} porção(ões)${r.nutricao?.calorias ? ` • 🔥 ${r.nutricao.calorias} kcal` : ''}</div>
+          <div class="meta">
+            <span class="meta-chip">⏱ ${r.tempo_preparo_min} min</span>
+            <span class="meta-chip">🍽 ${r.porcoes} porção(ões)</span>
+            ${r.nutricao?.calorias ? `<span class="meta-chip kcal">🔥 ${r.nutricao.calorias} kcal</span>` : ''}
+          </div>
           <div class="tags">${(r.tags || []).slice(0, 3).map((t) => `<span class="tag">${t.replace(/-/g, ' ')}</span>`).join('')}</div>
         </div>
       </article>`;
@@ -96,18 +159,20 @@
       b.addEventListener('click', async (e) => {
         e.stopPropagation();
         await post(`/api/membros/favoritos/${b.dataset.fav}`);
+        toast('Favoritos atualizados ❤️');
         await carregarReceitas();
         await carregarFavoritos();
       })
     );
   }
 
-  // Busca e filtros
+  // Busca, ordenação e filtros
   let buscaTimer;
   $('#busca').addEventListener('input', (e) => {
     clearTimeout(buscaTimer);
     buscaTimer = setTimeout(() => { filtros.q = e.target.value.trim(); carregarReceitas(); }, 280);
   });
+  $('#ordenar').addEventListener('change', (e) => { filtros.ordenar = e.target.value; carregarReceitas(); });
   $('#filtros-categoria').addEventListener('click', (e) => {
     const btn = e.target.closest('.chip');
     if (!btn) return;
@@ -120,6 +185,13 @@
     if (!btn) return;
     btn.classList.toggle('ativo');
     filtros.tags = [...$$('#filtros-tag .chip.ativo')].map((b) => b.dataset.tag);
+    carregarReceitas();
+  });
+  $('#btn-limpar-filtros').addEventListener('click', () => {
+    filtros = { q: '', categoria: '', tags: [], ordenar: filtros.ordenar };
+    $('#busca').value = '';
+    $$('#filtros-categoria .chip').forEach((b) => b.classList.toggle('ativo', b.dataset.categoria === ''));
+    $$('#filtros-tag .chip').forEach((b) => b.classList.remove('ativo'));
     carregarReceitas();
   });
 
@@ -162,27 +234,26 @@
         de nutricionista ou médico.</div>` : ''}
 
         ${r.dicas ? `<h4>Dicas</h4><p class="cinza">${r.dicas}</p>` : ''}
-
-        <div class="modal-acoes">
-          <button class="btn btn--azul" id="btn-feita">${r.feita ? '✓ Já feita (desmarcar)' : '✅ Já fiz essa'}</button>
-          <button class="btn btn--contorno" id="btn-fav-modal">${r.favorito ? '❤️ Nos favoritos' : '🤍 Favoritar'}</button>
-          <button class="btn btn--cta" id="btn-imprimir">🖨 Imprimir receita</button>
-        </div>
       </div>`;
+
+    $('#modal-acoes').innerHTML = `
+      <button class="btn btn--azul" id="btn-feita">${r.feita ? '✓ Já feita (desmarcar)' : '✅ Já fiz essa'}</button>
+      <button class="btn btn--contorno" id="btn-fav-modal">${r.favorito ? '❤️ Nos favoritos' : '🤍 Favoritar'}</button>
+      <button class="btn btn--cta" id="btn-imprimir">🖨 Imprimir</button>`;
 
     $('#modal-receita').classList.remove('oculto');
     document.body.style.overflow = 'hidden';
 
     $('#btn-feita').addEventListener('click', async () => {
       await post(`/api/membros/feitas/${r.id}`);
-      $('#modal-receita').classList.add('oculto');
-      document.body.style.overflow = '';
+      toast(r.feita ? 'Receita desmarcada' : 'Receita marcada como feita! 👨‍🍳');
+      fecharModal();
       await carregarReceitas(); await carregarHistorico(); await carregarFavoritos();
     });
     $('#btn-fav-modal').addEventListener('click', async () => {
       await post(`/api/membros/favoritos/${r.id}`);
-      $('#modal-receita').classList.add('oculto');
-      document.body.style.overflow = '';
+      toast('Favoritos atualizados ❤️');
+      fecharModal();
       await carregarReceitas(); await carregarFavoritos();
     });
     $('#btn-imprimir').addEventListener('click', () => imprimirReceita(r));
@@ -191,11 +262,15 @@
   function fecharModal() {
     $('#modal-receita').classList.add('oculto');
     $('#modal-lista').classList.add('oculto');
+    $('#modal-perfil').classList.add('oculto');
     document.body.style.overflow = '';
   }
   $('#fechar-modal').addEventListener('click', fecharModal);
   $('#fechar-modal-lista').addEventListener('click', fecharModal);
+  $('#fechar-modal-perfil').addEventListener('click', fecharModal);
   $('#modal-receita').addEventListener('click', (e) => { if (e.target.id === 'modal-receita') fecharModal(); });
+  $('#modal-lista').addEventListener('click', (e) => { if (e.target.id === 'modal-lista') fecharModal(); });
+  $('#modal-perfil').addEventListener('click', (e) => { if (e.target.id === 'modal-perfil') fecharModal(); });
 
   // ================= MODO IMPRESSÃO =================
   function imprimirReceita(r) {
@@ -216,9 +291,10 @@
   }
 
   $('#btn-imprimir-lista').addEventListener('click', () => {
+    const itens = usuario?.lista || [];
     $('#area-impressao').innerHTML = `
       <div class="imp-cabecalho"><div><h1>Lista de compras</h1><small>Oferta Fit BR</small></div></div>
-      <ul>${(usuario?.lista || []).map((i) => `<li>${[i.qtd, i.unidade, i.item].filter(Boolean).join(' ')} ${i.marcado ? '✓' : ''}</li>`).join('')}</ul>
+      <ul>${itens.map((i) => `<li>${[i.qtd, i.unidade, i.item].filter(Boolean).join(' ')} ${i.marcado ? '✓' : ''}</li>`).join('')}</ul>
       <div class="imp-rodape">Oferta Fit BR — comer melhor sem complicar</div>`;
     window.print();
   });
@@ -240,12 +316,13 @@
         <div class="data">feito em<br>${new Date(h.data).toLocaleDateString('pt-BR')}</div>
       </div>`).join('');
     $('#vazio-historico')?.classList.toggle('oculto', d.historico.length > 0);
+    if (usuario) $('#stat-feitas').textContent = d.historico.length;
   }
 
   // ================= LISTA DE COMPRAS =================
   $('#btn-lista').addEventListener('click', () => {
     $('#selecao-receitas').innerHTML = receitas.map((r) => `
-      <label class="lista-item" style="border-bottom:1px solid var(--borda);cursor:pointer">
+      <label class="lista-item" style="cursor:pointer">
         <input type="checkbox" value="${r.id}" />
         <div><strong>${r.nome}</strong><span class="de-receita">${(r.ingredientes?.length || 0)} ingredientes</span></div>
       </label>`).join('');
@@ -255,10 +332,11 @@
 
   $('#btn-gerar-lista').addEventListener('click', async () => {
     const ids = [...$$('#selecao-receitas input:checked')].map((i) => i.value);
-    if (!ids.length) return alert('Selecione ao menos uma receita.');
+    if (!ids.length) return toast('Selecione ao menos uma receita', 'erro');
     await post('/api/membros/lista/gerar', { receitaIds: ids });
     fecharModal();
     await carregarLista();
+    toast('Lista de compras gerada! 🛒');
     $$('#abas-membros .chip').forEach((b) => b.classList.toggle('ativo', b.dataset.aba === 'lista'));
     ['receitas', 'favoritos', 'lista', 'historico'].forEach((a) => $(`#aba-${a}`).classList.toggle('oculto', a !== 'lista'));
   });
@@ -266,7 +344,14 @@
   async function carregarLista() {
     const d = await api('/api/membros/lista');
     usuario = { ...usuario, lista: d.itens };
-    $('#itens-lista').innerHTML = d.itens.length
+
+    const total = d.itens.length;
+    const feitos = d.itens.filter((i) => i.marcado).length;
+    $('#progresso-texto').textContent = `${feitos} de ${total} itens`;
+    $('#progresso-pct').textContent = total ? `${Math.round((feitos / total) * 100)}%` : '0%';
+    $('#progresso-barra').style.width = total ? `${(feitos / total) * 100}%` : '0%';
+
+    $('#itens-lista').innerHTML = total
       ? d.itens.map((i, idx) => `
         <div class="lista-item ${i.marcado ? 'marcado' : ''}">
           <input type="checkbox" data-idx="${idx}" ${i.marcado ? 'checked' : ''} />
@@ -276,30 +361,70 @@
           </div>
           <button class="remover" data-del="${idx}">✕</button>
         </div>`).join('')
-      : `<div class="lista-item"><span class="cinza">Sua lista está vazia. Clique em “Gerar lista de compras” na aba Receitas.</span></div>`;
+      : `<div class="lista-item"><span class="cinza">Sua lista está vazia. Clique em “Gerar lista” para começar.</span></div>`;
 
     $$('#itens-lista input[data-idx]').forEach((c) =>
-      c.addEventListener('change', () => post('/api/membros/lista/marcar', { index: Number(c.dataset.idx), marcado: c.checked }).then(carregarLista))
+      c.addEventListener('change', async () => {
+        await post('/api/membros/lista/marcar', { index: Number(c.dataset.idx), marcado: c.checked });
+        carregarLista();
+      })
     );
     $$('#itens-lista [data-del]').forEach((b) =>
-      b.addEventListener('click', () => api(`/api/membros/lista/item/${b.dataset.del}`, { method: 'DELETE' }).then(carregarLista))
+      b.addEventListener('click', async () => {
+        await api(`/api/membros/lista/item/${b.dataset.del}`, { method: 'DELETE' });
+        carregarLista();
+      })
     );
   }
 
   $('#btn-add-item').addEventListener('click', async () => {
     const texto = $('#novo-item').value.trim();
-    if (!texto) return;
+    if (!texto) return toast('Digite o item antes de adicionar', 'erro');
     await post('/api/membros/lista/item', { texto });
     $('#novo-item').value = '';
+    toast('Item adicionado à lista');
     carregarLista();
+  });
+  $('#novo-item').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') $('#btn-add-item').click();
   });
   $('#btn-limpar-lista').addEventListener('click', async () => {
     if (!confirm('Limpar toda a lista de compras?')) return;
     await api('/api/membros/lista', { method: 'DELETE' });
+    toast('Lista limpa');
     carregarLista();
+  });
+
+  // ================= PERFIL =================
+  $('#btn-perfil').addEventListener('click', () => {
+    $('#perfil-email').value = usuario.email;
+    $('#perfil-nome-input').value = usuario.nome;
+    $('#perfil-senha-atual').value = '';
+    $('#perfil-senha-nova').value = '';
+    $('#modal-perfil').classList.remove('oculto');
+    document.body.style.overflow = 'hidden';
+  });
+
+  $('#form-perfil').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const nome = $('#perfil-nome-input').value.trim();
+    const senhaNova = $('#perfil-senha-nova').value;
+    const senhaAtual = $('#perfil-senha-atual').value;
+
+    if (senhaNova && !senhaAtual) return toast('Informe a senha atual para trocar a senha', 'erro');
+
+    try {
+      const r = await put('/api/membros/perfil', { nome, senhaAtual, senhaNova: senhaNova || undefined });
+      usuario.nome = r.usuario.nome;
+      renderizarCabecalho();
+      toast('Perfil atualizado! ✅');
+      fecharModal();
+    } catch (err) {
+      if (err.message !== 'login' && err.message !== 'acesso') toast('Não foi possível salvar o perfil', 'erro');
+    }
   });
 
   // Atalho: abre receita direto pelo link do e-mail (?receita=ID)
   const q = new URLSearchParams(location.search);
-  if (q.get('receita')) setTimeout(() => abrirReceita(q.get('receita')), 600);
+  if (q.get('receita')) setTimeout(() => abrirReceita(q.get('receita')), 700);
 })();

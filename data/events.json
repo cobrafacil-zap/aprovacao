@@ -1,1 +1,212 @@
-[]
+[
+  {
+    "id": "evt_mvse3p5skbwkpk",
+    "ts": "2026-10-28T17:30:02.656Z",
+    "sessao": "s_jkg051s5hmmvse3p5b",
+    "tipo": "pageview",
+    "pagina": "/membros.html",
+    "utm": {
+      "source": null,
+      "medium": null,
+      "campaign": null,
+      "content": null,
+      "term": null
+    },
+    "referrer": null,
+    "valor": null,
+    "pedidoId": null,
+    "receitaId": null,
+    "origem": "site",
+    "dispositivo": "desktop"
+  },
+  {
+    "id": "evt_mvse3p7irxaeo0",
+    "ts": "2026-10-28T17:30:02.718Z",
+    "sessao": "s_jkg051s5hmmvse3p5b",
+    "tipo": "pageview",
+    "pagina": "/login.html",
+    "utm": {
+      "source": null,
+      "medium": null,
+      "campaign": null,
+      "content": null,
+      "term": null
+    },
+    "referrer": "http://localhost:3000/membros.html",
+    "valor": null,
+    "pedidoId": null,
+    "receitaId": null,
+    "origem": "site",
+    "dispositivo": "desktop"
+  },
+  {
+    "id": "evt_mvse7jpvpapvn0",
+    "ts": "2026-10-28T17:33:02.227Z",
+    "sessao": null,
+    "tipo": "signup",
+    "pagina": null,
+    "utm": null,
+    "referrer": null,
+    "valor": null,
+    "pedidoId": null,
+    "receitaId": null,
+    "origem": "membros",
+    "dispositivo": null
+  },
+  {
+    "id": "evt_mvse7jqch14zlp",
+    "ts": "2026-10-28T17:33:02.244Z",
+    "sessao": null,
+    "tipo": "checkout_start",
+    "pagina": null,
+    "utm": null,
+    "referrer": null,
+    "valor": 19.9,
+    "pedidoId": "ped_mvse7jqc0ngz0o",
+    "receitaId": null,
+    "origem": "site",
+    "dispositivo": null
+  },
+  {
+    "id": "evt_mvse7jse2keiwd",
+    "ts": "2026-10-28T17:33:02.318Z",
+    "sessao": null,
+    "tipo": "purchase",
+    "pagina": null,
+    "utm": null,
+    "referrer": null,
+    "valor": 19.9,
+    "pedidoId": "ped_mvse7jqc0ngz0o",
+    "receitaId": null,
+    "origem": "checkout",
+    "dispositivo": null
+  },
+  {
+    "id": "evt_mvsef1y2pfx5g0",
+    "ts": "2026-10-28T17:38:52.442Z",
+    "sessao": null,
+    "tipo": "checkout_start",
+    "pagina": null,
+    "utm": null,
+    "referrer": null,
+    "valor": 19.9,
+    "pedidoId": "ped_mvsef1y1nyqci6",
+    "receitaId": null,
+    "origem": "site",
+    "dispositivo": null
+  },
+  {
+    "id": "evt_mvsef2083289tm",
+    "ts": "2026-10-28T17:38:52.520Z",
+    "sessao": null,
+    "tipo": "purchase",
+    "pagina": null,
+    "utm": null,
+    "referrer": null,
+    "valor": 19.9,
+    "pedidoId": "ped_mvsef1y1nyqci6",
+    "receitaId": null,
+    "origem": "checkout",
+    "dispositivo": null
+  },
+  {
+    "id": "evt_mvsefevjcsjtd7",
+    "ts": "2026-10-28T17:39:09.199Z",
+    "sessao": "s_jkg051s5hmmvse3p5b",
+    "tipo": "pageview",
+    "pagina": "/login.html",
+    "utm": {
+      "source": null,
+      "medium": null,
+      "campaign": null,
+      "content": null,
+      "term": null
+    },
+    "referrer": null,
+    "valor": null,
+    "pedidoId": null,
+    "receitaId": null,
+    "origem": "site",
+    "dispositivo": "desktop"
+  },
+  {
+    "id": "evt_mvseffaj6yv7zo",
+    "ts": "2026-10-28T17:39:09.739Z",
+    "sessao": "s_jkg051s5hmmvse3p5b",
+    "tipo": "pageview",
+    "pagina": "/membros.html",
+    "utm": {
+      "source": null,
+      "medium": null,
+      "campaign": null,
+      "content": null,
+      "term": null
+    },
+    "referrer": null,
+    "valor": null,
+    "pedidoId": null,
+    "receitaId": null,
+    "origem": "site",
+    "dispositivo": "desktop"
+  },
+  {
+    "id": "evt_mvsefqye5rqsvd",
+    "ts": "2026-10-28T17:39:24.854Z",
+    "sessao": "s_jkg051s5hmmvse3p5b",
+    "tipo": "pageview",
+    "pagina": "/",
+    "utm": {
+      "source": null,
+      "medium": null,
+      "campaign": null,
+      "content": null,
+      "term": null
+    },
+    "referrer": null,
+    "valor": null,
+    "pedidoId": null,
+    "receitaId": null,
+    "origem": "site",
+    "dispositivo": "desktop"
+  },
+  {
+    "id": "evt_mvsefqyfzmympz",
+    "ts": "2026-10-28T17:39:24.855Z",
+    "sessao": "s_jkg051s5hmmvse3p5b",
+    "tipo": "lp_view",
+    "pagina": "/",
+    "utm": {
+      "source": null,
+      "medium": null,
+      "campaign": null,
+      "content": null,
+      "term": null
+    },
+    "referrer": null,
+    "valor": null,
+    "pedidoId": null,
+    "receitaId": null,
+    "origem": "site",
+    "dispositivo": "desktop"
+  },
+  {
+    "id": "evt_mvsekb4kc9a3e1",
+    "ts": "2026-10-28T17:42:57.620Z",
+    "sessao": "s_jkg051s5hmmvse3p5b",
+    "tipo": "pageview",
+    "pagina": "/admin.html",
+    "utm": {
+      "source": null,
+      "medium": null,
+      "campaign": null,
+      "content": null,
+      "term": null
+    },
+    "referrer": null,
+    "valor": null,
+    "pedidoId": null,
+    "receitaId": null,
+    "origem": "site",
+    "dispositivo": "desktop"
+  }
+]

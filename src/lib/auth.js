@@ -65,6 +65,18 @@ export function isSessaoAdmin(req) {
   return !!s && s.tipo === 'admin';
 }
 
+// Higiene: remove sessões de usuários que não existem mais (ou já expiraram).
+export function limparSessoes() {
+  const users = new Set(read('users', []).map((u) => u.id));
+  const agora = Date.now();
+  const antes = sessoes().length;
+  const validas = sessoes().filter(
+    (s) => new Date(s.expiraEm).getTime() > agora && (s.tipo === 'admin' || users.has(s.usuarioId))
+  );
+  if (validas.length !== antes) write('sessions', validas);
+  return antes - validas.length;
+}
+
 // ---- Middlewares ----
 export function requireMember(req, res, next) {
   const u = usuarioDaSessao(req);
@@ -102,6 +114,7 @@ export function garantirConta({ nome, email, senha, pedidoId }) {
     write('users', users);
   } else if (u.acesso?.ativo === false) {
     u.acesso.ativo = true;
+    u.acesso.pendente = false;
     u.acesso.liberadoEm = agora();
     write('users', users);
   }

@@ -91,7 +91,7 @@ async function aprovarPedido(pedido) {
   return pedido;
 }
 
-// token simples para definir senha depois da compra
+// token simples para definir senha depois da compra (formato do link: usuarioId.token)
 const tokens = new Map();
 function tokenDefinirSenha(userId) {
   const t = id('tk');
@@ -99,10 +99,14 @@ function tokenDefinirSenha(userId) {
   return t;
 }
 export function consumirToken(t) {
-  const d = tokens.get(t);
+  const [userId, chave] = String(t).split('.');
+  const d = tokens.get(chave || t);
   if (!d || d.expira < Date.now()) return null;
+  if (chave && d.userId !== userId) return null;
+  tokens.delete(chave || t);
   return d.userId;
 }
+export { tokenDefinirSenha };
 
 // Webhook Mercado Pago (ou simulado). Aprova o pedido e libera o acesso.
 router.post('/webhook', async (req, res) => {

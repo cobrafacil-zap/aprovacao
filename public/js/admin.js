@@ -4,8 +4,13 @@
   const $ = (s) => document.querySelector(s);
   const $$ = (s) => document.querySelectorAll(s);
   const api = async (url, opts = {}) => {
-    const r = await fetch(url, { headers: { 'Content-Type': 'application/json' }, ...(opts.body instanceof FormData ? { headers: {} } : opts) });
-    return { ok: r.ok, ...(await r.json().catch(() => ({}))) };
+    try {
+      const r = await fetch(url, { headers: { 'Content-Type': 'application/json' }, ...(opts.body instanceof FormData ? { headers: {} } : opts) });
+      const dados = await r.json().catch(() => ({}));
+      return { ok: r.ok, ...dados, status: r.status };
+    } catch {
+      return { ok: false, error: 'Sem conexão com o servidor. (O painel precisa do backend rodando — em hospedagem estática como Vercel, as APIs não funcionam.)', status: 0 };
+    }
   };
   const post = (url, body) => api(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body || {}) });
   const put = (url, body) => api(url, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body || {}) });

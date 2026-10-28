@@ -131,9 +131,9 @@ Design novo (não replica o projeto P), mobile-first, com a paleta da logo:
 
 Para trocar as cores, edite as variáveis em `public/css/base.css` (`:root`).
 
-> **Logo:** a versão SVG (`public/assets/logo.svg`) é uma recriação fiel da logo enviada.
-> Para usar o arquivo original, salve-o como `public/assets/logo.png` e troque
-> `src="assets/logo.svg"` por `src="assets/logo.png"` nas páginas (ou sobrescreva o SVG).
+> **Logo:** o arquivo original está em `public/assets/logo.jpg` e é usado automaticamente
+> em todas as páginas (com fallback para `public/assets/logo.svg`, uma recriação vetorial).
+> Para trocar, basta sobrescrever `public/assets/logo.jpg` com o novo arquivo.
 
 ---
 

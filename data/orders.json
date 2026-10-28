@@ -1,1 +1,28 @@
-[]
+[
+  {
+    "id": "ped_mvse7jqc0ngz0o",
+    "nome": "Cliente Pago",
+    "email": "pago@email.com",
+    "produto": "Acesso vitalício — Oferta Fit BR",
+    "valor": 19.9,
+    "metodo": "pix",
+    "status": "pago",
+    "criadoEm": "2026-10-28T17:33:02.244Z",
+    "utm": null,
+    "acessoLiberado": true,
+    "pagoEm": "2026-10-28T17:33:02.296Z"
+  },
+  {
+    "id": "ped_mvsef1y1nyqci6",
+    "nome": "Cliente Novo",
+    "email": "novo@email.com",
+    "produto": "Acesso vitalício — Oferta Fit BR",
+    "valor": 19.9,
+    "metodo": "pix",
+    "status": "pago",
+    "criadoEm": "2026-10-28T17:38:52.441Z",
+    "utm": null,
+    "acessoLiberado": true,
+    "pagoEm": "2026-10-28T17:38:52.493Z"
+  }
+]

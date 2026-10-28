@@ -11,6 +11,7 @@ import checkoutRoutes from './src/routes/checkout.js';
 import membersRoutes from './src/routes/members.js';
 import adminRoutes from './src/routes/admin.js';
 import { liberarPendentes, marcarAbandonados } from './src/lib/release.js';
+import { limparSessoes } from './src/lib/auth.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
@@ -42,6 +43,8 @@ app.listen(PORT, async () => {
   console.log(`   Admin:    http://localhost:${PORT}/admin.html  (senha: ${process.env.ADMIN_SENHA || 'admin123'})\n`);
 
   // liberação semanal automática: no boot + a cada 10 minutos
+  const removidas = limparSessoes();
+  if (removidas) console.log(`[AUTH] ${removidas} sessão(ões) órfã(s) removida(s)`);
   try { await liberarPendentes(); } catch (e) { console.error('[RELEASE]', e.message); }
   setInterval(() => liberarPendentes().catch((e) => console.error('[RELEASE]', e.message)), 10 * 60 * 1000);
   setInterval(() => marcarAbandonados().catch(() => {}), 15 * 60 * 1000);

@@ -1,37 +1,22 @@
-// Área de membros: login/cadastro, receitas liberadas, busca/filtros, favoritos,
-// lista de compras gerada, histórico de receitas feitas e próxima liberação.
+// Área de membros: login (conta criada após o pagamento), receitas liberadas,
+// busca/filtros, favoritos, lista de compras gerada, histórico e próxima liberação.
 import { Router } from 'express';
-import { read, write, update, id, agora } from '../lib/db.js';
+import { read, write, agora } from '../lib/db.js';
 import {
-  requireMember, usuarioDaSessao, criarSessao, destruirSessao,
-  hashSenha, conferirSenha, garantirConta,
+  requireMember, criarSessao, destruirSessao,
+  hashSenha, conferirSenha,
 } from '../lib/auth.js';
-import { sendEmail, emailBoasVindas, urlMembros } from '../lib/mail.js';
+import { sendEmail, emailDefinirSenha, baseUrl } from '../lib/mail.js';
 import { receitasLiberadas, proximaReceita } from '../lib/release.js';
 import { track } from '../lib/analytics.js';
-import { consumirToken } from './checkout.js';
+import { consumirToken, tokenDefinirSenha } from './checkout.js';
 
 const router = Router();
 
 // ---------- Conta ----------
-router.post('/cadastro', async (req, res) => {
-  const { nome, email, senha } = req.body || {};
-  if (!nome || !email?.includes('@') || !senha || senha.length < 6) {
-    return res.status(400).json({ error: 'preencha nome, e-mail e senha (mín. 6 caracteres)' });
-  }
-  const users = read('users', []);
-  if (users.some((u) => u.email.toLowerCase() === email.toLowerCase())) {
-    return res.status(400).json({ error: 'já existe uma conta com este e-mail — faça login' });
-  }
-  const u = garantirConta({ nome, email, senha });
-  u.senhaDefinida = true;
-  write('users', users);
-  criarSessao(res, u.id, 'membro');
-  track({ tipo: 'signup', sessao: req.body?.sessao, origem: 'membros' });
-  try { await sendEmail({ to: u.email, subject: 'Bem-vindo(a) ao Oferta Fit BR!', html: emailBoasVindas(u.nome, urlMembros()) }); } catch {}
-  res.json({ ok: true, usuario: { id: u.id, nome: u.nome, email: u.email } });
-});
-
+// Não existe cadastro público: a conta é criada automaticamente após o pagamento
+// (garantirConta em checkout.js) e a senha é definida pelo link do e-mail
+// (definir-senha) ou redefinida em "esqueci minha senha".
 router.post('/login', (req, res) => {
   const { email, senha } = req.body || {};
   const u = read('users', []).find((x) => x.email.toLowerCase() === String(email || '').toLowerCase());
@@ -62,9 +47,45 @@ router.post('/definir-senha', (req, res) => {
   res.json({ ok: true });
 });
 
+// Esqueci minha senha: manda o link de redefinição por e-mail
+// (resposta genérica para não revelar se o e-mail tem conta).
+router.post('/recuperar-senha', async (req, res) => {
+  const email = String(req.body?.email || '').toLowerCase();
+  const u = read('users', []).find((x) => x.email.toLowerCase() === email);
+  if (u) {
+    const link = `${baseUrl()}/login.html?definir=${u.id}.${tokenDefinirSenha(u.id)}`;
+    try {
+      await sendEmail({ to: u.email, subject: 'Redefina sua senha — Oferta Fit BR', html: emailDefinirSenha(u.nome, link) });
+    } catch (e) {
+      console.error('[EMAIL] recuperação de senha:', e.message);
+    }
+  }
+  res.json({ ok: true, mensagem: 'Se este e-mail tiver uma conta, enviamos o link de redefinição.' });
+});
+
 router.post('/sair', (req, res) => {
   destruirSessao(req, res);
   res.json({ ok: true });
+});
+
+// Perfil: editar nome e trocar senha (exige a senha atual)
+router.put('/perfil', requireMember, (req, res) => {
+  const { nome, senhaAtual, senhaNova } = req.body || {};
+  const u = req.usuario;
+
+  if (senhaNova) {
+    if (!senhaAtual || !conferirSenha(senhaAtual, u.senhaSalt, u.senhaHash)) {
+      return res.status(401).json({ error: 'senha atual incorreta' });
+    }
+    if (senhaNova.length < 6) return res.status(400).json({ error: 'a nova senha precisa de pelo menos 6 caracteres' });
+    const { salt, hash } = hashSenha(senhaNova);
+    u.senhaSalt = salt;
+    u.senhaHash = hash;
+    u.senhaDefinida = true;
+  }
+  if (nome && nome.trim()) u.nome = nome.trim();
+  write('users', read('users', []));
+  res.json({ ok: true, usuario: { id: u.id, nome: u.nome, email: u.email } });
 });
 
 router.get('/eu', requireMember, (req, res) => {
