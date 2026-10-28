@@ -1,6 +1,9 @@
 // Aplicação Express compartilhada:
 //   • desenvolvimento local → server.js (npm start)
-//   • produção Vercel       → api/[...path].js (função serverless)
+//   • produção Vercel       → api/index.js (função serverless via rewrite)
+// express-async-errors: erros em handlers/middlewares async viram 500 JSON
+// em vez de travar a requisição (comportamento do Express 4 puro).
+import 'express-async-errors';
 import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';

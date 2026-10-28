@@ -7,9 +7,14 @@
     try {
       const r = await fetch(url, { headers: { 'Content-Type': 'application/json' }, ...(opts.body instanceof FormData ? { headers: {} } : opts) });
       const dados = await r.json().catch(() => ({}));
+      if (!r.ok && !dados.error) {
+        dados.error = r.status >= 500
+          ? `Erro no servidor (HTTP ${r.status}). Tente novamente em instantes.`
+          : `Falha na requisição (HTTP ${r.status}).`;
+      }
       return { ok: r.ok, ...dados, status: r.status };
     } catch {
-      return { ok: false, error: 'Sem conexão com o servidor. (O painel precisa do backend rodando — em hospedagem estática como Vercel, as APIs não funcionam.)', status: 0 };
+      return { ok: false, error: 'Sem conexão com o servidor. (O painel precisa do backend rodando.)', status: 0 };
     }
   };
   const post = (url, body) => api(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body || {}) });

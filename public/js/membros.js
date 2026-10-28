@@ -7,10 +7,21 @@
 
   // ================= API + GATE DE ACESSO =================
   const api = async (url, opts = {}) => {
-    const r = await fetch(url, { headers: { 'Content-Type': 'application/json' }, ...opts });
+    let r;
+    try {
+      r = await fetch(url, { headers: { 'Content-Type': 'application/json' }, ...opts });
+    } catch {
+      falhaConexao();
+      throw new Error('conexao');
+    }
     if (r.status === 401) { negarAcesso('Faça login para continuar'); throw new Error('login'); }
     if (r.status === 403) { negarAcesso('Seu acesso ainda não foi ativado'); throw new Error('acesso'); }
-    return r.json();
+    const dados = await r.json().catch(() => ({}));
+    if (!r.ok) {
+      falhaConexao(dados.error || `Erro no servidor (HTTP ${r.status})`);
+      throw new Error('servidor');
+    }
+    return dados;
   };
   const post = (url, body) => api(url, { method: 'POST', body: JSON.stringify(body || {}) });
   const put = (url, body) => api(url, { method: 'PUT', body: JSON.stringify(body || {}) });
@@ -24,6 +35,18 @@
     const btn = $('#gate-entrar');
     btn.classList.remove('oculto');
     btn.textContent = 'Ir para o login';
+  }
+
+  function falhaConexao(mensagem) {
+    const gate = $('#auth-gate');
+    gate.classList.remove('liberado');
+    $('#gate-texto').innerHTML = `<strong style="font-size:1.15rem;display:block;margin-bottom:6px">Não foi possível carregar sua conta</strong>
+      <span style="font-size:.9rem">${mensagem || 'Verifique sua conexão e tente novamente.'}</span>`;
+    gate.querySelector('.gate-spinner').style.display = 'none';
+    const btn = $('#gate-entrar');
+    btn.classList.remove('oculto');
+    btn.textContent = 'Tentar novamente';
+    btn.setAttribute('href', 'membros.html');
   }
 
   function liberarAcesso() {
