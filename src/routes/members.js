@@ -132,7 +132,8 @@ const receitaPublica = (r, u) => ({
   porcoes: r.porcoes,
   foto: r.foto || null,
   data_liberacao: r.data_liberacao,
-  nutricao: r.nutricao || null,
+  dificuldade: r.dificuldade || null,
+  custo: r.custo || null,
   favorito: (u?.favoritos || []).includes(r.id),
   feita: (u?.feitas || []).some((f) => f.receitaId === r.id),
 });

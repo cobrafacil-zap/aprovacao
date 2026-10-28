@@ -49,7 +49,9 @@
     "foto": "/assets/receitas/panqueca-banana-aveia.jpg",
     "data_liberacao": "2026-09-07T08:00:00-03:00",
     "liberada": true,
-    "ativo": true
+    "ativo": true,
+    "dificuldade": "facil",
+    "custo": "baixo"
   },
   {
     "id": "rec_bowl_frango_quinoa",
@@ -110,7 +112,9 @@
     "foto": "/assets/receitas/bowl-frango-quinoa.jpg",
     "data_liberacao": "2026-09-14T08:00:00-03:00",
     "liberada": true,
-    "ativo": true
+    "ativo": true,
+    "dificuldade": "media",
+    "custo": "medio"
   },
   {
     "id": "rec_omelete_forno_legumes",
@@ -172,7 +176,9 @@
     "foto": "/assets/receitas/omelete-forno-legumes.jpg",
     "data_liberacao": "2026-09-21T08:00:00-03:00",
     "liberada": true,
-    "ativo": true
+    "ativo": true,
+    "dificuldade": "facil",
+    "custo": "baixo"
   },
   {
     "id": "rec_mix_castanhas_mel",
@@ -218,7 +224,9 @@
     "foto": "/assets/receitas/mix-castanhas-mel.jpg",
     "data_liberacao": "2026-09-28T08:00:00-03:00",
     "liberada": true,
-    "ativo": true
+    "ativo": true,
+    "dificuldade": "facil",
+    "custo": "baixo"
   },
   {
     "id": "rec_mousse_abacate_cacau",
@@ -265,7 +273,9 @@
     "foto": "/assets/receitas/mousse-abacate-cacau.jpg",
     "data_liberacao": "2026-10-05T08:00:00-03:00",
     "liberada": true,
-    "ativo": true
+    "ativo": true,
+    "dificuldade": "facil",
+    "custo": "baixo"
   },
   {
     "id": "rec_tapioca_ovo_queijo",
@@ -311,7 +321,9 @@
     "foto": "/assets/receitas/tapioca-ovo-queijo.jpg",
     "data_liberacao": "2026-10-12T08:00:00-03:00",
     "liberada": true,
-    "ativo": true
+    "ativo": true,
+    "dificuldade": "facil",
+    "custo": "baixo"
   },
   {
     "id": "rec_salmao_mandioquinha",
@@ -367,7 +379,9 @@
     "foto": "/assets/receitas/salmao-mandioquinha.jpg",
     "data_liberacao": "2026-10-19T08:00:00-03:00",
     "liberada": true,
-    "ativo": true
+    "ativo": true,
+    "dificuldade": "media",
+    "custo": "alto"
   },
   {
     "id": "rec_salada_grao_bico_tahine",
@@ -428,7 +442,9 @@
     "foto": "/assets/receitas/salada-grao-bico-tahine.jpg",
     "data_liberacao": "2026-10-26T08:00:00-03:00",
     "liberada": true,
-    "ativo": true
+    "ativo": true,
+    "dificuldade": "facil",
+    "custo": "medio"
   },
   {
     "id": "rec_barra_cereal_caseira",
@@ -484,7 +500,9 @@
     "foto": "/assets/receitas/barra-cereal-caseira.jpg",
     "data_liberacao": "2026-11-02T08:00:00-03:00",
     "liberada": false,
-    "ativo": true
+    "ativo": true,
+    "dificuldade": "media",
+    "custo": "baixo"
   },
   {
     "id": "rec_pudim_chia_frutas",
@@ -535,6 +553,8 @@
     "foto": "/assets/receitas/pudim-chia-frutas.jpg",
     "data_liberacao": "2026-11-09T08:00:00-03:00",
     "liberada": false,
-    "ativo": true
+    "ativo": true,
+    "dificuldade": "facil",
+    "custo": "baixo"
   }
 ]

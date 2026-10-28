@@ -117,6 +117,22 @@
               <div class="campo"><label for="rec-tempo">Tempo de preparo (min)</label><input id="rec-tempo" type="number" min="1" value="20" /></div>
               <div class="campo"><label for="rec-porcoes">Porções</label><input id="rec-porcoes" type="number" min="1" value="2" /></div>
             </div>
+            <div class="duas-colunas">
+              <div class="campo"><label for="rec-dificuldade">Dificuldade</label>
+                <select id="rec-dificuldade">
+                  <option value="facil">Fácil</option>
+                  <option value="media">Média</option>
+                  <option value="dificil">Difícil</option>
+                </select>
+              </div>
+              <div class="campo"><label for="rec-custo">Custo estimado</label>
+                <select id="rec-custo">
+                  <option value="baixo">Baixo</option>
+                  <option value="medio">Médio</option>
+                  <option value="alto">Alto</option>
+                </select>
+              </div>
+            </div>
 
             <div class="duas-colunas">
               <div class="campo"><label for="rec-data">Data de liberação (fica invisível até esta data)</label><input id="rec-data" type="datetime-local" required /></div>
@@ -132,6 +148,11 @@
             <button type="button" class="btn btn--contorno btn--pequeno" id="btn-add-passo">+ Passo</button>
 
             <div class="campo mt-2">
+              <label for="rec-dicas">Dica especial (“Anote aí”)</label>
+              <textarea id="rec-dicas" rows="2" placeholder="ex.: Fica ainda melhor com uma colher de pasta de amendoim por cima."></textarea>
+            </div>
+
+            <div class="campo">
               <label>Foto do prato (jpg, png ou webp até 6MB)</label>
               <div class="upload-foto" id="upload-foto">
                 <img id="preview-foto" class="oculto" alt="Prévia da foto" />

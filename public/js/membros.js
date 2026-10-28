@@ -319,6 +319,19 @@
         <h4>Modo de preparo <span class="dica-check">toque para marcar o que já foi feito</span></h4>
         <ol class="passos passos-check" id="lista-passos"></ol>
 
+        <h4>Informações da receita</h4>
+        <div class="nutricao">
+          <div class="nutri"><strong>${r.tempo_preparo_min ?? '—'} min</strong><span>preparo</span></div>
+          <div class="nutri"><strong>${r.porcoes ?? '—'}</strong><span>porção(ões)</span></div>
+          <div class="nutri"><strong>${(r.ingredientes || []).length}</strong><span>ingredientes</span></div>
+          <div class="nutri"><strong>${(r.passos || []).length}</strong><span>etapas</span></div>
+        </div>
+        ${(r.dificuldade || r.custo) ? `
+        <div class="nutricao mt-1">
+          ${r.dificuldade ? `<div class="nutri"><strong>${({facil:'Fácil',media:'Média',dificil:'Difícil'})[r.dificuldade] || r.dificuldade}</strong><span>dificuldade</span></div>` : ''}
+          ${r.custo ? `<div class="nutri"><strong>${({baixo:'Baixo',medio:'Médio',alto:'Alto'})[r.custo] || r.custo}</strong><span>custo estimado</span></div>` : ''}
+        </div>` : ''}
+
 
         ${r.dicas ? `<h4>Anote aí</h4><p class="cinza">${r.dicas}</p>` : ''}
       </div>`;

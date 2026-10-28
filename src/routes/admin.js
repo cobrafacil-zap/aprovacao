@@ -69,6 +69,8 @@ router.post('/receitas', async (req, res) => {
     descricao: b.descricao || '',
     categoria: b.categoria || 'almoco',
     tags: b.tags || [],
+    dificuldade: b.dificuldade || 'facil',
+    custo: b.custo || 'baixo',
     tempo_preparo_min: Number(b.tempo_preparo_min) || 20,
     porcoes: Number(b.porcoes) || 2,
     ingredientes: b.ingredientes || [],
@@ -100,6 +102,8 @@ router.put('/receitas/:id', async (req, res) => {
   Object.assign(r, {
     nome: b.nome, descricao: b.descricao ?? r.descricao, categoria: b.categoria ?? r.categoria,
     tags: b.tags ?? r.tags,
+    dificuldade: b.dificuldade ?? r.dificuldade,
+    custo: b.custo ?? r.custo,
     // cuidado: Number(undefined) = NaN — só troca se veio valor válido
     tempo_preparo_min: Number(b.tempo_preparo_min) || r.tempo_preparo_min || 20,
     porcoes: Number(b.porcoes) || r.porcoes || 2,

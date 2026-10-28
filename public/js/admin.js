@@ -207,6 +207,9 @@
     $('#rec-tempo').value = r.tempo_preparo_min;
     $('#rec-porcoes').value = r.porcoes;
     $('#rec-tags').value = (r.tags || []).join(', ');
+    $('#rec-dificuldade').value = r.dificuldade || 'facil';
+    $('#rec-custo').value = r.custo || 'baixo';
+    $('#rec-dicas').value = r.dicas || '';
     const dt = new Date(r.data_liberacao);
     dt.setMinutes(dt.getMinutes() - dt.getTimezoneOffset());
     $('#rec-data').value = dt.toISOString().slice(0, 16);
@@ -254,6 +257,9 @@
       porcoes: Number($('#rec-porcoes').value),
       data_liberacao: new Date($('#rec-data').value).toISOString(),
       tags: $('#rec-tags').value.split(',').map((t) => t.trim()).filter(Boolean),
+      dificuldade: $('#rec-dificuldade').value,
+      custo: $('#rec-custo').value,
+      dicas: $('#rec-dicas').value,
       ingredientes,
       passos,
     };
