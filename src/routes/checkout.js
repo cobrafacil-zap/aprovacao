@@ -110,18 +110,75 @@ export async function consumirToken(t) {
   return dados.usuarioId;
 }
 
-// Webhook Mercado Pago (ou simulado). Aprova o pedido e libera o acesso.
+// Webhook Mercado Pago (Orders API / Payments API).
+// A MP envia apenas o ID do pagamento — o status real é CONFIRMADO consultando
+// a API, para nunca liberar acesso por payload forjado.
+// Proteção adicional: configure MP_WEBHOOK_SECRET e use a URL
+//   https://seudominio.com/api/checkout/webhook?token=SEGREDO
 router.post('/webhook', async (req, res) => {
-  const body = req.body || {};
-  console.log('[WEBHOOK]', JSON.stringify(body).slice(0, 300));
-  const pedidoId = body.external_reference || body.pedidoId;
-  const status = body.status || (body.type === 'payment' ? 'approved' : null);
-  if (pedidoId && status === 'approved') {
-    const pedidos = await read('orders', []);
-    const p = pedidos.find((x) => x.id === pedidoId);
-    if (p && p.status !== 'pago') await aprovarPedido(p, pedidos);
+  try {
+    const segredo = process.env.MP_WEBHOOK_SECRET;
+    if (segredo && req.query.token !== segredo) {
+      return res.status(401).json({ error: 'token inválido' });
+    }
+
+    const body = req.body || {};
+    console.log('[WEBHOOK]', JSON.stringify(body).slice(0, 300));
+
+    // formato webhook (type/data.id) e IPN antigo (topic/data.id na query)
+    const recursoId = body?.data?.id || req.query['data.id'] || req.body?.id || req.body?.pedidoId;
+    const tipo = body.type || req.query.topic || (body.action || '').split('.')[0];
+
+    if (process.env.MP_ACCESS_TOKEN && recursoId && (tipo === 'payment' || tipo === 'order' || tipo === 'merchant_order')) {
+      const pagamento = await consultarPagamentoMP(recursoId);
+      const pedidoId = pagamento?.external_reference;
+      const status = pagamento?.status; // approved | pending | rejected ...
+      if (pedidoId && status === 'approved') {
+        const pedidos = await read('orders', []);
+        const p = pedidos.find((x) => x.id === pedidoId);
+        if (p && p.status !== 'pago') await aprovarPedido(p, pedidos);
+      }
+      return res.json({ ok: true, consultado: recursoId, status });
+    }
+
+    // modo demo / payloads de teste: aceita external_reference + status direto
+    const pedidoId = body.external_reference || body.pedidoId;
+    const status = body.status || (body.type === 'payment' ? 'approved' : null);
+    if (pedidoId && status === 'approved') {
+      const pedidos = await read('orders', []);
+      const p = pedidos.find((x) => x.id === pedidoId);
+      if (p && p.status !== 'pago') await aprovarPedido(p, pedidos);
+    }
+    res.json({ ok: true });
+  } catch (e) {
+    console.error('[WEBHOOK] erro:', e.message);
+    res.json({ ok: true }); // responde 200 para a MP não reenviar em loop
   }
-  res.json({ ok: true });
 });
+
+// Consulta o status REAL do pagamento na API do Mercado Pago (Orders/Payments).
+async function consultarPagamentoMP(id) {
+  const token = process.env.MP_ACCESS_TOKEN;
+  const headers = { Authorization: `Bearer ${token}` };
+  // Orders API primeiro; se não achar, tenta a Payments API (legacy)
+  for (const url of [
+    `https://api.mercadopago.com/v1/orders/${id}`,
+    `https://api.mercadopago.com/v1/payments/${id}`,
+  ]) {
+    try {
+      const r = await fetch(url, { headers });
+      if (r.ok) {
+        const d = await r.json();
+        // Orders: status em transactions.payments[]; Payments: status direto
+        const pagamento = d?.transactions?.payments?.[0] || d;
+        return {
+          status: pagamento.status || d.status,
+          external_reference: d.external_reference || pagamento.external_reference,
+        };
+      }
+    } catch {}
+  }
+  return null;
+}
 
 export default router;
