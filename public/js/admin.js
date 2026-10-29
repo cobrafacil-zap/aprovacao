@@ -20,6 +20,42 @@
   const post = (url, body) => api(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body || {}) });
   const put = (url, body) => api(url, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body || {}) });
   const fmt = (v) => `R$ ${Number(v || 0).toFixed(2).replace('.', ',')}`;
+
+  // aviso escrito na tela (sem popup)
+  let toastTimer;
+  function toast(msg, tipo = 'sucesso') {
+    let t = document.getElementById('toast-admin');
+    if (!t) {
+      t = document.createElement('div');
+      t.id = 'toast-admin';
+      document.body.appendChild(t);
+    }
+    t.textContent = msg;
+    t.className = `toast-admin visivel ${tipo}`;
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove('visivel'), 3000);
+  }
+
+  // deixa o formulário pronto para cadastrar a PRÓXIMA receita
+  function prepararNovaReceita() {
+    receitaEditando = null;
+    $('#input-foto').value = '';
+    fotoNovaSelecionada = false;
+    fotoParaEnviar = null;
+    $('#titulo-form-receita').textContent = 'Nova receita';
+    $('#form-receita').reset();
+    $('#rec-id').value = '';
+    $('#ingredientes-textarea').value = '';
+    $('#passos-textarea').value = '';
+    $('#preview-foto').classList.add('oculto');
+    $('#upload-texto').textContent = '📷 Clique para enviar a foto do prato';
+    const d = new Date(Date.now() + 7 * 864e5);
+    d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
+    $('#rec-data').value = d.toISOString().slice(0, 16);
+    $('#form-receita-card').classList.remove('oculto');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(() => $('#rec-nome').focus(), 350);
+  }
   const dataBR = (s) => (s ? new Date(s).toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' }) : '—');
 
   // ================= LOGIN =================
@@ -182,24 +218,7 @@
     return blob ? new File([blob], nome, { type: 'image/jpeg' }) : arquivo;
   }
 
-  $('#btn-nova-receita').addEventListener('click', () => {
-    receitaEditando = null;
-    $('#input-foto').value = '';
-    fotoNovaSelecionada = false;
-    $('#titulo-form-receita').textContent = 'Nova receita';
-    $('#form-receita').reset();
-    $('#rec-id').value = '';
-    $('#ingredientes-textarea').value = '';
-    $('#passos-textarea').value = '';
-    $('#preview-foto').classList.add('oculto');
-    $('#upload-texto').classList.remove('oculto');
-    // padrão: liberação daqui a 7 dias (cronograma semanal)
-    const d = new Date(Date.now() + 7 * 864e5);
-    d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
-    $('#rec-data').value = d.toISOString().slice(0, 16);
-    $('#form-receita-card').classList.remove('oculto');
-    $('#form-receita-card').scrollIntoView({ behavior: 'smooth' });
-  });
+  $('#btn-nova-receita').addEventListener('click', prepararNovaReceita);
 
   function editarReceita(id, lista) {
     const r = lista.find((x) => x.id === id);
@@ -263,6 +282,7 @@
       .map((linha) => ({ qtd: '', unidade: '', item: linha }));
     const passos = $('#passos-textarea').value.split('\n').map((l) => l.trim()).filter(Boolean);
 
+    if (!$('#rec-data').value) return toast('Informe a data de liberação da receita', 'erro');
     const corpo = {
       nome: $('#rec-nome').value,
       descricao: $('#rec-descricao').value,
@@ -278,28 +298,39 @@
       passos,
     };
 
+    const btnSalvar = document.querySelector('#form-receita button[type="submit"]');
+    const textoOriginal = btnSalvar.textContent;
+    btnSalvar.disabled = true;
+    btnSalvar.textContent = 'Salvando...';
     let r = receitaEditando
       ? await put(`/api/admin/receitas/${receitaEditando.id}`, corpo)
       : await post('/api/admin/receitas', corpo);
-    if (!r.ok) return alert(r.error || 'Erro ao salvar receita');
+    if (!r.ok) {
+      btnSalvar.disabled = false;
+      btnSalvar.textContent = textoOriginal;
+      return toast(r.error || 'Erro ao salvar receita', 'erro');
+    }
 
     // Upload da foto APENAS se o usuário escolheu uma agora
     const arquivo = fotoNovaSelecionada ? (fotoParaEnviar || $('#input-foto').files[0]) : null;
     let fotoOk = true;
     if (arquivo) {
+      btnSalvar.textContent = 'Enviando foto...';
       const fd = new FormData();
       fd.append('foto', arquivo);
       const up = await fetch(`/api/admin/receitas/${r.receita.id}/foto`, { method: 'POST', body: fd });
       const ud = await up.json().catch(() => ({}));
       fotoOk = up.ok;
-      if (!up.ok) alert('⚠️ A foto NÃO foi enviada: ' + (ud.error || `erro ${up.status}`) + '\nA receita foi salva sem a nova foto.');
+      if (!up.ok) toast('A foto não foi enviada: ' + (ud.error || `erro ${up.status}`), 'erro');
     }
+    btnSalvar.disabled = false;
+    btnSalvar.textContent = textoOriginal;
     $('#input-foto').value = '';
     fotoNovaSelecionada = false;
     fotoParaEnviar = null;
 
-    alert(fotoOk ? (receitaEditando ? 'Receita atualizada com a nova foto! 📸' : 'Receita criada com a foto! 📸') : 'Receita salva (sem a nova foto).');
-    $('#form-receita-card').classList.add('oculto');
+    toast(fotoOk ? 'Receita salva! 📸' : 'Receita salva (sem a nova foto).', fotoOk ? 'sucesso' : 'erro');
+    prepararNovaReceita();
     carregarReceitas();
   });
 

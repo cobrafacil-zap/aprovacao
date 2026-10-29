@@ -246,23 +246,36 @@ function tirarMedidas(t) {
 export function interpretar(ing, bruto) {
   let texto = String(bruto || '').trim();
   let qtd = parseFloat(String(ing?.qtd ?? '').replace(',', '.'));
+  let palavrasQtd = 0;
   if (Number.isNaN(qtd)) {
     const m = texto.match(/^\s*(\d+\s*\/\s*\d+|\d+(?:[.,]\d+)?)\s*(.*)$/);
     if (m) {
       const [num, den] = m[1].split('/').map((x) => Number(x.trim()));
       qtd = den ? num / den : Number(String(m[1]).replace(',', '.'));
+      palavrasQtd = m[1].trim().split(/\s+/).length;
       texto = m[2];
-    } else if (detectarUnidade(texto) || /\ba gosto\b|para untar|pitada/i.test(texto)) {
-      qtd = 1; // "Colher de sopa de X" / "Sal a gosto" = 1 medida
+    } else if (detectarUnidade(texto)) {
+      qtd = 1; // "Colher de sopa de X" sem número = 1 medida
     }
   }
   let unidade = String(ing?.unidade || '').trim();
   if (!unidade) unidade = detectarUnidade(texto);
-  // as palavras de medida são removidas no texto sem acentos
+  // palavras de medida removidas no texto sem acentos (para reconhecer o alimento)
   const base = semAcento(texto);
   const semMedida = tirarMedidas(base);
   const itemLimpo = (semMedida.replace(RUIDO, ' ').replace(/\s+/g, ' ').trim() || semMedida || base);
-  return { qtd: Number.isNaN(qtd) ? null : qtd, unidade, itemLimpo };
+
+  // exibição fiel: corta do TEXTO ORIGINAL só a quantidade e as palavras de
+  // medida (mantém acentos e a escrita do usuário)
+  const consumidas = Math.max(0, base.split(/\s+/).length - semMedida.split(/\s+/).length);
+  const corte = consumidas;
+  let resto = String(texto).trim().split(/\s+/).slice(corte).join(' ').trim();
+  resto = resto.replace(/^(de|da|do|dos|das)\s+/i, '').replace(/\s+(e|ou)$/i, '').trim();
+  const itemExibicao = resto || itemLimpo;
+
+  // "Sal a gosto" e afins não ganham quantidade inventada
+  const livre = Number.isNaN(qtd) && !unidade && /a gosto|para untar|pitada/i.test(texto);
+  return { qtd: livre ? null : (Number.isNaN(qtd) ? null : qtd), unidade, itemLimpo, itemExibicao, livre };
 }
 
 function acharAlimento(item) {
@@ -286,7 +299,9 @@ function acharAlimento(item) {
 
 // detecta a unidade quando ela vem no texto (ex.: "3 colheres de...", "500 g de...")
 function detectarUnidade(texto) {
-  const t = semAcento(texto);
+  // ignora notas entre parênteses e olha só o início do texto
+  // ("5 batatas inglesas (400 gramas)" não pode virar "5 g")
+  const t = semAcento(String(texto).replace(/\([^)]*\)/g, ' ')).split(/\s+/).slice(0, 3).join(' ');
   if (t.includes('grama') || /\d\s*g\b/.test(t)) return 'g';
   if (t.includes('quilo') || /\d\s*kg\b/.test(t)) return 'kg';
   if (t.includes('xicara') || t.includes('xic')) return 'xíc';

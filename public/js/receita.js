@@ -180,12 +180,18 @@
     $('#lista-ingredientes').innerHTML = (receita.ingredientes || []).map((i, idx) => {
       // ingrediente normalizado: qtd/unidade/item vêm do servidor; se não houver
       // quantidade reconhecida, exibe o texto original sem escalar
-      const temQtd = i.qtd || i.unidade;
+      // itens livres ("Sal a gosto") aparecem exatamente como escritos
+      if (i.livre || (!i.qtd && !i.unidade)) {
+        return `
+      <li class="ing-check ${checks.has(idx) ? 'marcado' : ''}" data-idx="${idx}">
+        <span class="check-box">✓</span>
+        <span class="ing-texto">${i.texto || i.item || ''}</span>
+      </li>`;
+      }
       const qtdTxt = escalarQtd(i.qtd || 1, fatorAtual());
       const unTxt = unidadePorExtenso(i.unidade, qtdTxt);
-      const linha = temQtd
-        ? `<strong>${qtdTxt}${unTxt ? ' ' + unTxt : ''}</strong> ${i.item || ''}`
-        : `${i.texto || i.item || ''}`;
+      const juncao = unTxt ? (/^(de|da|do|em)\s/i.test(i.item || '') ? ' ' : ' de ') : ' ';
+      const linha = `<strong>${qtdTxt}${unTxt ? ' ' + unTxt : ''}</strong>${juncao}${i.item || ''}`;
       return `
       <li class="ing-check ${checks.has(idx) ? 'marcado' : ''}" data-idx="${idx}">
         <span class="check-box">✓</span>

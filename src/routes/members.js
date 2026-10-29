@@ -178,9 +178,10 @@ router.get('/receitas/:id', requireMember, async (req, res) => {
     const p = interpretar(i, texto);
     return {
       texto,
-      qtd: p.qtd != null ? String(p.qtd).replace('.', ',') : '',
-      unidade: p.unidade || '',
-      item: p.itemLimpo || texto,
+      livre: !!p.livre,
+      qtd: !p.livre && p.qtd != null ? String(p.qtd).replace('.', ',') : '',
+      unidade: p.livre ? '' : (p.unidade || ''),
+      item: p.itemExibicao || texto,
     };
   });
   res.json({ receita: { ...receitaPublica(r, req.usuario), ingredientes, passos: r.passos || [], dicas: r.dicas || '' } });
