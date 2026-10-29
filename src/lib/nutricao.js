@@ -214,7 +214,34 @@ const TABELA = DADOS.trim().split('\n').map((linha) => {
 
 // Interpreta o ingrediente vindo como texto natural:
 // "1 lata de atum" → qtd 1 | unidade lata | alimento "atum"
-const RE_MEDIDA = /^(?:de\s+|das?\s+)?(?:xicaras?(?:\s+de\s+cha)?|colheres?(?:\s+de\s+(?:sopa|cha|cafe|sobremesa))?|gramas?|quilogramas?|quilos?|kg|ml|mililitros?|litros?|lats?|latas?|caixas?|caixinhas?|pacotes?|sacos?|vidros?|potes?|fatias?|dentes?|folhas?|pitadas?|punhados?|unidades?|und|un|fardos?|duzias?)\b\s*(?:de\s+|da\s+|do\s+)?/i;
+// palavras de medida removidas do início do texto (ordem: mais específicas primeiro)
+const PALAVRAS_MEDIDA = [
+  'xicara de cha', 'xicaras de cha', 'xicara', 'xicaras',
+  'colher de sopa', 'colheres de sopa', 'colher de cha', 'colheres de cha',
+  'colher de cafe', 'colher de sobremesa', 'colher', 'colheres',
+  'gramas', 'grama', 'quilogramas', 'quilos', 'quilo', 'kg',
+  'mililitros', 'mililitro', 'ml', 'litros', 'litro', 'l',
+  'latas', 'lata', 'caixinhas', 'caixinha', 'caixas', 'caixa',
+  'pacotes', 'pacote', 'sacos', 'saco', 'vidros', 'vidro', 'potes', 'pote',
+  'fatias', 'fatia', 'dentes', 'dente', 'folhas', 'folha',
+  'pitadas', 'pitada', 'punhados', 'punhado', 'unidades', 'unidade', 'und', 'un',
+  'fardos', 'fardo', 'duzias', 'duzia',
+];
+
+function tirarMedidas(t) {
+  let s = String(t || '').trim();
+  let mudou = true;
+  while (mudou && s) {
+    mudou = false;
+    const baixo = s.toLowerCase();
+    for (const m of PALAVRAS_MEDIDA) {
+      if (baixo === m) return '';
+      if (baixo.startsWith(m + ' ')) { s = s.slice(m.length).trim(); mudou = true; break; }
+    }
+    if (mudou) s = s.replace(/^(de|da|do|das|dos)\s+/i, '').trim();
+  }
+  return s;
+}
 
 export function interpretar(ing, bruto) {
   let texto = String(bruto || '').trim();
@@ -225,13 +252,16 @@ export function interpretar(ing, bruto) {
       const [num, den] = m[1].split('/').map((x) => Number(x.trim()));
       qtd = den ? num / den : Number(String(m[1]).replace(',', '.'));
       texto = m[2];
-    } else if (detectarUnidade(texto)) {
-      qtd = 1; // "Colher de sopa de X" sem número = 1 medida
+    } else if (detectarUnidade(texto) || /\ba gosto\b|para untar|pitada/i.test(texto)) {
+      qtd = 1; // "Colher de sopa de X" / "Sal a gosto" = 1 medida
     }
   }
   let unidade = String(ing?.unidade || '').trim();
   if (!unidade) unidade = detectarUnidade(texto);
-  const itemLimpo = texto.replace(RE_MEDIDA, '').trim();
+  // as palavras de medida são removidas no texto sem acentos
+  const base = semAcento(texto);
+  const semMedida = tirarMedidas(base);
+  const itemLimpo = (semMedida.replace(RUIDO, ' ').replace(/\s+/g, ' ').trim() || semMedida || base);
   return { qtd: Number.isNaN(qtd) ? null : qtd, unidade, itemLimpo };
 }
 

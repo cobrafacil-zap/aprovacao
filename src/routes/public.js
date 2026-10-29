@@ -3,6 +3,8 @@ import { Router } from 'express';
 import { read } from '../lib/db.js';
 import { track } from '../lib/analytics.js';
 import { receitasLiberadas, proximaReceita, liberarPendentesSeNecessario } from '../lib/release.js';
+import { calcularNutricao } from '../lib/nutricao.js';
+import { detectarTags } from '../lib/tags.js';
 
 const router = Router();
 
@@ -11,11 +13,12 @@ const RECEITA_PUBLICA = (r) => ({
   nome: r.nome,
   descricao: r.descricao,
   categoria: r.categoria,
-  tags: r.tags || [],
+  tags: [...new Set([...(r.tags || []), ...detectarTags(r)])],
   tempo_preparo_min: r.tempo_preparo_min,
   porcoes: r.porcoes,
   foto: r.foto || null,
   data_liberacao: r.data_liberacao,
+  nutricao_aprox: calcularNutricao(r.ingredientes || [], r.porcoes || 1),
 });
 
 router.get('/produto', async (req, res) => {

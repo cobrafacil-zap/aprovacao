@@ -182,28 +182,6 @@
     return blob ? new File([blob], nome, { type: 'image/jpeg' }) : arquivo;
   }
 
-  // Editors de ingredientes e passos
-  const addIngrediente = (qtd = '', un = '', item = '') => {
-    const div = document.createElement('div');
-    div.className = 'item-lista-editor';
-    div.innerHTML = `
-      <input class="qtd-inp" placeholder="qtd" value="${qtd}" />
-      <input class="un-inp" placeholder="unidade" value="${un}" />
-      <input placeholder="ingrediente" value="${item}" />
-      <button type="button">✕</button>`;
-    div.querySelector('button').addEventListener('click', () => div.remove());
-    $('#editor-ingredientes').appendChild(div);
-  };
-  const addPasso = (texto = '') => {
-    const div = document.createElement('div');
-    div.className = 'item-lista-editor';
-    div.innerHTML = `<input placeholder="descreva o passo" value="${texto}" /><button type="button">✕</button>`;
-    div.querySelector('button').addEventListener('click', () => div.remove());
-    $('#editor-passos').appendChild(div);
-  };
-  $('#btn-add-ingrediente').addEventListener('click', () => addIngrediente());
-  $('#btn-add-passo').addEventListener('click', () => addPasso());
-
   $('#btn-nova-receita').addEventListener('click', () => {
     receitaEditando = null;
     $('#input-foto').value = '';
@@ -211,10 +189,8 @@
     $('#titulo-form-receita').textContent = 'Nova receita';
     $('#form-receita').reset();
     $('#rec-id').value = '';
-    $('#editor-ingredientes').innerHTML = '';
-    $('#editor-passos').innerHTML = '';
-    ['#1', '#2', '#3'].forEach(() => addIngrediente());
-    ['#1', '#2'].forEach(() => addPasso());
+    $('#ingredientes-textarea').value = '';
+    $('#passos-textarea').value = '';
     $('#preview-foto').classList.add('oculto');
     $('#upload-texto').classList.remove('oculto');
     // padrão: liberação daqui a 7 dias (cronograma semanal)
@@ -245,12 +221,10 @@
     const dt = new Date(r.data_liberacao);
     dt.setMinutes(dt.getMinutes() - dt.getTimezoneOffset());
     $('#rec-data').value = dt.toISOString().slice(0, 16);
-    $('#editor-ingredientes').innerHTML = '';
-    $('#editor-passos').innerHTML = '';
-    (r.ingredientes || []).forEach((i) => addIngrediente(i.qtd, i.unidade, i.item));
-    (r.passos || []).forEach((p) => addPasso(p));
-    if (!r.ingredientes?.length) addIngrediente();
-    if (!r.passos?.length) addPasso();
+    $('#ingredientes-textarea').value = (r.ingredientes || [])
+      .map((i) => (typeof i === 'string' ? i : (i.texto || [i.qtd, i.unidade, i.item].filter(Boolean).join(' '))))
+      .join('\n');
+    $('#passos-textarea').value = (r.passos || []).join('\n');
     if (r.foto) {
       $('#preview-foto').src = r.foto;
       $('#preview-foto').classList.remove('oculto');
@@ -284,11 +258,10 @@
 
   $('#form-receita').addEventListener('submit', async (e) => {
     e.preventDefault();
-    const ingredientes = [...$$('#editor-ingredientes .item-lista-editor')].map((d) => {
-      const [qtd, unidade, item] = d.querySelectorAll('input');
-      return { qtd: qtd.value.trim(), unidade: unidade.value.trim(), item: item.value.trim() };
-    }).filter((i) => i.item);
-    const passos = [...$$('#editor-passos .item-lista-editor')].map((d) => d.querySelector('input').value.trim()).filter(Boolean);
+    const ingredientes = $('#ingredientes-textarea').value.split('\n')
+      .map((l) => l.trim()).filter(Boolean)
+      .map((linha) => ({ qtd: '', unidade: '', item: linha }));
+    const passos = $('#passos-textarea').value.split('\n').map((l) => l.trim()).filter(Boolean);
 
     const corpo = {
       nome: $('#rec-nome').value,

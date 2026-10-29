@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Entrar — Oferta Fit BR</title>
+  <title>Entrar na área de membros</title>
   <link rel="icon" type="image/png" href="assets/logo-favicon.png" />
   <link rel="icon" type="image/svg+xml" href="assets/logo.svg" />
   <link rel="stylesheet" href="css/base.css" />
@@ -72,7 +72,7 @@
       r.ok ? irMembros() : erro(r.error || 'Não foi possível entrar');
     });
 
-    // Esqueci minha senha — envia link de redefinição por e-mail
+    // Esqueci minha senha: envia link de redefinição por e-mail
     $('#btn-esqueci').addEventListener('click', async () => {
       const email = $('#email-entrar').value.trim();
       if (!email.includes('@')) return erro('Informe seu e-mail no campo acima para receber o link.');
@@ -90,7 +90,7 @@
         const s1 = $('#senha-definir').value, s2 = $('#senha-definir2').value;
         if (s1 !== s2) return erro('As senhas não coincidem');
         const r = await post('/api/membros/definir-senha', { token: tokenDefinir, senha: s1 });
-        r.ok ? irMembros() : erro(r.error || 'Link inválido ou expirado — peça um novo em "Esqueci minha senha"');
+        r.ok ? irMembros() : erro(r.error || 'Link inválido ou expirado. Peça um novo em "Esqueci minha senha"');
       });
     }
   </script>

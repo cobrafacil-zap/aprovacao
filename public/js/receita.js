@@ -37,6 +37,25 @@
     return Number.isNaN(n) ? s : formatarQtd(n * fator);
   };
 
+
+  // unidades por extenso (sem abreviar), com plural
+  function unidadePorExtenso(unidade, qtd) {
+    const u = String(unidade || '').toLowerCase().trim();
+    const n = Math.abs(Number(String(qtd ?? '').replace(',', '.')) || 1);
+    const plural = n > 1;
+    const mapa = {
+      cs: plural ? 'colheres de sopa' : 'colher de sopa',
+      cd: plural ? 'colheres de chá' : 'colher de chá',
+      cp: plural ? 'colheres de chá' : 'colher de chá',
+      'xíc': plural ? 'xícaras' : 'xícara',
+      xic: plural ? 'xícaras' : 'xícara',
+      un: '', und: '', unidade: '', unidades: '',
+      g: 'g', kg: 'kg', ml: 'ml', l: 'litro' + (plural ? 's' : ''),
+    };
+    if (u in mapa) return mapa[u];
+    return plural && u && !u.endsWith('s') ? u + 's' : u;
+  }
+
   let receita = null;
   let porcoes = 1;
   const checks = new Set();
@@ -50,7 +69,7 @@
       const d = await api(`/api/membros/receitas/${id}`);
       receita = d.receita;
       porcoes = receita.porcoes || 1;
-      document.title = `${receita.nome} — Livro de Receitas Digital da Núbia`;
+      document.title = `${receita.nome} | Livro de Receitas Digital da Núbia`;
       renderizar();
       carregarRecomendacoes();
     } catch (e) {
@@ -75,8 +94,8 @@
       <div class="tags mt-2">${(r.tags || []).map((t) => `<span class="tag">${t.replace(/-/g, ' ')}</span>`).join('')}</div>
 
       <div class="nutricao info-receita">
-        <div class="nutri"><strong>${r.tempo_preparo_min ?? '—'} min</strong><span>preparo</span></div>
-        <div class="nutri"><strong>${r.porcoes ?? '—'}</strong><span>porção(ões)</span></div>
+        <div class="nutri"><strong>${r.tempo_preparo_min ?? ''} min</strong><span>preparo</span></div>
+        <div class="nutri"><strong>${r.porcoes ?? ''}</strong><span>porção(ões)</span></div>
         <div class="nutri"><strong>${(r.ingredientes || []).length}</strong><span>ingredientes</span></div>
         <div class="nutri"><strong>${(r.passos || []).length}</strong><span>etapas</span></div>
       </div>
@@ -114,11 +133,10 @@
     $('#menos-porcao').addEventListener('click', () => { if (porcoes > 1) { porcoes--; renderIngredientes(); } });
     $('#mais-porcao').addEventListener('click', () => { if (porcoes < 50) { porcoes++; renderIngredientes(); } });
     $('#btn-add-lista').addEventListener('click', async () => {
-      const itens = (r.ingredientes || []).map((i) => ({
-        qtd: i.qtd ? escalarQtd(i.qtd, fatorAtual()) : '',
-        unidade: i.unidade || '',
-        item: i.item || i.texto || String(i),
-      }));
+      const itens = (r.ingredientes || []).map((i) => {
+        const qtd = i.qtd ? escalarQtd(i.qtd, fatorAtual()) : '';
+        return { qtd, unidade: unidadePorExtenso(i.unidade, qtd), item: i.item || i.texto || String(i) };
+      });
       await post('/api/membros/lista/adicionar', { itens, receita: r.nome });
       toast(`Ingredientes (${porcoes} porção(ões)) na lista de compras! 🛒`);
     });
@@ -154,7 +172,7 @@
         <div class="nutri"><strong>${n.gorduras_g}g</strong><span>gorduras</span></div>
       </div>
       <p class="pequeno cinza mt-1">≈ Valores <strong>aproximados</strong>, calculados automaticamente a partir dos
-      ingredientes e da porção — podem variar conforme marcas, medidas e modo de preparo.</p>`;
+      ingredientes e da porção. Podem variar conforme marcas, medidas e modo de preparo.</p>`;
   }
 
   function renderIngredientes() {
@@ -163,8 +181,10 @@
       // ingrediente normalizado: qtd/unidade/item vêm do servidor; se não houver
       // quantidade reconhecida, exibe o texto original sem escalar
       const temQtd = i.qtd || i.unidade;
+      const qtdTxt = escalarQtd(i.qtd || 1, fatorAtual());
+      const unTxt = unidadePorExtenso(i.unidade, qtdTxt);
       const linha = temQtd
-        ? `<strong>${escalarQtd(i.qtd || 1, fatorAtual())}${i.unidade ? ' ' + i.unidade : ''}</strong> ${i.item || ''}`
+        ? `<strong>${qtdTxt}${unTxt ? ' ' + unTxt : ''}</strong> ${i.item || ''}`
         : `${i.texto || i.item || ''}`;
       return `
       <li class="ing-check ${checks.has(idx) ? 'marcado' : ''}" data-idx="${idx}">
@@ -220,7 +240,7 @@
             <h3>${x.nome}</h3>
             <div class="tags-linha">${(x.tags || []).slice(0, 2).map((t) => `<span class="tag">${t.replace(/-/g, ' ')}</span>`).join('')}</div>
             <div class="meta">
-              <span class="meta-chip">⏱ ${x.tempo_preparo_min ?? '—'} min</span>
+              <span class="meta-chip">⏱ ${x.tempo_preparo_min ?? ''} min</span>
               ${kcal ? `<span class="meta-chip kcal">🔥 ~${kcal} kcal</span>` : ''}
             </div>
           </div>
@@ -237,11 +257,14 @@
         <div style="text-align:right"><strong>LIVRO DE RECEITAS DA NÚBIA</strong><br><small>⏱ ${r.tempo_preparo_min} min • 🍽 ${Math.round((r.porcoes || 1) * fatorAtual())} porção(ões)</small></div>
       </div>
       <h2>Ingredientes</h2>
-      <ul>${(r.ingredientes || []).map((i) => `<li>${escalarQtd(i.qtd, fatorAtual())} ${i.unidade || ''} ${i.item || i}</li>`).join('')}</ul>
+      <ul>${(r.ingredientes || []).map((i) => {
+        const q = escalarQtd(i.qtd, fatorAtual());
+        return `<li>${q} ${unidadePorExtenso(i.unidade, q)} ${i.item || i.texto || i}</li>`;
+      }).join('')}</ul>
       <h2>Modo de preparo</h2>
       <ol>${(r.passos || []).map((p) => `<li>${p}</li>`).join('')}</ol>
       ${r.dicas ? `<h2>Anote aí</h2><p>${r.dicas}</p>` : ''}
-      <div class="imp-rodape">Conteúdo informativo — não substitui acompanhamento de nutricionista ou médico. • Livro de Receitas Digital da Núbia</div>`;
+      <div class="imp-rodape">Conteúdo informativo. Não substitui acompanhamento de nutricionista ou médico. • Livro de Receitas Digital da Núbia</div>`;
     window.print();
   }
 })();

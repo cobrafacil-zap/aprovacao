@@ -1,6 +1,6 @@
-// E-mails do Oferta Fit BR — identidade da marca e jornada do cliente.
+// E-mails do Oferta Fit BR: identidade da marca e jornada do cliente.
 // Canal principal: RESEND (obrigatório na Vercel). Fallback: SMTP (dev local).
-// Sem credenciais: modo simulado (imprime no console — ótimo para testes).
+// Sem credenciais: modo simulado (imprime no console, ótimo para testes).
 //
 // Regras de conteúdo: linguagem de bem-estar, sem promessa de resultado,
 // aviso de que não substitui nutricionista/médico em TODOS os e-mails.
@@ -78,7 +78,7 @@ export function shell(titulo, corpo) {
             ${corpo}
           </td></tr>
           <tr><td style="background:#16266E;border-radius:0 0 18px 18px;padding:20px 28px;font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:1.7;color:#C6CEF7">
-            <strong style="color:#FFC61A">Livro de Receitas Digital da Núbia</strong> — comer melhor sem complicar.<br />
+            <strong style="color:#FFC61A">Livro de Receitas Digital da Núbia</strong>. Comer melhor sem complicar.<br />
             Dúvidas? Responda este e-mail ou escreva para ${process.env.FROM_EMAIL || 'suporte@ofertafitbr.com'}.<br /><br />
             <span style="opacity:.85">Este conteúdo é informativo e não substitui acompanhamento de nutricionista ou médico.</span>
           </td></tr>
@@ -101,7 +101,7 @@ const assinatura = () => `
 
 // ---------- 1. Pagamento aprovado ----------
 export const emailCompra = (nome, urlAcesso) =>
-  shell(`Pagamento aprovado — bem-vindo(a), ${nome}! 🎉`, `
+  shell(`Pagamento aprovado! Bem-vindo(a), ${nome} 🎉`, `
     ${corpo('Seu pagamento foi confirmado e o acesso ao <strong>Livro de Receitas Digital da Núbia</strong> <strong>já está liberado</strong>.')}
     ${botao(urlAcesso, 'Entrar na área de membros')}
     <p style="margin:6px 0 4px;font-size:15px;font-weight:bold;color:#0E1330">O que fazer agora:</p>
@@ -110,7 +110,7 @@ export const emailCompra = (nome, urlAcesso) =>
       ${passo(2, 'Escolha uma receita para hoje', 'Use a busca e os filtros por categoria e tags.')}
       ${passo(3, 'Gere sua lista de compras', 'Selecione as receitas e a lista sai pronta para a feira.')}
     </table>
-    ${corpo('E fique atenta(o): <strong>toda semana entra uma receita nova</strong> na sua conta — você recebe um aviso por e-mail quando ela for liberada.')}
+    ${corpo('E fique atenta(o): <strong>toda semana entra uma receita nova</strong> na sua conta. Você recebe um aviso por e-mail quando ela for liberada.')}
     ${assinatura()}
   `);
 
@@ -132,7 +132,7 @@ export const emailBoasVindas = (nome, urlAcesso) =>
       ${passo(2, 'Marque suas favoritas', 'Toque no ❤️ para guardar as receitas que você mais gosta.')}
       ${passo(3, 'Cozinhe e registre', 'Marque as receitas como feitas e acompanhe sua evolução na cozinha.')}
     </table>
-    ${corpo('Qualquer dúvida, é só responder este e-mail — estamos aqui para ajudar.')}
+    ${corpo('Qualquer dúvida, é só responder este e-mail, estamos aqui para ajudar.')}
     ${assinatura()}
   `);
 

@@ -140,12 +140,16 @@
             </div>
 
             <h4 style="margin:14px 0 8px;font-size:.95rem">Ingredientes</h4>
-            <div id="editor-ingredientes"></div>
-            <button type="button" class="btn btn--contorno btn--pequeno" id="btn-add-ingrediente">+ Ingrediente</button>
+            <div class="campo">
+              <textarea id="ingredientes-textarea" rows="9" placeholder="Cole a lista inteira aqui, um ingrediente por linha.&#10;&#10;3 ovos&#10;1 lata de creme de leite&#10;2 colheres de sopa de requeijão&#10;Sal a gosto"></textarea>
+              <p class="pequeno cinza mt-1">Pode colar tudo de uma vez. O sistema entende as quantidades e medidas automaticamente.</p>
+            </div>
 
             <h4 style="margin:14px 0 8px;font-size:.95rem">Modo de preparo (passos)</h4>
-            <div id="editor-passos"></div>
-            <button type="button" class="btn btn--contorno btn--pequeno" id="btn-add-passo">+ Passo</button>
+            <div class="campo">
+              <textarea id="passos-textarea" rows="7" placeholder="Cole os passos aqui, um por linha. Eles são numerados sozinhos.&#10;&#10;Preaqueça o forno a 180 °C.&#10;Misture todos os ingredientes em uma tigela.&#10;Asse por 30 minutos."></textarea>
+              <p class="pequeno cinza mt-1">Um passo por linha, na ordem.</p>
+            </div>
 
             <div class="campo mt-2">
               <label for="rec-dicas">Dica especial (“Anote aí”)</label>

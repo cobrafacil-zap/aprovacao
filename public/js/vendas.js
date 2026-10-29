@@ -15,7 +15,7 @@
           <img src="${rec.foto || 'assets/receitas/bowl-frango-quinoa.jpg'}" alt="${rec.nome}" />
           <div class="corpo">
             <h3>${rec.nome}</h3>
-            <div class="meta">⏱ ${rec.tempo_preparo_min} min • 🍽 ${rec.porcoes} porção(ões) • ${rec.categoria.replace('-', ' ')}</div>
+            <div class="meta">⏱ ${rec.tempo_preparo_min} min • 🍽 ${rec.porcoes} porção(ões)${rec.nutricao_aprox?.kcal_por_porcao ? ` • 🔥 ~${rec.nutricao_aprox.kcal_por_porcao} kcal` : ''}</div>
             <div class="tags">${(rec.tags || []).slice(0, 3).map((t) => `<span class="tag">${t.replace('-', ' ')}</span>`).join('')}</div>
           </div>
         </article>`).join('');

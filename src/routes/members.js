@@ -15,6 +15,7 @@ import {
 import { track } from '../lib/analytics.js';
 import { consumirToken, tokenDefinirSenha } from './checkout.js';
 import { calcularNutricao, interpretar } from '../lib/nutricao.js';
+import { detectarTags } from '../lib/tags.js';
 
 const router = Router();
 const diasAte = (data) => Math.max(0, Math.ceil((new Date(data) - Date.now()) / 864e5));
@@ -128,7 +129,7 @@ const receitaPublica = (r, u) => ({
   nome: r.nome,
   descricao: r.descricao,
   categoria: r.categoria,
-  tags: r.tags || [],
+  tags: [...new Set([...(r.tags || []), ...detectarTags(r)])],
   tempo_preparo_min: r.tempo_preparo_min,
   porcoes: r.porcoes,
   foto: r.foto || null,

@@ -970,5 +970,25 @@
     "receitaId": null,
     "origem": "site",
     "dispositivo": "desktop"
+  },
+  {
+    "id": "evt_mvsrvz3pf7uhyh",
+    "ts": "2026-10-28T23:55:56.917Z",
+    "sessao": "s_s60s3jvaqymvsqajct",
+    "tipo": "pageview",
+    "pagina": "/membros.html",
+    "utm": {
+      "source": null,
+      "medium": null,
+      "campaign": null,
+      "content": null,
+      "term": null
+    },
+    "referrer": "http://localhost:3000/receita.html?id=rec_tapioca_ovo_queijo",
+    "valor": null,
+    "pedidoId": null,
+    "receitaId": null,
+    "origem": "site",
+    "dispositivo": "desktop"
   }
 ]

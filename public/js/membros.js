@@ -56,6 +56,25 @@
   document.body.style.overflow = 'hidden';
 
   // ================= TOAST =================
+
+  // unidades por extenso (sem abreviar), com plural
+  function unidadePorExtenso(unidade, qtd) {
+    const u = String(unidade || '').toLowerCase().trim();
+    const n = Math.abs(Number(String(qtd ?? '').replace(',', '.')) || 1);
+    const plural = n > 1;
+    const mapa = {
+      cs: plural ? 'colheres de sopa' : 'colher de sopa',
+      cd: plural ? 'colheres de chá' : 'colher de chá',
+      cp: plural ? 'colheres de chá' : 'colher de chá',
+      'xíc': plural ? 'xícaras' : 'xícara',
+      xic: plural ? 'xícaras' : 'xícara',
+      un: '', und: '', unidade: '', unidades: '',
+      g: 'g', kg: 'kg', ml: 'ml', l: 'litro' + (plural ? 's' : ''),
+    };
+    if (u in mapa) return mapa[u];
+    return plural && u && !u.endsWith('s') ? u + 's' : u;
+  }
+
   let toastTimer;
   function toast(mensagem, tipo = 'sucesso') {
     const t = $('#toast');
@@ -100,7 +119,7 @@
     if (eu.proxima) {
       $('#stat-proxima').textContent = `${eu.proxima.dias}d`;
       $('#stat-proxima-rotulo').textContent = `para "${eu.proxima.nome}"`;
-      $('#bv-sub').textContent = `A receita "${eu.proxima.nome}" libera em ${eu.proxima.dias} dia(s) — enquanto isso, que tal fazer uma das de hoje?`;
+      $('#bv-sub').textContent = `A receita "${eu.proxima.nome}" libera em ${eu.proxima.dias} dia(s). Enquanto isso, que tal fazer uma das de hoje?`;
     } else {
       $('#stat-proxima').textContent = '✓';
       $('#stat-proxima-rotulo').textContent = 'biblioteca completa';
@@ -206,7 +225,7 @@
           <h3>${r.nome}</h3>
           <div class="tags-linha">${(r.tags || []).slice(0, 2).map((t) => `<span class="tag">${t.replace(/-/g, ' ')}</span>`).join('')}</div>
           <div class="meta">
-            <span class="meta-chip">⏱ ${r.tempo_preparo_min ?? '—'} min</span>
+            <span class="meta-chip">⏱ ${r.tempo_preparo_min ?? ''} min</span>
             ${kcal ? `<span class="meta-chip kcal">🔥 ~${kcal} kcal</span>` : ''}
           </div>
         </div>
@@ -274,7 +293,7 @@
     const itens = usuario?.lista || [];
     if (!itens.length) return toast('Sua lista de compras está vazia', 'erro');
     const linhas = itens.map((i) => `${i.marcado ? '☑' : '☐'} ${[i.qtd, i.unidade, i.item].filter(Boolean).join(' ')}`);
-    const texto = `🛒 *Lista de compras — Oferta Fit BR*\n\n${linhas.join('\n')}\n\n🥗 Feita na área de membros`;
+    const texto = `🛒 *Lista de compras | Oferta Fit BR*\n\n${linhas.join('\n')}\n\n🥗 Feita na área de membros`;
     window.open(`https://wa.me/?text=${encodeURIComponent(texto)}`, '_blank');
   });
 
@@ -332,8 +351,8 @@
 
         <h4>Informações da receita</h4>
         <div class="nutricao">
-          <div class="nutri"><strong>${r.tempo_preparo_min ?? '—'} min</strong><span>preparo</span></div>
-          <div class="nutri"><strong>${r.porcoes ?? '—'}</strong><span>porção(ões)</span></div>
+          <div class="nutri"><strong>${r.tempo_preparo_min ?? ''} min</strong><span>preparo</span></div>
+          <div class="nutri"><strong>${r.porcoes ?? ''}</strong><span>porção(ões)</span></div>
           <div class="nutri"><strong>${(r.ingredientes || []).length}</strong><span>ingredientes</span></div>
           <div class="nutri"><strong>${(r.passos || []).length}</strong><span>etapas</span></div>
         </div>
@@ -450,7 +469,7 @@
       <ul>${(r.ingredientes || []).map((i) => `<li>${escalarQtd(i.qtd, fator)} ${i.unidade || ''} ${i.item || i}</li>`).join('')}</ul>
       <h2>Modo de preparo</h2>
       <ol>${(r.passos || []).map((p) => `<li>${p}</li>`).join('')}</ol>
-      <div class="imp-rodape">Conteúdo informativo — não substitui acompanhamento de nutricionista ou médico. • Oferta Fit BR</div>`;
+      <div class="imp-rodape">Conteúdo informativo. Não substitui acompanhamento de nutricionista ou médico. • Oferta Fit BR</div>`;
     window.print();
   }
 
@@ -459,7 +478,7 @@
     $('#area-impressao').innerHTML = `
       <div class="imp-cabecalho"><div><h1>Lista de compras</h1><small>Oferta Fit BR</small></div></div>
       <ul>${itens.map((i) => `<li>${[i.qtd, i.unidade, i.item].filter(Boolean).join(' ')} ${i.marcado ? '✓' : ''}</li>`).join('')}</ul>
-      <div class="imp-rodape">Oferta Fit BR — comer melhor sem complicar</div>`;
+      <div class="imp-rodape">Oferta Fit BR. Comer melhor sem complicar</div>`;
     window.print();
   });
 
@@ -520,7 +539,7 @@
         <div class="lista-item ${i.marcado ? 'marcado' : ''}">
           <input type="checkbox" data-idx="${idx}" ${i.marcado ? 'checked' : ''} />
           <div>
-            <span class="texto"><strong class="qtd">${[i.qtd, i.unidade].filter(Boolean).join(' ') || '—'}</strong> ${i.item}</span>
+            <span class="texto"><strong class="qtd">${[i.qtd, unidadePorExtenso(i.unidade, i.qtd)].filter(Boolean).join(' ') || ''}</strong> ${i.item}</span>
             <span class="de-receita">${(i.receitas || []).join(' • ')}</span>
           </div>
           <button class="remover" data-del="${idx}">✕</button>
