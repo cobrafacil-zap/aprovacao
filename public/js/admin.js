@@ -180,7 +180,7 @@
     $$('#tabela-receitas [data-publicar]').forEach((b) => b.addEventListener('click', async () => {
       if (!confirm('Publicar esta receita agora e enviar o e-mail para todos os membros?')) return;
       const r = await post(`/api/admin/receitas/${b.dataset.publicar}/publicar`);
-      alert(r.ok ? `Receita publicada! E-mail enviado para ${r.emails} membro(s).` : 'Erro ao publicar');
+      toast(r.ok ? `Receita publicada! E-mail enviado para ${r.emails} membro(s).` : 'Erro ao publicar', r.ok ? 'sucesso' : 'erro');
       carregarReceitas();
     }));
     $$('#tabela-receitas [data-excluir]').forEach((b) => b.addEventListener('click', async () => {
@@ -357,7 +357,7 @@
       const senha = prompt('Defina a nova senha para este membro (mín. 6 caracteres):');
       if (!senha) return;
       const r = await post(`/api/admin/membros/${b.dataset.senha}/senha`, { senha });
-      alert(r.ok ? 'Senha definida com sucesso!' : r.error || 'Erro ao definir senha');
+      toast(r.ok ? 'Senha definida com sucesso!' : r.error || 'Erro ao definir senha', r.ok ? 'sucesso' : 'erro');
     }));
 
     $$('#tabela-membros [data-acesso]').forEach((b) => b.addEventListener('click', async () => {
@@ -403,7 +403,7 @@
       emailSuporte: $('#cfg-suporte').value,
       adminSenha: $('#cfg-admin-senha').value || undefined,
     });
-    alert(r.ok ? 'Configurações salvas!' : 'Erro ao salvar');
+    toast(r.ok ? 'Configurações salvas!' : (r.error || 'Erro ao salvar'), r.ok ? 'sucesso' : 'erro');
     $('#cfg-admin-senha').value = '';
   });
 
