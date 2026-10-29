@@ -233,7 +233,6 @@
     $('#rec-categoria').value = r.categoria;
     $('#rec-tempo').value = r.tempo_preparo_min;
     $('#rec-porcoes').value = r.porcoes;
-    $('#rec-tags').value = (r.tags || []).join(', ');
     $('#rec-dificuldade').value = r.dificuldade || 'facil';
     $('#rec-custo').value = r.custo || 'baixo';
     $('#rec-dicas').value = r.dicas || '';
@@ -290,7 +289,6 @@
       tempo_preparo_min: Number($('#rec-tempo').value),
       porcoes: Number($('#rec-porcoes').value),
       data_liberacao: new Date($('#rec-data').value).toISOString(),
-      tags: $('#rec-tags').value.split(',').map((t) => t.trim()).filter(Boolean),
       dificuldade: $('#rec-dificuldade').value,
       custo: $('#rec-custo').value,
       dicas: $('#rec-dicas').value,

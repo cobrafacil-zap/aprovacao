@@ -5,9 +5,9 @@
     "descricao": "Café da manhã macio, saboroso e que fica pronto em 15 minutos — perfeita para dias corridos.",
     "categoria": "cafe-manha",
     "tags": [
+      "rapido",
       "sem-lactose",
-      "vegetariano",
-      "rapido"
+      "vegetariano"
     ],
     "tempo_preparo_min": 15,
     "porcoes": 2,
@@ -59,8 +59,9 @@
     "descricao": "Almoço completo, equilibrado e colorido — proteína, carboidrato bom e legumes em uma travessa só.",
     "categoria": "almoco",
     "tags": [
-      "alto-proteico",
-      "sem-lactose"
+      "sem-gluten",
+      "sem-lactose",
+      "alto-proteico"
     ],
     "tempo_preparo_min": 30,
     "porcoes": 2,
@@ -122,9 +123,9 @@
     "descricao": "Jantar prático, leve e proteico — você prepara, coloca no forno e esquece até ficar pronto.",
     "categoria": "jantar",
     "tags": [
-      "low-carb",
-      "alto-proteico",
-      "sem-gluten"
+      "sem-gluten",
+      "vegetariano",
+      "low-carb"
     ],
     "tempo_preparo_min": 25,
     "porcoes": 3,
@@ -186,9 +187,11 @@
     "descricao": "Lanche rápido para matar a fome entre as refeições com energia de qualidade.",
     "categoria": "lanche",
     "tags": [
-      "vegetariano",
       "rapido",
-      "sem-lactose"
+      "sem-gluten",
+      "sem-lactose",
+      "vegetariano",
+      "low-carb"
     ],
     "tempo_preparo_min": 5,
     "porcoes": 4,
@@ -234,10 +237,10 @@
     "descricao": "Sobremesa cremosa, saborosa e sem lactose — para matar a vontade de doce sem culpa.",
     "categoria": "sobremesa",
     "tags": [
-      "sem-lactose",
-      "vegetariano",
       "rapido",
-      "low-carb"
+      "sem-gluten",
+      "sem-lactose",
+      "vegetariano"
     ],
     "tempo_preparo_min": 10,
     "porcoes": 2,
@@ -283,9 +286,9 @@
     "descricao": "Café da manhã ou lanche prático, sem glúten e com boa proteína para começar bem o dia.",
     "categoria": "cafe-manha",
     "tags": [
-      "sem-gluten",
       "rapido",
-      "alto-proteico"
+      "sem-gluten",
+      "vegetariano"
     ],
     "tempo_preparo_min": 10,
     "porcoes": 1,
@@ -331,8 +334,9 @@
     "descricao": "Jantar especial de fim de semana, elegante e simples de preparar.",
     "categoria": "jantar",
     "tags": [
-      "alto-proteico",
-      "sem-gluten"
+      "sem-gluten",
+      "sem-lactose",
+      "alto-proteico"
     ],
     "tempo_preparo_min": 35,
     "porcoes": 2,
@@ -389,9 +393,11 @@
     "descricao": "Almoço vegetariano, nutritivo e que aguenta bem a marmita.",
     "categoria": "almoco",
     "tags": [
-      "vegetariano",
+      "sem-gluten",
       "sem-lactose",
-      "sem-gluten"
+      "vegetariano",
+      "vegano",
+      "alto-proteico"
     ],
     "tempo_preparo_min": 20,
     "porcoes": 2,
@@ -452,8 +458,8 @@
     "descricao": "Lanche prático para levar na bolsa, no trabalho ou antes do treino.",
     "categoria": "lanche",
     "tags": [
-      "vegetariano",
-      "rapido"
+      "sem-lactose",
+      "vegetariano"
     ],
     "tempo_preparo_min": 20,
     "porcoes": 8,
@@ -510,9 +516,9 @@
     "descricao": "Sobremesa ou café da manhã preparado na véspera — cremoso, sem lactose e cheio de fibras.",
     "categoria": "sobremesa",
     "tags": [
+      "rapido",
       "sem-lactose",
-      "vegetariano",
-      "sem-gluten"
+      "vegetariano"
     ],
     "tempo_preparo_min": 10,
     "porcoes": 2,

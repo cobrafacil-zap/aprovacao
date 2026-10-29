@@ -13,7 +13,7 @@ const RECEITA_PUBLICA = (r) => ({
   nome: r.nome,
   descricao: r.descricao,
   categoria: r.categoria,
-  tags: [...new Set([...(r.tags || []), ...detectarTags(r)])],
+  tags: detectarTags(r), // sempre automáticas
   tempo_preparo_min: r.tempo_preparo_min,
   porcoes: r.porcoes,
   foto: r.foto || null,

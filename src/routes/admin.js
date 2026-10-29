@@ -12,6 +12,7 @@ import { requireAdmin, criarSessao, destruirSessao, isSessaoAdmin, hashSenha } f
 import { resumo, track } from '../lib/analytics.js';
 import { liberarPendentes, receitasLiberadas, proximaReceita } from '../lib/release.js';
 import { sendEmail, emailNovaReceita, emailTeste, urlMembros } from '../lib/mail.js';
+import { detectarTags } from '../lib/tags.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const UPLOAD_DIR = path.join(__dirname, '..', '..', 'public', 'assets', 'receitas');
@@ -49,7 +50,11 @@ router.use(requireAdmin);
 
 // ---------- Receitas ----------
 router.get('/receitas', async (req, res) => {
-  const lista = (await read('receitas', [])).slice().sort((a, b) => new Date(b.data_liberacao) - new Date(a.data_liberacao));
+  const lista = (await read('receitas', []))
+    .slice()
+    .sort((a, b) => new Date(b.data_liberacao) - new Date(a.data_liberacao))
+    // tags sempre calculadas na hora: nada de preenchimento manual
+    .map((r) => ({ ...r, tags: detectarTags(r) }));
   res.json({ receitas: lista, agora: new Date().toISOString() });
 });
 
@@ -69,7 +74,7 @@ router.post('/receitas', async (req, res) => {
     nome: b.nome,
     descricao: b.descricao || '',
     categoria: b.categoria || 'almoco',
-    tags: b.tags || [],
+    tags: [], // preenchidas automaticamente logo abaixo
     dificuldade: b.dificuldade || 'facil',
     custo: b.custo || 'baixo',
     tempo_preparo_min: Number(b.tempo_preparo_min) || 20,
@@ -85,6 +90,7 @@ router.post('/receitas', async (req, res) => {
     ativo: b.ativo !== false,
     criadoEm: agora(),
   };
+  receita.tags = detectarTags(receita);
   const receitas = await read('receitas', []);
   receitas.push(receita);
   await write('receitas', receitas);
@@ -102,7 +108,6 @@ router.put('/receitas/:id', async (req, res) => {
 
   Object.assign(r, {
     nome: b.nome, descricao: b.descricao ?? r.descricao, categoria: b.categoria ?? r.categoria,
-    tags: b.tags ?? r.tags,
     dificuldade: b.dificuldade ?? r.dificuldade,
     custo: b.custo ?? r.custo,
     // cuidado: Number(undefined) = NaN — só troca se veio valor válido
@@ -114,6 +119,7 @@ router.put('/receitas/:id', async (req, res) => {
     ativo: b.ativo !== false,
   });
   if (new Date(r.data_liberacao) <= new Date()) r.liberada = true;
+  r.tags = detectarTags(r); // recalcula sempre, inclusive ao trocar ingredientes
   await write('receitas', receitas);
   liberarPendentes().catch(() => {});
   res.json({ ok: true, receita: r });

@@ -129,7 +129,7 @@ const receitaPublica = (r, u) => ({
   nome: r.nome,
   descricao: r.descricao,
   categoria: r.categoria,
-  tags: [...new Set([...(r.tags || []), ...detectarTags(r)])],
+  tags: detectarTags(r), // sempre automáticas, sem preenchimento manual
   tempo_preparo_min: r.tempo_preparo_min,
   porcoes: r.porcoes,
   foto: r.foto || null,
