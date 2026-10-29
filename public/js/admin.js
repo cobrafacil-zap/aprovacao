@@ -48,7 +48,7 @@
     $('#ingredientes-textarea').value = '';
     $('#passos-textarea').value = '';
     $('#preview-foto').classList.add('oculto');
-    $('#upload-texto').textContent = '📷 Clique para enviar a foto do prato';
+    $('#upload-texto').textContent = '📷 Clique ou arraste a foto do prato aqui';
     const d = new Date(Date.now() + 7 * 864e5);
     d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
     $('#rec-data').value = d.toISOString().slice(0, 16);
@@ -254,11 +254,12 @@
 
   $('#btn-cancelar-receita').addEventListener('click', () => $('#form-receita-card').classList.add('oculto'));
 
-  // Upload de foto (preview + envio)
-  $('#upload-foto').addEventListener('click', () => $('#input-foto').click());
-  $('#input-foto').addEventListener('change', async (e) => {
-    const f = e.target.files[0];
+  // Upload de foto (clique, seleção ou ARRASTANDO o arquivo)
+  async function processarFoto(f) {
     if (!f) return;
+    if (!/^image\//.test(f.type) && !/\.(jpe?g|png|webp)$/i.test(f.name || '')) {
+      return toast('Escolha um arquivo de imagem (JPG, PNG ou WebP)', 'erro');
+    }
     fotoNovaSelecionada = true;
     $('#upload-texto').textContent = 'Processando imagem...';
     try {
@@ -272,7 +273,35 @@
       $('#preview-foto').classList.remove('oculto');
       $('#upload-texto').textContent = `${f.name} — ${Math.round(f.size / 1024)} KB`;
     }
+  }
+
+  $('#upload-foto').addEventListener('click', () => $('#input-foto').click());
+  $('#input-foto').addEventListener('change', (e) => processarFoto(e.target.files[0]));
+
+  // Arrastar e soltar: destaca a área e aceita o arquivo solto
+  const areaFoto = $('#upload-foto');
+  ['dragenter', 'dragover'].forEach((ev) => areaFoto.addEventListener(ev, (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    areaFoto.classList.add('arrastando');
+  }));
+  ['dragleave', 'dragend'].forEach((ev) => areaFoto.addEventListener(ev, (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (ev === 'dragleave' && areaFoto.contains(e.relatedTarget)) return;
+    areaFoto.classList.remove('arrastando');
+  }));
+  areaFoto.addEventListener('drop', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    areaFoto.classList.remove('arrastando');
+    const arquivo = e.dataTransfer?.files?.[0];
+    if (arquivo) processarFoto(arquivo);
   });
+  // evita o navegador abrir a imagem se ela for solta fora da área
+  ['dragover', 'drop'].forEach((ev) => window.addEventListener(ev, (e) => {
+    if (!areaFoto.contains(e.target)) e.preventDefault();
+  }));
 
   $('#form-receita').addEventListener('submit', async (e) => {
     e.preventDefault();

@@ -79,6 +79,11 @@
   text-align: center; color: var(--cinza); cursor: pointer; background: var(--fundo);
 }
 .upload-foto img { max-height: 150px; margin: 0 auto 10px; border-radius: 12px; }
+.upload-foto { transition: border-color 0.15s ease, background 0.15s ease; }
+.upload-foto.arrastando {
+  border-color: var(--azul); background: rgba(28, 63, 170, 0.07);
+  border-style: solid; color: var(--azul);
+}
 .painel-card { background: #fff; border-radius: var(--raio); border: 1px solid var(--borda); box-shadow: var(--sombra); padding: 24px; margin-top: 18px; }
 
 

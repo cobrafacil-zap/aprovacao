@@ -1070,5 +1070,25 @@
     "receitaId": null,
     "origem": "site",
     "dispositivo": "desktop"
+  },
+  {
+    "id": "evt_mvst27zv0loet7",
+    "ts": "2026-10-29T00:28:47.995Z",
+    "sessao": "s_s60s3jvaqymvsqajct",
+    "tipo": "pageview",
+    "pagina": "/admin.html",
+    "utm": {
+      "source": null,
+      "medium": null,
+      "campaign": null,
+      "content": null,
+      "term": null
+    },
+    "referrer": null,
+    "valor": null,
+    "pedidoId": null,
+    "receitaId": null,
+    "origem": "site",
+    "dispositivo": "desktop"
   }
 ]
