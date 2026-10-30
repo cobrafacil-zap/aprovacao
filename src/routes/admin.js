@@ -167,7 +167,8 @@ router.post('/receitas/:id/publicar', async (req, res) => {
   r.liberadaEm = agora();
   await write('receitas', receitas);
 
-  const membros = (await read('users', [])).filter((u) => u.acesso?.ativo);
+  // quem cancelou a inscrição não recebe avisos de receitas novas
+  const membros = (await read('users', [])).filter((u) => u.acesso?.ativo && u.emailsAtivos !== false);
   for (const u of membros) {
     try {
       await sendEmail({ to: u.email, subject: `Nova receita liberada: ${r.nome} 🥗`, html: emailNovaReceita(u.nome, r, `${urlMembros()}?receita=${r.id}`) });
@@ -274,7 +275,7 @@ router.put('/config', async (req, res) => {
 router.post('/email/teste', async (req, res) => {
   const { email } = req.body || {};
   if (!email?.includes('@')) return res.status(400).json({ error: 'informe um e-mail válido' });
-  const r = await sendEmail({ to: email, subject: 'Teste — Oferta Fit BR ✅', html: emailTeste() });
+  const r = await sendEmail({ to: email, subject: 'Teste de e-mail do OfertaFitBR ✅', html: emailTeste() });
   res.json({ ok: true, ...r });
 });
 

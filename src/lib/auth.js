@@ -61,7 +61,7 @@ export async function isSessaoAdmin(req) {
 export async function requireMember(req, res, next) {
   const u = await usuarioDaSessao(req);
   if (!u) return res.status(401).json({ error: 'faça login para continuar' });
-  if (u.acesso?.ativo === false) return res.status(403).json({ error: 'acesso inativo — fale com o suporte' });
+  if (u.acesso?.ativo === false) return res.status(403).json({ error: 'acesso inativo. Fale com o suporte' });
   req.usuario = u;
   next();
 }

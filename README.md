@@ -1,4 +1,4 @@
-# 🥗 Oferta Fit BR — Área de membros de receitas fit
+# 🥗 OfertaFitBR — Área de membros de receitas fit
 
 Site de venda de produto digital de baixo ticket: **receitas fit em área de membros**,
 com **acesso vitalício**, **atualização semanal** e preço único de **R$ 19,90**.
@@ -56,7 +56,7 @@ Ofertafitreceitas/
 │   ├── css/                   # base.css (design system) + vendas.css + membros.css + admin.css
 │   ├── js/                    # track.js (analytics) + vendas.js + checkout.js + membros.js + admin.js
 │   └── assets/
-│       ├── logo.svg           # logo Oferta Fit BR (recriada em SVG)
+│       ├── logo.svg           # logo OfertaFitBR (recriada em SVG)
 │       ├── logo.png           # ← COLE AQUI o PNG original da logo (substitui o SVG nos <img>)
 │       └── receitas/          # fotos dos pratos (upload pelo admin ou SVGs ilustrativos)
 │

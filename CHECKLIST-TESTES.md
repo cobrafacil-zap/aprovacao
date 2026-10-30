@@ -1,4 +1,4 @@
-# ✅ Checklist de Testes — Oferta Fit BR
+# ✅ Checklist de Testes — OfertaFitBR
 
 Como rodar: `npm i && npm start` e abra `http://localhost:3000`.
 Marque cada item após validar. Use duas janelas (ou aba anônima) para simular o membro.

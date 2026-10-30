@@ -1,13 +1,31 @@
-// E-mails do Oferta Fit BR: identidade da marca e jornada do cliente.
+// E-mails do OfertaFitBR: identidade da marca e jornada do cliente.
 // Canal principal: RESEND (obrigatório na Vercel). Fallback: SMTP (dev local).
 // Sem credenciais: modo simulado (imprime no console, ótimo para testes).
 //
 // Regras de conteúdo: linguagem de bem-estar, sem promessa de resultado,
 // aviso de que não substitui nutricionista/médico em TODOS os e-mails.
+import { createHmac } from 'crypto';
 import { baseUrl } from './helpers.js';
 
+// Token estável por e-mail (HMAC): permite cancelar a inscrição sem senha
+// e sem gravar nada novo no banco.
+const SEGREDO_EMAILS = process.env.EMAILS_SECRET || process.env.CRON_SECRET || 'ofertafit-emails-v1';
+export const tokenEmails = (email) =>
+  createHmac('sha256', SEGREDO_EMAILS).update(String(email).toLowerCase().trim()).digest('hex').slice(0, 32);
+
+export const urlCancelarEmails = (email) =>
+  `${baseUrl()}/api/emails/cancelar?e=${encodeURIComponent(email)}&t=${tokenEmails(email)}`;
+
+// Substitui {{CANCELAR}} pelo link do destinatário. Se o endereço não tiver
+// conta (e-mails de teste), a linha de cancelamento é removida inteira.
+function inserirCancelamento(html, to) {
+  if (!String(html).includes('{{CANCELAR}}')) return html;
+  return String(html).split('{{CANCELAR}}').join(urlCancelarEmails(to));
+}
+
 export async function sendEmail({ to, subject, html }) {
-  const from = process.env.FROM_EMAIL || 'entrega@ofertafitbr.com';
+  html = inserirCancelamento(html, to);
+  const from = process.env.FROM_EMAIL || 'entrega@ofertafit.smdigtal.com';
 
   if (process.env.RESEND_API_KEY) {
     const r = await fetch('https://api.resend.com/emails', {
@@ -70,7 +88,7 @@ export function shell(titulo, corpo) {
       <tr><td align="center">
         <table width="560" cellpadding="0" cellspacing="0" border="0" style="max-width:560px;width:100%">
           <tr><td style="background:#2743D6;border-radius:18px 18px 0 0;padding:22px 28px">
-            <img src="${abs('/assets/logo.jpg')}" alt="Oferta Fit BR" width="52" height="52"
+            <img src="${abs('/assets/logo.jpg')}" alt="OfertaFitBR" width="52" height="52"
                  style="border-radius:50%;display:block" />
           </td></tr>
           <tr><td style="background:#ffffff;padding:30px 28px;font-family:Arial,Helvetica,sans-serif">
@@ -79,8 +97,10 @@ export function shell(titulo, corpo) {
           </td></tr>
           <tr><td style="background:#16266E;border-radius:0 0 18px 18px;padding:20px 28px;font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:1.7;color:#C6CEF7">
             <strong style="color:#FFC61A">Livro de Receitas Digital da Núbia</strong>. Comer melhor sem complicar.<br />
-            Dúvidas? Responda este e-mail ou escreva para ${process.env.FROM_EMAIL || 'suporte@ofertafitbr.com'}.<br /><br />
-            <span style="opacity:.85">Este conteúdo é informativo e não substitui acompanhamento de nutricionista ou médico.</span>
+            Dúvidas? Responda este e-mail ou escreva para ${process.env.FROM_EMAIL || 'entrega@ofertafit.smdigtal.com'}.<br /><br />
+            <span style="opacity:.85">Este conteúdo é informativo e não substitui acompanhamento de nutricionista ou médico.</span><br />
+            <span style="opacity:.85">Não quer mais receber os e-mails de novas receitas?
+              <a href="{{CANCELAR}}" style="color:#C6CEF7;text-decoration:underline">Cancelar inscrição</a>.</span>
           </td></tr>
         </table>
       </td></tr>
@@ -96,7 +116,7 @@ const assinatura = () => `
   <p style="margin:18px 0 0;font-size:15px;color:#0E1330;line-height:1.65">
     Com carinho,<br />
     <strong style="font-size:16px;color:#2743D6">Núbia</strong><br />
-    <span style="color:#5B627E;font-size:13px">Livro de Receitas Digital da Núbia • Oferta Fit BR</span>
+    <span style="color:#5B627E;font-size:13px">Livro de Receitas Digital da Núbia • OfertaFitBR</span>
   </p>`;
 
 // ---------- 1. Pagamento aprovado ----------
@@ -170,6 +190,6 @@ export const emailLinkAcesso = (nome, urlAcesso) =>
 // ---------- 6. Teste (painel admin) ----------
 export const emailTeste = () =>
   shell('Seu e-mail está configurado! ✅', `
-    ${corpo('Este é um e-mail de teste do <strong>Oferta Fit BR</strong>. Se você está lendo isso, a integração de e-mail está funcionando corretamente.')}
+    ${corpo('Este é um e-mail de teste do <strong>OfertaFitBR</strong>. Se você está lendo isso, a integração de e-mail está funcionando corretamente.')}
     ${botao(`${baseUrl()}/index.html`, 'Visitar o site')}
   `);

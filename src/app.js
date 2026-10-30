@@ -11,6 +11,7 @@ import publicRoutes from './routes/public.js';
 import checkoutRoutes from './routes/checkout.js';
 import membersRoutes from './routes/members.js';
 import adminRoutes from './routes/admin.js';
+import emailsRoutes from './routes/emails.js';
 import { liberarPendentes, marcarAbandonados } from './lib/release.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -31,6 +32,7 @@ app.get('/api/cron', async (req, res) => {
 
 // APIs
 app.use('/api', publicRoutes);
+app.use('/api/emails', emailsRoutes); // cancelar/reativar inscrição (link dos e-mails)
 app.use('/api/checkout', checkoutRoutes);
 app.use('/api/membros', membersRoutes);
 app.use('/api/admin', adminRoutes);

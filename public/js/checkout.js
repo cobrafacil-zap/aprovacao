@@ -17,7 +17,7 @@
     config = p;
     const precoTxt = fmt(p.preco ?? 19.9);
     $('#valor-total').textContent = precoTxt;
-    $('#btn-pagar').textContent = `Finalizar compra — ${precoTxt}`;
+    $('#btn-pagar').textContent = `Finalizar compra por ${precoTxt}`;
     const topo = $('#preco-topo');
     if (topo) topo.textContent = precoTxt;
     if (p.mp_ativo && p.mp_public_key) prepararSDK();
@@ -155,7 +155,7 @@
       mostrarErro(e.message);
     } finally {
       btn.disabled = false;
-      btn.textContent = `Finalizar compra — ${fmt(config.preco ?? 19.9)}`;
+      btn.textContent = `Finalizar compra por ${fmt(config.preco ?? 19.9)}`;
     }
   });
 

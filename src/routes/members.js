@@ -69,6 +69,7 @@ router.put('/perfil', requireMember, async (req, res) => {
     u.senhaDefinida = true;
   }
   if (nome && nome.trim()) u.nome = nome.trim();
+  if (typeof req.body?.emailsAtivos === 'boolean') u.emailsAtivos = req.body.emailsAtivos;
   await write('users', users);
   res.json({ ok: true, usuario: { id: u.id, nome: u.nome, email: u.email } });
 });
@@ -99,7 +100,7 @@ router.post('/recuperar-senha', async (req, res) => {
   if (u) {
     const link = `${baseUrl()}/login.html?definir=${u.id}.${tokenDefinirSenha(u.id)}`;
     try {
-      await sendEmail({ to: u.email, subject: 'Redefina sua senha — Oferta Fit BR', html: emailDefinirSenha(u.nome, link) });
+      await sendEmail({ to: u.email, subject: 'Redefina sua senha da conta OfertaFitBR', html: emailDefinirSenha(u.nome, link) });
     } catch (e) {
       console.error('[EMAIL] recuperação de senha:', e.message);
     }
@@ -114,6 +115,7 @@ router.get('/eu', requireMember, async (req, res) => {
   res.json({
     usuario: {
       id: u.id, nome: u.nome, email: u.email,
+      emailsAtivos: u.emailsAtivos !== false,
       acesso: u.acesso, criadoEm: u.criadoEm,
       favoritos: u.favoritos || [],
       feitas: u.feitas || [],

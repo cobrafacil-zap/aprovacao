@@ -7,7 +7,7 @@ import { usaRedis } from './src/lib/db.js';
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, async () => {
-  console.log('\n🥗 Oferta Fit BR no ar');
+  console.log('\n🥗 OfertaFitBR no ar');
   console.log(`   Vendas:   http://localhost:${PORT}/`);
   console.log(`   Checkout: http://localhost:${PORT}/checkout.html`);
   console.log(`   Membros:  http://localhost:${PORT}/membros.html`);

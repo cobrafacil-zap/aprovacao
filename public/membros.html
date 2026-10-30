@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Área de Membros — Oferta Fit BR</title>
+  <title>Área de Membros · OfertaFitBR</title>
   <link rel="icon" type="image/png" href="assets/logo-favicon.png" />
   <link rel="icon" type="image/svg+xml" href="assets/logo.svg" />
   <link rel="stylesheet" href="css/base.css" />
@@ -14,7 +14,7 @@
   <!-- ===== GATE DE ACESSO (login obrigatório antes de ver qualquer conteúdo) ===== -->
   <div id="auth-gate">
     <div class="gate-caixa">
-      <img class="gate-logo" src="assets/logo.jpg" onerror="this.onerror=null;this.src='assets/logo.svg'" alt="Oferta Fit BR" />
+      <img class="gate-logo" src="assets/logo.jpg" onerror="this.onerror=null;this.src='assets/logo.svg'" alt="OfertaFitBR" />
       <div class="gate-spinner"></div>
       <p id="gate-texto">Verificando seu acesso...</p>
       <a class="btn btn--cta oculto" id="gate-entrar" href="login.html">Fazer login</a>
@@ -26,7 +26,7 @@
     <div class="container linha-flex">
       <button class="menu-btn" id="btn-menu" aria-label="Abrir menu">☰</button>
       <a href="index.html" title="Ir para o início do site">
-        <img class="logo" src="assets/logo.jpg" onerror="this.onerror=null;this.src='assets/logo.svg'" alt="Oferta Fit BR" />
+        <img class="logo" src="assets/logo.jpg" onerror="this.onerror=null;this.src='assets/logo.svg'" alt="OfertaFitBR" />
       </a>
       <div class="espaçador"></div>
       <button class="perfil-chip" id="btn-perfil" title="Meu perfil">
@@ -40,10 +40,12 @@
       <button class="menu-item" data-ir="receitas">🍽 Receitas</button>
       <button class="menu-item" data-ir="favoritos">❤️ Favoritos</button>
       <button class="menu-item" data-ir="lista">🛒 Lista de compras</button>
+      <a class="menu-item" href="guia-substituicoes.html">🔄 Guia de substituições</a>
+      <a class="menu-item" href="checklist-despensa.html">🧺 Checklist de despensa</a>
       <button class="menu-item" data-ir="historico">✅ Receitas que já fiz</button>
       <button class="menu-item" id="menu-perfil">👤 Meu perfil</button>
       <button class="menu-item" id="menu-convite">💛 Convidar um amigo</button>
-      <a class="menu-item" href="mailto:suporte@ofertafitbr.com">💬 Falar com o suporte</a>
+      <a class="menu-item" href="mailto:entrega@ofertafit.smdigtal.com">💬 Falar com o suporte</a>
       <button class="menu-item menu-item--sair" id="btn-sair">🚪 Sair da conta</button>
     </nav>
   </header>
@@ -60,7 +62,7 @@
         <div class="bv-proxima">
           <span class="bv-icone">📅</span>
           <div>
-            <strong id="stat-proxima">—</strong>
+            <strong id="stat-proxima">sem data</strong>
             <small id="stat-proxima-rotulo">próxima receita</small>
           </div>
         </div>
@@ -82,6 +84,21 @@
       <label class="pp-item"><input type="checkbox" data-pp="favoritos" /> <span>Marcar minhas favoritas com ❤️</span></label>
       <label class="pp-item"><input type="checkbox" data-pp="lista" /> <span>Gerar minha lista de compras</span></label>
       <label class="pp-item"><input type="checkbox" data-pp="feita" /> <span>Cozinhar e marcar uma receita como feita</span></label>
+    </section>
+
+    <!-- ===== Bônus inclusos ===== -->
+    <section class="mt-3">
+      <h3 style="font-size:1.05rem">🎁 Bônus inclusos</h3>
+      <div class="bonus-grade">
+        <a class="bonus-item" href="guia-substituicoes.html"><span class="bonus-icone">🔄</span>
+          <div><strong>Guia de substituições</strong><small>Troque ingredientes sem quebrar a receita</small></div></a>
+        <a class="bonus-item" href="checklist-despensa.html"><span class="bonus-icone">🧺</span>
+          <div><strong>Checklist de despensa fit</strong><small>O essencial para ter em casa</small></div></a>
+        <a class="bonus-item" href="#" data-ir="lista"><span class="bonus-icone">📝</span>
+          <div><strong>Lista de compras inteligente</strong><small>Gerada a partir das receitas escolhidas</small></div></a>
+        <a class="bonus-item" href="membros.html" data-ir="receitas"><span class="bonus-icone">🖨</span>
+          <div><strong>Modo impressão</strong><small>Abra uma receita e toque em imprimir</small></div></a>
+      </div>
     </section>
 
     <!-- ===== Abas ===== -->
@@ -229,6 +246,11 @@
             <label for="perfil-nome-input">Nome</label>
             <input id="perfil-nome-input" type="text" required />
           </div>
+          <hr style="border:none;border-top:1px solid var(--borda);margin:18px 0" />
+          <label class="pp-item" style="margin-bottom:10px">
+            <input type="checkbox" id="perfil-emails" checked />
+            <span>Receber e-mails com receitas novas</span>
+          </label>
           <hr style="border:none;border-top:1px solid var(--borda);margin:18px 0" />
           <p class="pequeno cinza mb-2">Trocar senha (deixe em branco para não alterar)</p>
           <div class="campo">

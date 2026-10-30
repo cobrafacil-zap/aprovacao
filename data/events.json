@@ -1090,5 +1090,179 @@
     "receitaId": null,
     "origem": "site",
     "dispositivo": "desktop"
+  },
+  {
+    "id": "evt_mvv75losan5cdc",
+    "ts": "2026-10-30T16:38:52.684Z",
+    "sessao": null,
+    "tipo": "receita_liberada",
+    "pagina": null,
+    "utm": null,
+    "referrer": null,
+    "valor": null,
+    "pedidoId": null,
+    "receitaId": "rec_mvv75kvdgsbgem",
+    "origem": "admin",
+    "dispositivo": null
+  },
+  {
+    "id": "evt_mvv76c62y5wyyp",
+    "ts": "2026-10-30T16:39:27.003Z",
+    "sessao": "s_yn7zs8uqsjmvv76c3z",
+    "tipo": "pageview",
+    "pagina": "/login.html",
+    "utm": {
+      "source": null,
+      "medium": null,
+      "campaign": null,
+      "content": null,
+      "term": null
+    },
+    "referrer": "http://localhost:3000/checklist-despensa.html",
+    "valor": null,
+    "pedidoId": null,
+    "receitaId": null,
+    "origem": "site",
+    "dispositivo": "desktop"
+  },
+  {
+    "id": "evt_mvv76pz1urusgl",
+    "ts": "2026-10-30T16:39:44.893Z",
+    "sessao": "s_yn7zs8uqsjmvv76c3z",
+    "tipo": "pageview",
+    "pagina": "/login.html",
+    "utm": {
+      "source": null,
+      "medium": null,
+      "campaign": null,
+      "content": null,
+      "term": null
+    },
+    "referrer": null,
+    "valor": null,
+    "pedidoId": null,
+    "receitaId": null,
+    "origem": "site",
+    "dispositivo": "desktop"
+  },
+  {
+    "id": "evt_mvv76q36prjpl1",
+    "ts": "2026-10-30T16:39:45.042Z",
+    "sessao": "s_yn7zs8uqsjmvv76c3z",
+    "tipo": "pageview",
+    "pagina": "/membros.html",
+    "utm": {
+      "source": null,
+      "medium": null,
+      "campaign": null,
+      "content": null,
+      "term": null
+    },
+    "referrer": "http://localhost:3000/login.html",
+    "valor": null,
+    "pedidoId": null,
+    "receitaId": null,
+    "origem": "site",
+    "dispositivo": "desktop"
+  },
+  {
+    "id": "evt_mvv771qirnz7ev",
+    "ts": "2026-10-30T16:40:00.138Z",
+    "sessao": "s_yn7zs8uqsjmvv76c3z",
+    "tipo": "pageview",
+    "pagina": "/login.html",
+    "utm": {
+      "source": null,
+      "medium": null,
+      "campaign": null,
+      "content": null,
+      "term": null
+    },
+    "referrer": null,
+    "valor": null,
+    "pedidoId": null,
+    "receitaId": null,
+    "origem": "site",
+    "dispositivo": "desktop"
+  },
+  {
+    "id": "evt_mvv771sqw5bcf5",
+    "ts": "2026-10-30T16:40:00.218Z",
+    "sessao": "s_yn7zs8uqsjmvv76c3z",
+    "tipo": "pageview",
+    "pagina": "/membros.html",
+    "utm": {
+      "source": null,
+      "medium": null,
+      "campaign": null,
+      "content": null,
+      "term": null
+    },
+    "referrer": "http://localhost:3000/login.html",
+    "valor": null,
+    "pedidoId": null,
+    "receitaId": null,
+    "origem": "site",
+    "dispositivo": "desktop"
+  },
+  {
+    "id": "evt_mvv77ek7xhuw5n",
+    "ts": "2026-10-30T16:40:16.759Z",
+    "sessao": "s_yn7zs8uqsjmvv76c3z",
+    "tipo": "pageview",
+    "pagina": "/login.html",
+    "utm": {
+      "source": null,
+      "medium": null,
+      "campaign": null,
+      "content": null,
+      "term": null
+    },
+    "referrer": null,
+    "valor": null,
+    "pedidoId": null,
+    "receitaId": null,
+    "origem": "site",
+    "dispositivo": "desktop"
+  },
+  {
+    "id": "evt_mvv77em873pu7b",
+    "ts": "2026-10-30T16:40:16.832Z",
+    "sessao": "s_yn7zs8uqsjmvv76c3z",
+    "tipo": "pageview",
+    "pagina": "/membros.html",
+    "utm": {
+      "source": null,
+      "medium": null,
+      "campaign": null,
+      "content": null,
+      "term": null
+    },
+    "referrer": "http://localhost:3000/login.html",
+    "valor": null,
+    "pedidoId": null,
+    "receitaId": null,
+    "origem": "site",
+    "dispositivo": "desktop"
+  },
+  {
+    "id": "evt_mvv77teryeub25",
+    "ts": "2026-10-30T16:40:36.003Z",
+    "sessao": "s_yn7zs8uqsjmvv76c3z",
+    "tipo": "pageview",
+    "pagina": "/membros.html",
+    "utm": {
+      "source": null,
+      "medium": null,
+      "campaign": null,
+      "content": null,
+      "term": null
+    },
+    "referrer": null,
+    "valor": null,
+    "pedidoId": null,
+    "receitaId": null,
+    "origem": "site",
+    "dispositivo": "desktop"
   }
 ]

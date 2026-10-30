@@ -40,7 +40,8 @@ export async function liberarPendentes() {
   });
   await write('receitas', receitas);
 
-  const membros = (await read('users', [])).filter((u) => u.acesso?.ativo);
+  // quem cancelou a inscrição não recebe avisos de receitas novas
+  const membros = (await read('users', [])).filter((u) => u.acesso?.ativo && u.emailsAtivos !== false);
   for (const r of saiuAgora) {
     await eventoAdd({ id: id('evt'), ts: agora(), tipo: 'receita_liberada', receitaId: r.id, origem: 'sistema' });
     for (const u of membros) {

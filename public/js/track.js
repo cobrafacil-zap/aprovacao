@@ -1,4 +1,4 @@
-// Tracker de analytics do Oferta Fit BR.
+// Tracker de analytics do OfertaFitBR.
 // Captura UTMs do Instagram, cria uma sessão anônima e envia eventos
 // para /api/track (visitas, origem do tráfego e eventos do funil).
 window.OFTrack = (() => {

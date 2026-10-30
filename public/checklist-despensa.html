@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Checklist de despensa fit · Livro de Receitas Digital da Núbia</title>
+  <link rel="icon" type="image/png" href="assets/logo-favicon.png" />
+  <link rel="icon" type="image/svg+xml" href="assets/logo.svg" />
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/membros.css" />
+</head>
+<body class="app-membros">
+
+  <!-- ===== Topo ===== -->
+  <header class="app-topo">
+    <div class="container linha-flex">
+      <a href="membros.html" class="menu-btn" title="Voltar">←</a>
+      <a href="index.html" title="Início do site">
+        <img class="logo" src="assets/logo.jpg" onerror="this.onerror=null;this.src='assets/logo.svg'" alt="OfertaFitBR" />
+      </a>
+      <div class="espaçador"></div>
+      <a class="btn-sair" href="membros.html">🍽 Área de membros</a>
+    </div>
+  </header>
+
+  <main class="container receita-pagina">
+    <h1 class="titulo-aba">Checklist de despensa fit 🧺</h1>
+    <p class="cinza" style="margin-top:6px">Uma lista-base para deixar em casa e nunca faltar o essencial na hora de cozinhar.
+    Marque o que você já tem: a lista fica salva neste aparelho.</p>
+
+    <div class="lista-card mt-2">
+      <div class="cabeca">
+        <h3>Minha despensa</h3>
+        <div class="espaçador"></div>
+        <button class="btn-mini-whats" id="btn-whatsapp">📱 WhatsApp</button>
+        <button class="btn btn--contorno btn--pequeno" id="btn-imprimir">🖨 Imprimir</button>
+        <button class="btn-mini-cinza" id="btn-limpar">Limpar marcações</button>
+      </div>
+      <div class="lista-progresso">
+        <div class="progresso-info"><span id="progresso-texto">0 de 0 itens</span><strong id="progresso-pct">0%</strong></div>
+        <div class="progresso-trilho"><i id="progresso-barra" style="width:0%"></i></div>
+      </div>
+      <div id="checklist"></div>
+    </div>
+
+    <p class="pequeno cinza" style="margin:18px 0 40px">Ajuste a lista ao seu dia a dia: tire o que você não usa e aproveite para anotar
+    as marcas que mais agradam em casa. Este conteúdo é informativo e não substitui
+    acompanhamento de nutricionista ou médico.</p>
+  </main>
+
+  <!-- ===== Toast ===== -->
+  <div id="toast" class="toast oculto"></div>
+
+  <script src="js/checklist.js"></script>
+  <script>
+    fetch('/api/membros/eu', { headers: { 'Content-Type': 'application/json' } })
+      .then((r) => { if (r.status === 401) location.href = 'login.html'; })
+      .catch(() => {});
+  </script>
+</body>
+</html>

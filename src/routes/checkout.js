@@ -38,7 +38,7 @@ router.post('/pedidos', async (req, res) => {
   if (!nome || !email?.includes('@')) return res.status(400).json({ error: 'preencha nome e e-mail válidos' });
   if (!['pix', 'cartao', 'boleto'].includes(metodo)) return res.status(400).json({ error: 'escolha a forma de pagamento' });
   if (metodo === 'cartao' && mpAtivo() && !cartao?.token) {
-    return res.status(400).json({ error: 'dados do cartão não processados — tente novamente' });
+    return res.status(400).json({ error: 'dados do cartão não processados. Tente novamente' });
   }
   if (metodo === 'boleto' && mpAtivo() && !req.body?.documento) {
     return res.status(400).json({ error: 'para emitir o boleto precisamos do seu CPF e endereço' });
@@ -147,7 +147,7 @@ async function aprovarPedido(pedido, pedidos) {
 
   const url = urlMembros();
   try {
-    await sendEmail({ to: pedido.email, subject: 'Pagamento aprovado — seu acesso chegou 🎉', html: emailCompra(pedido.nome, url) });
+    await sendEmail({ to: pedido.email, subject: 'Pagamento aprovado: seu acesso chegou 🎉', html: emailCompra(pedido.nome, url) });
     if (!usuario.senhaDefinida) {
       const link = `${baseUrl()}/login.html?definir=${usuario.id}.${tokenDefinirSenha(usuario.id)}`;
       await sendEmail({ to: pedido.email, subject: 'Defina sua senha de acesso', html: emailDefinirSenha(pedido.nome, link) });

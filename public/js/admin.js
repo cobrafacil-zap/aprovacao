@@ -266,12 +266,12 @@
       fotoParaEnviar = await comprimirImagem(f);
       $('#preview-foto').src = URL.createObjectURL(fotoParaEnviar);
       $('#preview-foto').classList.remove('oculto');
-      $('#upload-texto').textContent = `${fotoParaEnviar.name} — ${Math.round(fotoParaEnviar.size / 1024)} KB (comprimida)`;
+      $('#upload-texto').textContent = `${fotoParaEnviar.name} (${Math.round(fotoParaEnviar.size / 1024)} KB, comprimida)`;
     } catch {
       fotoParaEnviar = f;
       $('#preview-foto').src = URL.createObjectURL(f);
       $('#preview-foto').classList.remove('oculto');
-      $('#upload-texto').textContent = `${f.name} — ${Math.round(f.size / 1024)} KB`;
+      $('#upload-texto').textContent = `${f.name} (${Math.round(f.size / 1024)} KB)`;
     }
   }
 
@@ -415,7 +415,7 @@
   async function carregarConfig() {
     const d = await api('/api/admin/config');
     const c = d.config || {};
-    $('#cfg-nome').value = c.nomeProduto || 'Oferta Fit BR';
+    $('#cfg-nome').value = c.nomeProduto || 'OfertaFitBR';
     $('#cfg-preco').value = c.preco ?? 19.9;
     $('#cfg-preco-antigo').value = c.precoAntigo ?? 97;
     $('#cfg-garantia').value = c.garantiaDias ?? 7;

@@ -1,7 +1,7 @@
 {
   "name": "oferta-fit-br",
   "version": "1.0.0",
-  "description": "Oferta Fit BR — receitas fit em área de membros (acesso vitalício + liberação semanal)",
+  "description": "OfertaFitBR — receitas fit em área de membros (acesso vitalício + liberação semanal)",
   "type": "module",
   "scripts": {
     "start": "node server.js",

@@ -157,8 +157,9 @@
       painel.classList.add('oculto');
     }
   });
-  $$('#menu-painel [data-ir]').forEach((b) =>
-    b.addEventListener('click', () => {
+  $$('[data-ir]').forEach((b) =>
+    b.addEventListener('click', (ev) => {
+      ev.preventDefault();
       $('#menu-painel').classList.add('oculto');
       irParaAba(b.dataset.ir);
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -293,7 +294,7 @@
     const itens = usuario?.lista || [];
     if (!itens.length) return toast('Sua lista de compras está vazia', 'erro');
     const linhas = itens.map((i) => `${i.marcado ? '☑' : '☐'} ${[i.qtd, i.unidade, i.item].filter(Boolean).join(' ')}`);
-    const texto = `🛒 *Lista de compras | Oferta Fit BR*\n\n${linhas.join('\n')}\n\n🥗 Feita na área de membros`;
+    const texto = `🛒 *Lista de compras | OfertaFitBR*\n\n${linhas.join('\n')}\n\n🥗 Feita na área de membros`;
     window.open(`https://wa.me/?text=${encodeURIComponent(texto)}`, '_blank');
   });
 
@@ -469,16 +470,16 @@
       <ul>${(r.ingredientes || []).map((i) => `<li>${escalarQtd(i.qtd, fator)} ${i.unidade || ''} ${i.item || i}</li>`).join('')}</ul>
       <h2>Modo de preparo</h2>
       <ol>${(r.passos || []).map((p) => `<li>${p}</li>`).join('')}</ol>
-      <div class="imp-rodape">Conteúdo informativo. Não substitui acompanhamento de nutricionista ou médico. • Oferta Fit BR</div>`;
+      <div class="imp-rodape">Conteúdo informativo. Não substitui acompanhamento de nutricionista ou médico. • OfertaFitBR</div>`;
     window.print();
   }
 
   $('#btn-imprimir-lista').addEventListener('click', () => {
     const itens = usuario?.lista || [];
     $('#area-impressao').innerHTML = `
-      <div class="imp-cabecalho"><div><h1>Lista de compras</h1><small>Oferta Fit BR</small></div></div>
+      <div class="imp-cabecalho"><div><h1>Lista de compras</h1><small>OfertaFitBR</small></div></div>
       <ul>${itens.map((i) => `<li>${[i.qtd, i.unidade, i.item].filter(Boolean).join(' ')} ${i.marcado ? '✓' : ''}</li>`).join('')}</ul>
-      <div class="imp-rodape">Oferta Fit BR. Comer melhor sem complicar</div>`;
+      <div class="imp-rodape">OfertaFitBR. Comer melhor sem complicar</div>`;
     window.print();
   });
 
@@ -582,6 +583,7 @@
   $('#btn-perfil').addEventListener('click', () => {
     $('#perfil-email').value = usuario.email;
     $('#perfil-nome-input').value = usuario.nome;
+    $('#perfil-emails').checked = usuario.emailsAtivos !== false;
     $('#perfil-senha-atual').value = '';
     $('#perfil-senha-nova').value = '';
     $('#modal-perfil').classList.remove('oculto');
@@ -597,8 +599,10 @@
     if (senhaNova && !senhaAtual) return toast('Informe a senha atual para trocar a senha', 'erro');
 
     try {
-      const r = await put('/api/membros/perfil', { nome, senhaAtual, senhaNova: senhaNova || undefined });
+      const emailsAtivos = $('#perfil-emails').checked;
+      const r = await put('/api/membros/perfil', { nome, senhaAtual, senhaNova: senhaNova || undefined, emailsAtivos });
       usuario.nome = r.usuario.nome;
+      usuario.emailsAtivos = emailsAtivos;
       renderizarCabecalho();
       toast('Perfil atualizado! ✅');
       fecharModal();
@@ -645,7 +649,7 @@
   // ================= CONVITE POR WHATSAPP =================
   $('#menu-convite').addEventListener('click', async () => {
     $('#menu-painel').classList.add('oculto');
-    const texto = '🥗 Olha que bacana: receitas fit prontas em até 20 minutos, com receita nova toda semana e acesso vitalício por R$ 19,90. Dá uma olhada: ' + location.origin + '/index.html';
+    const texto = '🥗 Olha que bacana: receitas gostosas e simples para o dia a dia, com receita nova toda semana e acesso vitalício. Dá uma olhada: ' + location.origin + '/index.html';
     if (navigator.share) {
       try { await navigator.share({ text: texto }); return; } catch {}
     }
