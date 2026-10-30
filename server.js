@@ -11,7 +11,7 @@ app.listen(PORT, async () => {
   console.log(`   Vendas:   http://localhost:${PORT}/`);
   console.log(`   Checkout: http://localhost:${PORT}/checkout.html`);
   console.log(`   Membros:  http://localhost:${PORT}/membros.html`);
-  console.log(`   Admin:    http://localhost:${PORT}/admin.html  (senha: ${process.env.ADMIN_SENHA || 'Comsoc1#'})`);
+  console.log(`   Admin:    http://localhost:${PORT}/admin.html`);
   console.log(`   Banco:    ${usaRedis ? 'Upstash Redis (produção)' : 'arquivos JSON (dev)'}\n`);
 
   // liberação semanal: no boot + a cada 10 minutos (no dev; na Vercel é o cron)

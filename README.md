@@ -18,7 +18,7 @@ npm start
 # Vendas:   http://localhost:3000/
 # Checkout: http://localhost:3000/checkout.html
 # Membros:  http://localhost:3000/membros.html  (login/cadastro em /login.html)
-# Admin:    http://localhost:3000/admin.html    (senha padrão: admin123)
+# Admin:    http://localhost:3000/admin.html    (senha: a definida em ADMIN_SENHA)
 ```
 
 Configuração opcional: copie `.env.example` para `.env` (senha do admin, SMTP/Resend, Mercado Pago).
@@ -172,7 +172,7 @@ e-mails por **Resend** e liberação semanal pelo **Vercel Cron** (`vercel.json`
 
 ### 3. Variáveis de ambiente (Settings → Environment Variables)
 ```
-ADMIN_SENHA=Comsoc1#
+ADMIN_SENHA=<defina-uma-senha-forte>
 RESEND_API_KEY=...
 FROM_EMAIL=entrega@seudominio.com
 PUBLIC_BASE_URL=https://aprovacao-psi.vercel.app

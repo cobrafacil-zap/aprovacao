@@ -40,24 +40,49 @@ export async function liberarPendentes() {
   });
   await write('receitas', receitas);
 
-  // quem cancelou a inscrição não recebe avisos de receitas novas
-  const membros = (await read('users', [])).filter((u) => u.acesso?.ativo && u.emailsAtivos !== false);
   for (const r of saiuAgora) {
     await eventoAdd({ id: id('evt'), ts: agora(), tipo: 'receita_liberada', receitaId: r.id, origem: 'sistema' });
-    for (const u of membros) {
-      try {
-        await sendEmail({
-          to: u.email,
-          subject: `Nova receita liberada: ${r.nome} 🥗`,
-          html: emailNovaReceita(u.nome, r, `${urlMembros()}?receita=${r.id}`),
-        });
-      } catch (e) {
-        console.error(`[EMAIL] falha para ${u.email}:`, e.message);
-      }
-    }
-    console.log(`[RELEASE] receita liberada: ${r.nome} (e-mail para ${membros.length} membros)`);
+    const enviados = await enviarAvisosDeNovaReceita(r);
+    console.log(`[RELEASE] receita liberada: ${r.nome} (${enviados.enviados} e-mails, ${enviados.pendentes} pendentes)`);
   }
   return { liberadas: saiuAgora.length };
+}
+
+// Aviso de receita nova, com controle de quem JÁ recebeu.
+// Grava `emailsEnviados` na receita a cada envio: se o cron estourar o tempo
+// de execução no meio, a próxima chamada continua de onde parou, sem repetir
+// e-mail para ninguém. Máximo por chamada para caber no limite da Vercel.
+export async function enviarAvisosDeNovaReceita(receita, { maxPorChamada = 40 } = {}) {
+  const membros = (await read('users', []))
+    .filter((u) => u.acesso?.ativo && u.emailsAtivos !== false);
+  const jaEnviados = new Set(receita.emailsEnviados || []);
+  const fila = membros.filter((u) => !jaEnviados.has(u.id));
+  let enviados = 0;
+
+  for (const u of fila.slice(0, maxPorChamada)) {
+    try {
+      await sendEmail({
+        to: u.email,
+        subject: `Nova receita liberada: ${receita.nome} 🥗`,
+        html: emailNovaReceita(u.nome, receita, `${urlMembros()}?receita=${receita.id}`),
+      });
+    } catch (e) {
+      console.error(`[EMAIL] falha para ${u.email}:`, e.message);
+      continue; // não marca como enviado: tenta de novo na próxima
+    }
+    jaEnviados.add(u.id);
+    receita.emailsEnviados = [...jaEnviados];
+    enviados += 1;
+  }
+
+  if (enviados) {
+    // grava o progresso mesmo sem ter terminado todo mundo
+    const receitas = await read('receitas', []);
+    const alvo = receitas.find((x) => x.id === receita.id);
+    if (alvo) alvo.emailsEnviados = receita.emailsEnviados;
+    await write('receitas', receitas);
+  }
+  return { enviados, pendentes: Math.max(0, fila.length - enviados) };
 }
 
 // Versão "preguiçosa": só roda se a última checagem tem mais de 10 min.

@@ -28,17 +28,24 @@ export function parseCookies(req) {
   return out;
 }
 
-export async function criarSessao(res, usuarioId, tipo = 'membro') {
-  const token = id('ses') + crypto.randomBytes(24).toString('hex');
+// Secure só quando a página chega por HTTPS (produção), para não quebrar
+// o desenvolvimento local em http://localhost.
+function cookieFlags(req) {
+  const https = req?.secure || req?.headers['x-forwarded-proto'] === 'https' || !!process.env.VERCEL;
+  return https ? '; Secure' : '';
+}
+
+export async function criarSessao(res, usuarioId, tipo = 'membro', req = null) {
+  const token = crypto.randomBytes(24).toString('hex');
   await sessaoSet(token, { usuarioId, tipo, criadoEm: agora() }, DIAS);
-  res.setHeader('Set-Cookie', `${SESSION_COOKIE}=${token}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${DIAS * 86400}`);
+  res.setHeader('Set-Cookie', `${SESSION_COOKIE}=${token}; Path=/; HttpOnly; SameSite=Lax${cookieFlags(req)}; Max-Age=${DIAS * 86400}`);
   return token;
 }
 
 export async function destruirSessao(req, res) {
   const token = parseCookies(req)[SESSION_COOKIE];
   if (token) await sessaoDelete(token);
-  res.setHeader('Set-Cookie', `${SESSION_COOKIE}=; Path=/; HttpOnly; Max-Age=0`);
+  res.setHeader('Set-Cookie', `${SESSION_COOKIE}=; Path=/; HttpOnly; SameSite=Lax${cookieFlags(req)}; Max-Age=0`);
 }
 
 export async function sessaoAtual(req) {

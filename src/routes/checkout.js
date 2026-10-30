@@ -4,12 +4,13 @@
 //           e a aprovação chega pelo webhook /api/checkout/webhook.
 // Tokens de "definir senha" ficam no banco com TTL (funciona entre instâncias serverless).
 import { Router } from 'express';
-import { read, write, id, agora, sessaoSet, sessaoGet, sessaoDelete } from '../lib/db.js';
+import { read, write, id, agora, sessaoSet, sessaoGet, sessaoDelete, setNx } from '../lib/db.js';
 import { track } from '../lib/analytics.js';
 import { garantirConta } from '../lib/auth.js';
 import { sendEmail, emailCompra, emailDefinirSenha, urlMembros } from '../lib/mail.js';
 import { baseUrl } from '../lib/helpers.js';
 import { mpAtivo, criarOrder, consultarOrder, estaPago } from '../lib/mercadopago.js';
+import { limite } from '../lib/limite.js';
 
 const router = Router();
 const VALOR = async () => (await read('settings', {})).preco ?? 19.9;
@@ -33,7 +34,7 @@ async function novoPedido({ nome, email, metodo, utm }) {
   return pedido;
 }
 
-router.post('/pedidos', async (req, res) => {
+router.post('/pedidos', limite({ max: 20, janelaMs: 10 * 60 * 1000 }), async (req, res) => {
   const { nome, email, metodo, utm, sessao, cartao } = req.body || {};
   if (!nome || !email?.includes('@')) return res.status(400).json({ error: 'preencha nome e e-mail válidos' });
   if (!['pix', 'cartao', 'boleto'].includes(metodo)) return res.status(400).json({ error: 'escolha a forma de pagamento' });
@@ -108,6 +109,7 @@ function pixCopiaECola(pedido) {
 }
 
 router.get('/pedidos/:id', async (req, res) => {
+  if (!idValido(req.params.id)) return res.status(400).json({ error: 'id de pedido inválido' });
   const pedidos = await read('orders', []);
   const p = pedidos.find((x) => x.id === req.params.id);
   if (!p) return res.status(404).json({ error: 'pedido não encontrado' });
@@ -123,11 +125,15 @@ router.get('/pedidos/:id', async (req, res) => {
     }
   }
 
-  res.json({ pedido: { id: p.id, status: p.status, valor: p.valor, metodo: p.metodo, email: p.email, criadoEm: p.criadoEm } });
+  // resposta mínima: o id já é o "segredo" da URL; não exponha dados do cliente
+  res.json({ pedido: { id: p.id, status: p.status, valor: p.valor, metodo: p.metodo } });
 });
 
-// DEMO: botão "simular pagamento aprovado". Em produção, quem aprova é o webhook.
+// DEMO: botão "simular pagamento aprovado". Só existe quando o Mercado Pago
+// NÃO está configurado; em produção este endpoint é bloqueado.
 router.post('/pedidos/:id/aprovar', async (req, res) => {
+  if (mpAtivo()) return res.status(403).json({ error: 'indisponível com pagamentos ativos' });
+  if (!idValido(req.params.id)) return res.status(400).json({ error: 'id de pedido inválido' });
   const pedidos = await read('orders', []);
   const p = pedidos.find((x) => x.id === req.params.id);
   if (!p) return res.status(404).json({ error: 'pedido não encontrado' });
@@ -136,7 +142,13 @@ router.post('/pedidos/:id/aprovar', async (req, res) => {
   res.json({ ok: true, url: `${baseUrl()}/obrigado.html?pedido=${p.id}` });
 });
 
+const idValido = (v) => /^[A-Za-z0-9_-]{1,80}$/.test(String(v || ''));
+
 async function aprovarPedido(pedido, pedidos) {
+  // idempotente: se já foi pago, ou outra chamada já está aprovando, não repete
+  // (webhook e polling podem chegar ao mesmo tempo)
+  if (pedido.status === 'pago') return pedido;
+  if (!(await setNx(`of:aprovando:${pedido.id}`, 120))) return pedido;
   pedido.status = 'pago';
   pedido.pagoEm = agora();
   pedido.acessoLiberado = true;
@@ -149,7 +161,7 @@ async function aprovarPedido(pedido, pedidos) {
   try {
     await sendEmail({ to: pedido.email, subject: 'Pagamento aprovado: seu acesso chegou 🎉', html: emailCompra(pedido.nome, url) });
     if (!usuario.senhaDefinida) {
-      const link = `${baseUrl()}/login.html?definir=${usuario.id}.${tokenDefinirSenha(usuario.id)}`;
+      const link = `${baseUrl()}/login.html?definir=${usuario.id}.${await tokenDefinirSenha(usuario.id)}`;
       await sendEmail({ to: pedido.email, subject: 'Defina sua senha de acesso', html: emailDefinirSenha(pedido.nome, link) });
     }
   } catch (e) {
@@ -159,10 +171,11 @@ async function aprovarPedido(pedido, pedidos) {
 }
 
 // ---------- tokens de senha (no banco, com TTL de 7 dias) ----------
-export function tokenDefinirSenha(userId) {
-  const t = id('tk') + Math.random().toString(36).slice(2, 10);
-  // dispara sem esperar: não precisa bloquear a resposta
-  sessaoSet(t, { usuarioId: userId, tipo: 'senha' }, 7).catch(() => {});
+export async function tokenDefinirSenha(userId) {
+  const crypto = await import('crypto');
+  const t = crypto.randomBytes(24).toString('base64url');
+  // gravar ANTES de enviar o e-mail: se não gravar, o link não funciona
+  await sessaoSet(t, { usuarioId: userId, tipo: 'senha' }, 7);
   return t;
 }
 
@@ -186,6 +199,10 @@ router.post('/webhook', async (req, res) => {
     if (segredo && req.query.token !== segredo) {
       return res.status(401).json({ error: 'token inválido' });
     }
+    // com pagamento real ativo, o segredo é OBRIGATÓRIO (não fica aberto)
+    if (mpAtivo() && !segredo) {
+      return res.status(503).json({ error: 'MP_WEBHOOK_SECRET não configurado' });
+    }
 
     const body = req.body || {};
     console.log('[WEBHOOK]', JSON.stringify(body).slice(0, 300));
@@ -195,6 +212,7 @@ router.post('/webhook', async (req, res) => {
     const tipo = body.type || req.query.topic || (body.action || '').split('.')[0];
 
     if (process.env.MP_ACCESS_TOKEN && recursoId && (tipo === 'payment' || tipo === 'order' || tipo === 'merchant_order')) {
+      if (!idValido(recursoId)) return res.status(400).json({ error: 'id inválido' });
       const pagamento = await consultarPagamentoMP(recursoId);
       const pedidoId = pagamento?.external_reference;
       if (pedidoId && estaPago(pagamento?.status, pagamento?.statusDetail)) {
@@ -206,6 +224,8 @@ router.post('/webhook', async (req, res) => {
     }
 
     // modo demo / payloads de teste: aceita external_reference + status direto
+    // BLOQUEADO quando há pagamento real: só o Mercado Pago pode confirmar
+    if (mpAtivo()) return res.json({ ok: true });
     const pedidoId = body.external_reference || body.pedidoId;
     const status = body.status || (body.type === 'payment' ? 'approved' : null);
     if (pedidoId && status === 'approved') {

@@ -220,7 +220,9 @@
 
   function iniciarPolling(pedidoId) {
     clearInterval(pollTimer);
-    pollTimer = setInterval(async () => {
+    let tentativas = 0;
+    const checar = async () => {
+      tentativas += 1;
       try {
         const r = await fetch(`/api/checkout/pedidos/${pedidoId}`);
         const j = await r.json();
@@ -228,9 +230,19 @@
           clearInterval(pollTimer);
           window.OFTrack?.enviar('purchase', { pedidoId, valor: j.pedido.valor });
           location.href = `/obrigado.html?pedido=${pedidoId}`;
+          return;
         }
       } catch {}
-    }, 5000);
+      // boleto pode demorar dias: desacelera e para de insistir depois de 20 min
+      if (tentativas === 240) {
+        clearInterval(pollTimer);
+        mostrarErro('Pagamento ainda em processamento. Você recebe o acesso por e-mail assim que for aprovado.');
+      } else if (tentativas > 30) {
+        clearInterval(pollTimer);
+        pollTimer = setInterval(checar, 15000);
+      }
+    };
+    pollTimer = setInterval(checar, 5000);
   }
 
   async function aprovarDemo(d) {

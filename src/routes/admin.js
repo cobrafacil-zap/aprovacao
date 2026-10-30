@@ -3,14 +3,16 @@
 // Upload de foto: Vercel Blob em produção (BLOB_READ_WRITE_TOKEN);
 // sem token, grava em public/assets/receitas/ (desenvolvimento local).
 import { Router } from 'express';
+import crypto from 'crypto';
 import multer from 'multer';
 import path from 'path';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
 import { read, write, id, agora } from '../lib/db.js';
-import { requireAdmin, criarSessao, destruirSessao, isSessaoAdmin, hashSenha } from '../lib/auth.js';
+import { requireAdmin, criarSessao, destruirSessao, isSessaoAdmin, hashSenha, conferirSenha } from '../lib/auth.js';
+import { limite } from '../lib/limite.js';
 import { resumo, track } from '../lib/analytics.js';
-import { liberarPendentes, receitasLiberadas, proximaReceita } from '../lib/release.js';
+import { liberarPendentes, receitasLiberadas, proximaReceita, enviarAvisosDeNovaReceita } from '../lib/release.js';
 import { sendEmail, emailNovaReceita, emailTeste, urlMembros } from '../lib/mail.js';
 import { detectarTags } from '../lib/tags.js';
 
@@ -21,19 +23,41 @@ const UPLOAD_DIR = path.join(__dirname, '..', '..', 'public', 'assets', 'receita
 const upload = multer({
   storage: multer.memoryStorage(),
   limits: { fileSize: 4 * 1024 * 1024 }, // a Vercel recusa payloads > ~4,5 MB
+  // só os 3 formatos reais, conferidos pelo conteúdo do arquivo depois
   fileFilter: (req, file, cb) =>
-    cb(null, /^image\//.test(file.mimetype) || /\.(jpe?g|png|webp)$/i.test(file.originalname || '')),
+    cb(null, ['image/jpeg', 'image/png', 'image/webp'].includes(file.mimetype)),
 });
+
+// assinatura mágica dos formatos aceitos (evita arquivo forjado ser servido)
+function tipoDaImagem(buf) {
+  if (buf.length > 3 && buf[0] === 0xff && buf[1] === 0xd8 && buf[2] === 0xff) return { ext: 'jpg', mime: 'image/jpeg' };
+  if (buf.length > 8 && buf[0] === 0x89 && buf[1] === 0x50 && buf[2] === 0x4e && buf[3] === 0x47) return { ext: 'png', mime: 'image/png' };
+  if (buf.length > 12 && buf.toString('ascii', 0, 4) === 'RIFF' && buf.toString('ascii', 8, 12) === 'WEBP') return { ext: 'webp', mime: 'image/webp' };
+  return null;
+}
 
 const router = Router();
 
 // ---------- Login admin ----------
-router.post('/login', async (req, res) => {
+// Comparações em tempo constante; senha guardada como hash (nunca em claro).
+function compararSegredos(a, b) {
+  const ha = crypto.createHash('sha256').update(String(a)).digest();
+  const hb = crypto.createHash('sha256').update(String(b)).digest();
+  return crypto.timingSafeEqual(ha, hb);
+}
+
+router.post('/login', limite({ max: 15, janelaMs: 5 * 60 * 1000 }), async (req, res) => {
   const { senha } = req.body || {};
   const settings = await read('settings', {});
-  const esperada = process.env.ADMIN_SENHA || settings.adminSenha || 'Comsoc1#';
-  if (String(senha) !== String(esperada)) return res.status(401).json({ error: 'senha incorreta' });
-  await criarSessao(res, 'admin', 'admin');
+  let ok = false;
+  if (settings.adminSenhaHash && settings.adminSenhaSalt) {
+    ok = conferirSenha(senha, settings.adminSenhaSalt, settings.adminSenhaHash);
+  } else {
+    const esperada = process.env.ADMIN_SENHA || settings.adminSenha;
+    if (esperada) ok = compararSegredos(senha, esperada);
+  }
+  if (!ok) return res.status(401).json({ error: 'senha incorreta' });
+  await criarSessao(res, 'admin', 'admin', req);
   res.json({ ok: true });
 });
 
@@ -135,16 +159,19 @@ router.post('/receitas/:id/foto', upload.single('foto'), async (req, res) => {
   const receitas = await read('receitas', []);
   const r = receitas.find((x) => x.id === req.params.id);
   if (!r) return res.status(404).json({ error: 'receita não encontrada' });
-  if (!req.file) return res.status(400).json({ error: 'envie uma imagem (jpg, png ou webp até 6MB)' });
+  if (!req.file) return res.status(400).json({ error: 'envie uma imagem (jpg, png ou webp de até 4 MB)' });
 
-  const ext = path.extname(req.file.originalname).toLowerCase() || '.jpg';
-  const nomeArquivo = `${Date.now().toString(36)}${ext}`;
+  // o conteúdo REAL do arquivo define o formato: nada de nome forjado
+  const tipo = tipoDaImagem(req.file.buffer);
+  if (!tipo) return res.status(400).json({ error: 'o arquivo enviado não é uma imagem válida (jpg, png ou webp)' });
+  const nomeArquivo = `${Date.now().toString(36)}${crypto.randomBytes(6).toString('hex')}.${tipo.ext}`;
 
   if (process.env.BLOB_READ_WRITE_TOKEN) {
     const { put } = await import('@vercel/blob');
     const blob = await put(`receitas/${nomeArquivo}`, req.file.buffer, {
       access: 'public',
       token: process.env.BLOB_READ_WRITE_TOKEN,
+      contentType: tipo.mime,
     });
     r.foto = blob.url;
   } else {
@@ -167,15 +194,10 @@ router.post('/receitas/:id/publicar', async (req, res) => {
   r.liberadaEm = agora();
   await write('receitas', receitas);
 
-  // quem cancelou a inscrição não recebe avisos de receitas novas
-  const membros = (await read('users', [])).filter((u) => u.acesso?.ativo && u.emailsAtivos !== false);
-  for (const u of membros) {
-    try {
-      await sendEmail({ to: u.email, subject: `Nova receita liberada: ${r.nome} 🥗`, html: emailNovaReceita(u.nome, r, `${urlMembros()}?receita=${r.id}`) });
-    } catch {}
-  }
+  // envio retomável: quem cancelou a inscrição fica de fora e nada é repetido
+  const { enviados, pendentes } = await enviarAvisosDeNovaReceita(r, { maxPorChamada: 200 });
   await track({ tipo: 'receita_liberada', receitaId: r.id, origem: 'admin' });
-  res.json({ ok: true, receita: r, emails: membros.length });
+  res.json({ ok: true, receita: r, emails: enviados, pendentes });
 });
 
 // ---------- Membros / acessos ----------
@@ -255,6 +277,8 @@ router.get('/metricas', async (req, res) => {
 router.get('/config', async (req, res) => {
   const s = { ...(await read('settings', {})) };
   delete s.adminSenha;
+  delete s.adminSenhaHash;
+  delete s.adminSenhaSalt;
   res.json({ config: s });
 });
 
@@ -266,7 +290,9 @@ router.put('/config', async (req, res) => {
   });
   if (b.adminSenha) {
     const { salt, hash } = hashSenha(b.adminSenha);
-    s.adminSenhaHash = hash; s.adminSenhaSalt = salt; s.adminSenha = b.adminSenha;
+    s.adminSenhaHash = hash;
+    s.adminSenhaSalt = salt;
+    delete s.adminSenha; // nunca guarda a senha em claro
   }
   await write('settings', s);
   res.json({ ok: true, config: { ...s, adminSenha: undefined } });

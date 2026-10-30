@@ -4,24 +4,45 @@
 // vendas e origem do tráfego.
 import { eventoAdd, eventoLista, read, id, agora } from './db.js';
 
+// tudo que vem do navegador é tratado como dado não confiável:
+// limita tamanho e apaga qualquer marcação de HTML
+const seguro = (v, max = 80) =>
+  String(v || '').slice(0, max).replace(/[<>&"'`\\]/g, '');
+
+function utmSeguro(utm) {
+  if (!utm || typeof utm !== 'object') return null;
+  const out = {};
+  for (const k of ['source', 'medium', 'campaign', 'content', 'term']) {
+    if (utm[k]) out[k] = seguro(utm[k], 60).toLowerCase();
+  }
+  return Object.keys(out).length ? out : null;
+}
+
+const referrerSeguro = (r) => {
+  const s = seguro(r, 200);
+  if (!s) return null;
+  try { return new URL(s).host.slice(0, 80); } catch { return null; }
+};
+
 export async function track(evt) {
   await eventoAdd({
     id: id('evt'),
     ts: agora(),
-    sessao: evt.sessao || null,
-    tipo: evt.tipo || evt.type || 'evento',
-    pagina: evt.pagina || null,
-    utm: evt.utm || null,
-    referrer: evt.referrer || null,
-    valor: evt.valor ?? null,
-    pedidoId: evt.pedidoId || null,
-    receitaId: evt.receitaId || null,
-    origem: evt.origem || 'site',
-    dispositivo: evt.dispositivo || null,
+    sessao: seguro(evt.sessao, 40) || null,
+    tipo: seguro(evt.tipo || evt.type || 'evento', 30),
+    pagina: seguro(evt.pagina, 120) || null,
+    utm: utmSeguro(evt.utm),
+    referrer: referrerSeguro(evt.referrer),
+    valor: Number(evt.valor) || null,
+    pedidoId: seguro(evt.pedidoId, 40) || null,
+    receitaId: seguro(evt.receitaId, 40) || null,
+    origem: seguro(evt.origem, 20) || 'site',
+    dispositivo: seguro(evt.dispositivo, 20) || null,
   });
 }
 
-const dia = (ts) => String(ts).slice(0, 10);
+// agrupa por dia no fuso de São Paulo (o negócio é UTC-3)
+const dia = (ts) => new Date(new Date(ts).getTime() - 3 * 3600 * 1000).toISOString().slice(0, 10);
 const noPeriodo = (ts, de, ate) => (!de || ts >= de) && (!ate || ts <= ate);
 
 export async function resumo({ de, ate, dias = 14 } = {}) {

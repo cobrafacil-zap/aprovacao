@@ -3,6 +3,11 @@
 // modo impressão de receita e perfil (nome/senha).
 (() => {
   const $ = (s) => document.querySelector(s);
+
+  // escape obrigatório para qualquer texto que entra em HTML (XSS)
+  const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) =>
+    ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
   const $$ = (s) => document.querySelectorAll(s);
 
   // ================= API + GATE DE ACESSO =================
@@ -108,8 +113,9 @@
 
   function renderizarCabecalho() {
     $('#avatar-inicial').textContent = (usuario.nome || '?').trim()[0].toUpperCase();
-    $('#perfil-nome').textContent = usuario.nome.split(' ')[0];
-    $('#saudacao').textContent = `Olá, ${usuario.nome.split(' ')[0]}! 👋`;
+    const primeiroNome = String(usuario.nome || '').trim().split(' ')[0] || 'você';
+    $('#perfil-nome').textContent = primeiroNome;
+    $('#saudacao').textContent = `Olá, ${primeiroNome}! 👋`;
   }
 
   function renderizarStats(eu) {
@@ -219,12 +225,12 @@
           ${nova ? '<span class="nova-selo">🆕 Nova da semana</span>' : ''}
           ${r.feita ? `<span class="feita-selo ${nova ? 'com-nova' : ''}">✓ já feita</span>` : ''}
           <button class="favorito" data-fav="${r.id}" aria-label="Favoritar">${r.favorito ? '❤️' : '🤍'}</button>
-          <img class="foto" src="${r.foto || '/assets/receitas/bowl-frango-quinoa.jpg'}" alt="${r.nome}" />
+          <img class="foto" src="${esc(r.foto || '/assets/receitas/bowl-frango-quinoa.jpg')}" alt="${esc(r.nome)}" />
           <span class="cat-badge">${(r.categoria || '').replace(/-/g, ' ')}</span>
         </div>
         <div class="corpo">
-          <h3>${r.nome}</h3>
-          <div class="tags-linha">${(r.tags || []).slice(0, 2).map((t) => `<span class="tag">${t.replace(/-/g, ' ')}</span>`).join('')}</div>
+          <h3>${esc(r.nome)}</h3>
+          <div class="tags-linha">${(r.tags || []).slice(0, 2).map((t) => `<span class="tag">${esc(t.replace(/-/g, ' '))}</span>`).join('')}</div>
           <div class="meta">
             <span class="meta-chip">⏱ ${r.tempo_preparo_min ?? ''} min</span>
             ${kcal ? `<span class="meta-chip kcal">🔥 ~${kcal} kcal</span>` : ''}
@@ -326,14 +332,14 @@
     checksFeitos = new Set();
 
     $('#modal-conteudo').innerHTML = `
-      <img class="foto-capa" src="${r.foto || '/assets/receitas/bowl-frango-quinoa.jpg'}" alt="${r.nome}" />
+      <img class="foto-capa" src="${esc(r.foto || '/assets/receitas/bowl-frango-quinoa.jpg')}" alt="${esc(r.nome)}" />
       <div class="conteudo">
-        <h2>${r.nome}</h2>
-        <p class="cinza">${r.descricao || ''}</p>
+        <h2>${esc(r.nome)}</h2>
+        <p class="cinza">${esc(r.descricao || '')}</p>
         <div class="meta-flex">
           ${r.tempo_preparo_min ? `<span>⏱ ${r.tempo_preparo_min} min</span>` : ''}
           ${r.categoria ? `<span>📂 ${r.categoria.replace(/-/g, ' ')}</span>` : ''}
-          ${(r.tags || []).map((t) => `<span>🏷 ${t.replace(/-/g, ' ')}</span>`).join('')}
+          ${(r.tags || []).map((t) => `<span>🏷 ${esc(t.replace(/-/g, ' '))}</span>`).join('')}
         </div>
 
         <div class="ingredientes-topo">
@@ -364,7 +370,7 @@
         </div>` : ''}
 
 
-        ${r.dicas ? `<h4>Anote aí</h4><p class="cinza">${r.dicas}</p>` : ''}
+        ${r.dicas ? `<h4>Anote aí</h4><p class="cinza">${esc(r.dicas)}</p>` : ''}
       </div>`;
 
     renderIngredientes();
@@ -422,7 +428,7 @@
     $('#lista-ingredientes').innerHTML = (r.ingredientes || []).map((i, idx) => `
       <li class="ing-check ${checksFeitos.has(idx) ? 'marcado' : ''}" data-idx="${idx}">
         <span class="check-box">✓</span>
-        <span class="ing-texto"><strong>${escalarQtd(i.qtd, fator)}${i.unidade ? ' ' + i.unidade : ''}</strong> ${i.item || i}</span>
+        <span class="ing-texto"><strong>${esc(escalarQtd(i.qtd, fator))}${i.unidade ? ' ' + esc(i.unidade) : ''}</strong> ${esc(i.item || i)}</span>
       </li>`).join('');
     $$('#lista-ingredientes .ing-check').forEach((li) =>
       li.addEventListener('click', () => {
@@ -439,7 +445,7 @@
     $('#lista-passos').innerHTML = (r.passos || []).map((p, i) => `
       <li class="passo-check" data-idx="${i}">
         <span class="passo-n">${i + 1}</span>
-        <span class="passo-texto">${p}</span>
+        <span class="passo-texto">${esc(p)}</span>
       </li>`).join('');
     $$('#lista-passos .passo-check').forEach((li) =>
       li.addEventListener('click', () => li.classList.toggle('marcado'))
@@ -463,13 +469,13 @@
   function imprimirReceita(r, fator = 1) {
     $('#area-impressao').innerHTML = `
       <div class="imp-cabecalho">
-        <div><h1>${r.nome}</h1><small>${r.descricao || ''}</small></div>
-        <div style="text-align:right"><strong>OFERTA FIT BR</strong><br><small>⏱ ${r.tempo_preparo_min} min • 🍽 ${Math.round((r.porcoes || 1) * fator)} porção(ões)</small></div>
+        <div><h1>${esc(r.nome)}</h1><small>${esc(r.descricao || '')}</small></div>
+        <div style="text-align:right"><strong>OFERTAFITBR</strong><br><small>⏱ ${r.tempo_preparo_min} min • 🍽 ${Math.round((r.porcoes || 1) * fator)} porção(ões)</small></div>
       </div>
       <h2>Ingredientes</h2>
-      <ul>${(r.ingredientes || []).map((i) => `<li>${escalarQtd(i.qtd, fator)} ${i.unidade || ''} ${i.item || i}</li>`).join('')}</ul>
+      <ul>${(r.ingredientes || []).map((i) => `<li>${esc(escalarQtd(i.qtd, fator))} ${esc(i.unidade || '')} ${esc(i.item || i)}</li>`).join('')}</ul>
       <h2>Modo de preparo</h2>
-      <ol>${(r.passos || []).map((p) => `<li>${p}</li>`).join('')}</ol>
+      <ol>${(r.passos || []).map((p) => `<li>${esc(p)}</li>`).join('')}</ol>
       <div class="imp-rodape">Conteúdo informativo. Não substitui acompanhamento de nutricionista ou médico. • OfertaFitBR</div>`;
     window.print();
   }
@@ -478,7 +484,7 @@
     const itens = usuario?.lista || [];
     $('#area-impressao').innerHTML = `
       <div class="imp-cabecalho"><div><h1>Lista de compras</h1><small>OfertaFitBR</small></div></div>
-      <ul>${itens.map((i) => `<li>${[i.qtd, i.unidade, i.item].filter(Boolean).join(' ')} ${i.marcado ? '✓' : ''}</li>`).join('')}</ul>
+      <ul>${itens.map((i) => `<li>${esc([i.qtd, i.unidade, i.item].filter(Boolean).join(' '))} ${i.marcado ? '✓' : ''}</li>`).join('')}</ul>
       <div class="imp-rodape">OfertaFitBR. Comer melhor sem complicar</div>`;
     window.print();
   });
@@ -495,8 +501,8 @@
     const lista = $('#lista-historico');
     lista.innerHTML = d.historico.map((h) => `
       <div class="historico-item">
-        <img src="${h.receita.foto || '/assets/receitas/bowl-frango-quinoa.jpg'}" alt="${h.receita.nome}" />
-        <div><strong>${h.receita.nome}</strong><p class="pequeno cinza">${h.receita.tempo_preparo_min} min • ${h.receita.categoria.replace(/-/g, ' ')}</p></div>
+        <img src="${esc(h.receita.foto || '/assets/receitas/bowl-frango-quinoa.jpg')}" alt="${esc(h.receita.nome)}" />
+        <div><strong>${esc(h.receita.nome)}</strong><p class="pequeno cinza">${h.receita.tempo_preparo_min} min • ${esc(h.receita.categoria.replace(/-/g, ' '))}</p></div>
         <div class="data">feito em<br>${new Date(h.data).toLocaleDateString('pt-BR')}</div>
       </div>`).join('');
     $('#vazio-historico')?.classList.toggle('oculto', d.historico.length > 0);

@@ -168,8 +168,24 @@ export async function eventoLista(limite = MAX_EVENTOS) {
 }
 
 // ---------- utilidades ----------
+import crypto from 'crypto';
+
 export function id(prefixo = 'id') {
-  return `${prefixo}_${Date.now().toString(36)}${Math.random().toString(36).slice(2, 8)}`;
+  // criptograficamente aleatório: os ids aparecem em URLs de pedido/acesso
+  return `${prefixo}_${crypto.randomBytes(9).toString('base64url').toLowerCase().replace(/[^a-z0-9]/g, '')}`;
+}
+
+// Trava com expiração: só quem consegue criar passa (evita aprovar o mesmo
+// pedido duas vezes quando webhook e polling chegam juntos).
+export async function setNx(chave, segundos = 120) {
+  if (usaRedis) {
+    const v = await kv('SET', chave, '1', 'NX', 'EX', segundos);
+    return v === 'OK';
+  }
+  if (globalThis.__travas?.has(chave)) return false;
+  (globalThis.__travas ||= new Set()).add(chave);
+  setTimeout(() => globalThis.__travas.delete(chave), segundos * 1000).unref?.();
+  return true;
 }
 
 export function agora() {

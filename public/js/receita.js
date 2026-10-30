@@ -3,10 +3,15 @@
 // e recomendações embaixo. Visual simplista e bem legível.
 (() => {
   const $ = (s) => document.querySelector(s);
+
+  // escape obrigatório para qualquer texto que entra em HTML (XSS)
+  const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) =>
+    ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
   const $$ = (s) => document.querySelectorAll(s);
   const api = async (url, opts = {}) => {
     const r = await fetch(url, { headers: { 'Content-Type': 'application/json' }, ...opts });
-    if (r.status === 401) { location.href = 'login.html'; throw new Error('login'); }
+    if (r.status === 401 || r.status === 403) { location.href = 'login.html'; throw new Error('login'); }
     const d = await r.json().catch(() => ({}));
     if (!r.ok) throw new Error(d.error || 'erro');
     return d;
@@ -87,11 +92,11 @@
   function renderizar() {
     const r = receita;
     $('#conteudo-receita').innerHTML = `
-      <img class="foto-receita" src="${r.foto || '/assets/receitas/bowl-frango-quinoa.jpg'}" alt="${r.nome}" />
+      <img class="foto-receita" src="${esc(r.foto || '/assets/receitas/bowl-frango-quinoa.jpg')}" alt="${esc(r.nome)}" />
 
-      <h1 class="titulo-receita">${r.nome}</h1>
-      ${r.descricao ? `<p class="subtitulo-receita">${r.descricao}</p>` : ''}
-      <div class="tags mt-2">${(r.tags || []).map((t) => `<span class="tag">${t.replace(/-/g, ' ')}</span>`).join('')}</div>
+      <h1 class="titulo-receita">${esc(r.nome)}</h1>
+      ${r.descricao ? `<p class="subtitulo-receita">${esc(r.descricao)}</p>` : ''}
+      <div class="tags mt-2">${(r.tags || []).map((t) => `<span class="tag">${esc(t.replace(/-/g, ' '))}</span>`).join('')}</div>
 
       <div class="nutricao info-receita">
         <div class="nutri"><strong>${r.tempo_preparo_min ?? ''} min</strong><span>preparo</span></div>
@@ -121,7 +126,7 @@
       <h2 class="titulo-secao">Modo de preparo <span class="dica-check">toque para marcar o que já foi feito</span></h2>
       <ol class="passos passos-check" id="lista-passos"></ol>
 
-      ${r.dicas ? `<h2 class="titulo-secao">Anote aí</h2><p class="dica-texto">💡 ${r.dicas}</p>` : ''}
+      ${r.dicas ? `<h2 class="titulo-secao">Anote aí</h2><p class="dica-texto">💡 ${esc(r.dicas)}</p>` : ''}
 
       <h2 class="titulo-secao mt-4">Você também vai gostar</h2>
       <div class="receita-grade" id="recomendacoes"></div>
@@ -185,13 +190,13 @@
         return `
       <li class="ing-check ${checks.has(idx) ? 'marcado' : ''}" data-idx="${idx}">
         <span class="check-box">✓</span>
-        <span class="ing-texto">${i.texto || i.item || ''}</span>
+        <span class="ing-texto">${esc(i.texto || i.item || '')}</span>
       </li>`;
       }
       const qtdTxt = escalarQtd(i.qtd || 1, fatorAtual());
       const unTxt = unidadePorExtenso(i.unidade, qtdTxt);
       const juncao = unTxt ? (/^(de|da|do|em)\s/i.test(i.item || '') ? ' ' : ' de ') : ' ';
-      const linha = `<strong>${qtdTxt}${unTxt ? ' ' + unTxt : ''}</strong>${juncao}${i.item || ''}`;
+      const linha = `<strong>${esc(qtdTxt)}${unTxt ? ' ' + esc(unTxt) : ''}</strong>${esc(juncao)}${esc(i.item || '')}`;
       return `
       <li class="ing-check ${checks.has(idx) ? 'marcado' : ''}" data-idx="${idx}">
         <span class="check-box">✓</span>
@@ -210,7 +215,7 @@
     $('#lista-passos').innerHTML = (receita.passos || []).map((p, i) => `
       <li class="passo-check" data-idx="${i}">
         <span class="passo-n">${i + 1}</span>
-        <span class="passo-texto">${p}</span>
+        <span class="passo-texto">${esc(p)}</span>
       </li>`).join('');
     $$('#lista-passos .passo-check').forEach((li) =>
       li.addEventListener('click', () => li.classList.toggle('marcado'))
@@ -239,12 +244,12 @@
         return `
         <a class="receita-card" href="receita.html?id=${x.id}">
           <div class="foto-wrap">
-            <img class="foto" src="${x.foto || '/assets/receitas/bowl-frango-quinoa.jpg'}" alt="${x.nome}" />
+            <img class="foto" src="${esc(x.foto || '/assets/receitas/bowl-frango-quinoa.jpg')}" alt="${esc(x.nome)}" />
             <span class="cat-badge">${(x.categoria || '').replace(/-/g, ' ')}</span>
           </div>
           <div class="corpo">
-            <h3>${x.nome}</h3>
-            <div class="tags-linha">${(x.tags || []).slice(0, 2).map((t) => `<span class="tag">${t.replace(/-/g, ' ')}</span>`).join('')}</div>
+            <h3>${esc(x.nome)}</h3>
+            <div class="tags-linha">${(x.tags || []).slice(0, 2).map((t) => `<span class="tag">${esc(t.replace(/-/g, ' '))}</span>`).join('')}</div>
             <div class="meta">
               <span class="meta-chip">⏱ ${x.tempo_preparo_min ?? ''} min</span>
               ${kcal ? `<span class="meta-chip kcal">🔥 ~${kcal} kcal</span>` : ''}
@@ -259,17 +264,17 @@
     const r = receita;
     $('#area-impressao').innerHTML = `
       <div class="imp-cabecalho">
-        <div><h1>${r.nome}</h1><small>${r.descricao || ''}</small></div>
-        <div style="text-align:right"><strong>LIVRO DE RECEITAS DA NÚBIA</strong><br><small>⏱ ${r.tempo_preparo_min} min • 🍽 ${Math.round((r.porcoes || 1) * fatorAtual())} porção(ões)</small></div>
+        <div><h1>${esc(r.nome)}</h1><small>${esc(r.descricao || '')}</small></div>
+        <div style="text-align:right"><strong>LIVRO DE RECEITAS DIGITAL DA NÚBIA</strong><br><small>⏱ ${r.tempo_preparo_min} min • 🍽 ${Math.round((r.porcoes || 1) * fatorAtual())} porção(ões)</small></div>
       </div>
       <h2>Ingredientes</h2>
       <ul>${(r.ingredientes || []).map((i) => {
         const q = escalarQtd(i.qtd, fatorAtual());
-        return `<li>${q} ${unidadePorExtenso(i.unidade, q)} ${i.item || i.texto || i}</li>`;
+        return `<li>${esc(q)} ${esc(unidadePorExtenso(i.unidade, q))} ${esc(i.item || i.texto || i)}</li>`;
       }).join('')}</ul>
       <h2>Modo de preparo</h2>
-      <ol>${(r.passos || []).map((p) => `<li>${p}</li>`).join('')}</ol>
-      ${r.dicas ? `<h2>Anote aí</h2><p>${r.dicas}</p>` : ''}
+      <ol>${(r.passos || []).map((p) => `<li>${esc(p)}</li>`).join('')}</ol>
+      ${r.dicas ? `<h2>Anote aí</h2><p>${esc(r.dicas)}</p>` : ''}
       <div class="imp-rodape">Conteúdo informativo. Não substitui acompanhamento de nutricionista ou médico. • Livro de Receitas Digital da Núbia</div>`;
     window.print();
   }

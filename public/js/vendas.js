@@ -1,7 +1,13 @@
 // Página de vendas: prévia das receitas (prints), botão fixo mobile e preços dinâmicos.
 (() => {
   const $ = (s) => document.querySelector(s);
+
+  // escape obrigatório para qualquer texto que entra em HTML (XSS)
+  const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) =>
+    ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
   const $$ = (s) => document.querySelectorAll(s);
+  let precoAtual = 19.9;
 
   // ---------- Prévia do produto (prints reais das receitas) ----------
   async function carregarPrevia() {
@@ -12,11 +18,11 @@
       if (!grade || !d.itens?.length) return;
       grade.innerHTML = d.itens.map((rec) => `
         <article class="print-card">
-          <img src="${rec.foto || 'assets/receitas/bowl-frango-quinoa.jpg'}" alt="${rec.nome}" />
+          <img src="${esc(rec.foto || 'assets/receitas/bowl-frango-quinoa.jpg')}" alt="${esc(rec.nome)}" />
           <div class="corpo">
-            <h3>${rec.nome}</h3>
+            <h3>${esc(rec.nome)}</h3>
             <div class="meta">⏱ ${rec.tempo_preparo_min} min • 🍽 ${rec.porcoes} porção(ões)${rec.nutricao_aprox?.kcal_por_porcao ? ` • 🔥 ~${rec.nutricao_aprox.kcal_por_porcao} kcal` : ''}</div>
-            <div class="tags">${(rec.tags || []).slice(0, 3).map((t) => `<span class="tag">${t.replace('-', ' ')}</span>`).join('')}</div>
+            <div class="tags">${(rec.tags || []).slice(0, 3).map((t) => `<span class="tag">${esc(t.replace('-', ' '))}</span>`).join('')}</div>
           </div>
         </article>`).join('');
     } catch {}
@@ -40,6 +46,15 @@
         b.textContent = `Quero acesso vitalício por ${fmt(p.preco)}`;
       });
       $$('.compra-fixa .preco strong').forEach((b) => { b.textContent = fmt(p.preco); });
+      precoAtual = Number(p.preco) || precoAtual;
+      // qualquer "R$ 19,90" escrito no texto segue o preço configurado
+      const alvo = /R\$\s?19,90/g;
+      const caminhador = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+      const nos = [];
+      while (caminhador.nextNode()) nos.push(caminhador.currentNode);
+      nos.forEach((n) => {
+        if (alvo.test(n.nodeValue)) n.nodeValue = n.nodeValue.replace(alvo, fmt(p.preco));
+      });
     } catch {}
   }
 
@@ -57,7 +72,7 @@
 
   // ---------- Tracking de cliques nos CTAs ----------
   $$('a[href="checkout.html"]').forEach((a) => {
-    a.addEventListener('click', () => window.OFTrack?.enviar('cta_click', { valor: 19.9 }));
+    a.addEventListener('click', () => window.OFTrack?.enviar('cta_click', { valor: precoAtual }));
   });
 
   carregarPrevia();

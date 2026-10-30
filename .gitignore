@@ -3,6 +3,11 @@ node_modules/
 .DS_Store
 data/sessions.json
 data/*.tmp
+
+# dados de clientes (PII): nunca versionar
+data/users.json
+data/orders.json
+data/events.json
 *.log
 .vercel
 .env*

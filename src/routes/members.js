@@ -14,6 +14,7 @@ import {
 } from '../lib/release.js';
 import { track } from '../lib/analytics.js';
 import { consumirToken, tokenDefinirSenha } from './checkout.js';
+import { limite } from '../lib/limite.js';
 import { calcularNutricao, interpretar } from '../lib/nutricao.js';
 import { detectarTags } from '../lib/tags.js';
 
@@ -33,14 +34,14 @@ async function avisarLinkAcesso(u) {
   }
 }
 
-router.post('/login', async (req, res) => {
+router.post('/login', limite({ max: 20, janelaMs: 5 * 60 * 1000 }), async (req, res) => {
   const { email, senha } = req.body || {};
   const users = await read('users', []);
   const u = users.find((x) => x.email.toLowerCase() === String(email || '').toLowerCase());
   if (!u || !conferirSenha(senha, u.senhaSalt, u.senhaHash)) {
     return res.status(401).json({ error: 'e-mail ou senha incorretos' });
   }
-  await criarSessao(res, u.id, 'membro');
+  await criarSessao(res, u.id, 'membro', req);
   u.ultimaVisita = agora();
   await avisarLinkAcesso(u);
   await write('users', users);
@@ -75,7 +76,7 @@ router.put('/perfil', requireMember, async (req, res) => {
 });
 
 // Define a senha a partir do link enviado por e-mail (pós-compra ou redefinição).
-router.post('/definir-senha', async (req, res) => {
+router.post('/definir-senha', limite({ max: 15, janelaMs: 5 * 60 * 1000 }), async (req, res) => {
   const { token, senha } = req.body || {};
   const userId = await consumirToken(token);
   if (!userId) return res.status(400).json({ error: 'link inválido ou expirado' });
@@ -89,16 +90,16 @@ router.post('/definir-senha', async (req, res) => {
   u.senhaDefinida = true;
   await avisarLinkAcesso(u);
   await write('users', users);
-  await criarSessao(res, u.id, 'membro');
+  await criarSessao(res, u.id, 'membro', req);
   res.json({ ok: true });
 });
 
 // Esqueci minha senha: envia link de redefinição (resposta genérica de propósito).
-router.post('/recuperar-senha', async (req, res) => {
+router.post('/recuperar-senha', limite({ max: 8, janelaMs: 10 * 60 * 1000 }), async (req, res) => {
   const email = String(req.body?.email || '').toLowerCase();
   const u = (await read('users', [])).find((x) => x.email.toLowerCase() === email);
   if (u) {
-    const link = `${baseUrl()}/login.html?definir=${u.id}.${tokenDefinirSenha(u.id)}`;
+    const link = `${baseUrl()}/login.html?definir=${u.id}.${await tokenDefinirSenha(u.id)}`;
     try {
       await sendEmail({ to: u.email, subject: 'Redefina sua senha da conta OfertaFitBR', html: emailDefinirSenha(u.nome, link) });
     } catch (e) {

@@ -22,6 +22,11 @@ app.use(express.json({ limit: '2mb' }));
 // Rota de cron (Vercel Cron → ver vercel.json). Protegida por CRON_SECRET.
 app.get('/api/cron', async (req, res) => {
   const segredo = process.env.CRON_SECRET;
+  // falha fechado: sem segredo configurado, o cron não roda (não fica aberto
+  // para qualquer pessoa disparar e-mails em massa). Local (sem Vercel) libera.
+  if (!segredo && process.env.VERCEL) {
+    return res.status(503).json({ error: 'CRON_SECRET não configurado' });
+  }
   if (segredo && req.headers.authorization !== `Bearer ${segredo}`) {
     return res.status(401).json({ error: 'não autorizado' });
   }

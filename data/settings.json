@@ -6,5 +6,6 @@
   "emailSuporte": "entrega@ofertafit.smdigtal.com",
   "diaLiberacao": "segunda-feira, 08:00",
   "fraseRodape": "Comer melhor sem complicar.",
-  "adminSenha": "Comsoc1#"
+  "adminSenhaHash": "a7c42f69d75ac5420f4aeeaf142dd7850c241dc2464755693c41de8756d47eba45c88a2e8d3c650f0dad4389dc060ffefe4425969146428a538226647514ecb7",
+  "adminSenhaSalt": "e031cfa48f64b01d0cc07c5e49c08949"
 }

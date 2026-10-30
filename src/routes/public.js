@@ -5,6 +5,7 @@ import { track } from '../lib/analytics.js';
 import { receitasLiberadas, proximaReceita, liberarPendentesSeNecessario } from '../lib/release.js';
 import { calcularNutricao } from '../lib/nutricao.js';
 import { detectarTags } from '../lib/tags.js';
+import { limite } from '../lib/limite.js';
 
 const router = Router();
 
@@ -50,7 +51,7 @@ router.get('/receitas/preview', async (req, res) => {
 });
 
 // Tracking público (LP e checkout). Nunca bloqueia a página.
-router.post('/track', async (req, res) => {
+router.post('/track', limite({ max: 60, janelaMs: 60 * 1000 }), async (req, res) => {
   try {
     const b = req.body || {};
     await track({

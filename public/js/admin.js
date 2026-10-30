@@ -2,6 +2,11 @@
 // agendamento), membros & acessos, pedidos e configurações.
 (() => {
   const $ = (s) => document.querySelector(s);
+
+  // escape obrigatório para qualquer texto que entra em HTML (XSS)
+  const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) =>
+    ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
   const $$ = (s) => document.querySelectorAll(s);
   const api = async (url, opts = {}) => {
     try {
@@ -135,7 +140,7 @@
     const maxO = Math.max(1, ...m.origens.map((o) => o.total));
     $('#lista-origens').innerHTML = m.origens.length
       ? m.origens.map((o) => `
-        <div class="linha-o"><span style="min-width:110px">${o.nome}</span>
+        <div class="linha-o"><span style="min-width:110px">${esc(o.nome)}</span>
           <div class="barra-o"><i style="width:${(o.total / maxO) * 100}%"></i></div>
           <strong style="min-width:40px;text-align:right">${o.total}</strong></div>`).join('')
       : '<p class="cinza pequeno">Sem dados no período.</p>';
@@ -164,14 +169,14 @@
       const agendada = new Date(r.data_liberacao) > new Date(d.agora);
       return `
       <tr>
-        <td><strong>${r.nome}</strong><br><small class="cinza">${(r.tags || []).join(' • ') || 'sem tags'}</small></td>
+        <td><strong>${esc(r.nome)}</strong><br><small class="cinza">${(r.tags || []).map(esc).join(' • ') || 'sem tags'}</small></td>
         <td>${r.categoria.replace(/-/g, ' ')}</td>
         <td>${dataBR(r.data_liberacao)}</td>
         <td><span class="status-pill ${agendada ? 'status-agendada' : 'status-liberada'}">${agendada ? '⏳ agendada' : '✓ liberada'}</span></td>
         <td class="acoes">
-          <button class="btn-mini-azul" data-editar="${r.id}">Editar</button>
-          ${agendada ? `<button class="btn-mini-verde" data-publicar="${r.id}">Publicar agora</button>` : ''}
-          <button class="btn-mini-vermelho" data-excluir="${r.id}">Excluir</button>
+          <button class="btn-mini-azul" data-editar="${esc(r.id)}">Editar</button>
+          ${agendada ? `<button class="btn-mini-verde" data-publicar="${esc(r.id)}">Publicar agora</button>` : ''}
+          <button class="btn-mini-vermelho" data-excluir="${esc(r.id)}">Excluir</button>
         </td>
       </tr>`;
     }).join('');
@@ -367,15 +372,15 @@
     $('#tabela-membros tbody').innerHTML = d.membros.length
       ? d.membros.map((a) => `
         <tr>
-          <td><strong>${a.nome}</strong></td>
-          <td>${a.email}</td>
+          <td><strong>${esc(a.nome)}</strong></td>
+          <td>${esc(a.email)}</td>
           <td><span class="status-pill ${a.acesso?.ativo ? 'status-pago' : 'status-abandonado'}">${a.acesso?.ativo ? '✓ ativo' : '✕ inativo'}</span></td>
           <td>${dataBR(a.criadoEm)}</td>
           <td>${dataBR(a.ultimaVisita)}</td>
           <td>${a.feitas} receitas</td>
           <td class="acoes">
-            <button class="btn-mini-cinza" data-senha="${a.id}">Senha</button>
-            <button class="${a.acesso?.ativo ? 'btn-mini-vermelho' : 'btn-mini-verde'}" data-acesso="${a.id}" data-valor="${a.acesso?.ativo ? 'false' : 'true'}">
+            <button class="btn-mini-cinza" data-senha="${esc(a.id)}">Senha</button>
+            <button class="${a.acesso?.ativo ? 'btn-mini-vermelho' : 'btn-mini-verde'}" data-acesso="${esc(a.id)}" data-valor="${a.acesso?.ativo ? 'false' : 'true'}">
               ${a.acesso?.ativo ? 'Revogar acesso' : 'Liberar acesso'}
             </button>
           </td>
@@ -401,8 +406,8 @@
     $('#tabela-pedidos tbody').innerHTML = d.pedidos.length
       ? d.pedidos.map((p) => `
         <tr>
-          <td><small>${p.id}</small></td>
-          <td><strong>${p.nome}</strong><br><small class="cinza">${p.email}</small></td>
+          <td><small>${esc(p.id)}</small></td>
+          <td><strong>${esc(p.nome)}</strong><br><small class="cinza">${esc(p.email)}</small></td>
           <td>${fmt(p.valor)}</td>
           <td>${p.metodo}</td>
           <td><span class="status-pill status-${p.status === 'pago' ? 'pago' : p.status === 'abandonado' ? 'abandonado' : 'aguardando'}">${p.status}</span></td>

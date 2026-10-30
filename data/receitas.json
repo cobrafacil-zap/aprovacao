@@ -2,7 +2,7 @@
   {
     "id": "rec_panqueca_banana_aveia",
     "nome": "Panqueca de Banana com Aveia",
-    "descricao": "Café da manhã macio, saboroso e que fica pronto em 15 minutos — perfeita para dias corridos.",
+    "descricao": "Café da manhã macio, saboroso e que fica pronto em 15 minutos, perfeita para dias corridos.",
     "categoria": "cafe-manha",
     "tags": [
       "rapido",
@@ -56,7 +56,7 @@
   {
     "id": "rec_bowl_frango_quinoa",
     "nome": "Bowl de Frango com Quinoa",
-    "descricao": "Almoço completo, equilibrado e colorido — proteína, carboidrato bom e legumes em uma travessa só.",
+    "descricao": "Almoço completo, equilibrado e colorido, proteína, carboidrato bom e legumes em uma travessa só.",
     "categoria": "almoco",
     "tags": [
       "sem-gluten",
@@ -120,7 +120,7 @@
   {
     "id": "rec_omelete_forno_legumes",
     "nome": "Omelete de Forno com Legumes",
-    "descricao": "Jantar prático, leve e proteico — você prepara, coloca no forno e esquece até ficar pronto.",
+    "descricao": "Jantar prático, leve e proteico, você prepara, coloca no forno e esquece até ficar pronto.",
     "categoria": "jantar",
     "tags": [
       "sem-gluten",
@@ -173,7 +173,7 @@
       "Despeje na forma e asse por 18 a 20 minutos, até firmar e dourar levemente.",
       "Sirva quente com uma salada verde ao lado."
     ],
-    "dicas": "Sobrou? Corte em fatias e leve como lanche no dia seguinte — vai bem fria também.",
+    "dicas": "Sobrou? Corte em fatias e leve como lanche no dia seguinte, vai bem fria também.",
     "foto": "/assets/receitas/omelete-forno-legumes.jpg",
     "data_liberacao": "2026-09-21T08:00:00-03:00",
     "liberada": true,
@@ -234,7 +234,7 @@
   {
     "id": "rec_mousse_abacate_cacau",
     "nome": "Mousse de Abacate com Cacau",
-    "descricao": "Sobremesa cremosa, saborosa e sem lactose — para matar a vontade de doce sem culpa.",
+    "descricao": "Sobremesa cremosa, saborosa e sem lactose, para aquela vontade de doce no fim do dia.",
     "categoria": "sobremesa",
     "tags": [
       "rapido",
@@ -444,7 +444,7 @@
       "Misture o tahine com o suco de limão e um pouco de água até virar um molho cremoso.",
       "Regue a salada com o molho e finalize com salsinha."
     ],
-    "dicas": "O molho de tahine fica na geladeira por até 5 dias — faça uma porção maior.",
+    "dicas": "O molho de tahine fica na geladeira por até 5 dias, faça uma porção maior.",
     "foto": "/assets/receitas/salada-grao-bico-tahine.jpg",
     "data_liberacao": "2026-10-26T08:00:00-03:00",
     "liberada": true,
@@ -513,7 +513,7 @@
   {
     "id": "rec_pudim_chia_frutas",
     "nome": "Pudim de Chia com Frutas",
-    "descricao": "Sobremesa ou café da manhã preparado na véspera — cremoso, sem lactose e cheio de fibras.",
+    "descricao": "Sobremesa ou café da manhã preparado na véspera, cremoso, sem lactose e cheio de fibras.",
     "categoria": "sobremesa",
     "tags": [
       "rapido",

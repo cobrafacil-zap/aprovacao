@@ -4,6 +4,11 @@
   const $ = (s) => document.querySelector(s);
   const $$ = (s) => document.querySelectorAll(s);
 
+  // escape obrigatório para qualquer texto que entra em HTML (XSS)
+  const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) =>
+    ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+
   const GRUPOS = [
     { nome: '🌾 Grãos e cereais', itens: ['Arroz', 'Feijão (ou lentilha)', 'Aveia em flocos', 'Farinha de trigo', 'Macarrão', 'Tapioca (goma ou granulada)', 'Cuscuz'] },
     { nome: '🥚 Proteínas', itens: ['Ovos', 'Peito de frango', 'Carne moída', 'Patinho ou coxa e sobrecoxa', 'Atum e sardinha em conserva', 'Queijo minas', 'Ricota', 'Iogurte natural'] },

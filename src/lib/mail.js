@@ -111,6 +111,10 @@ export function shell(titulo, corpo) {
 const corpo = (html) => `
   <p style="margin:0 0 12px;font-size:15px;color:#0E1330;line-height:1.65">${html}</p>`;
 
+// textos vindos de fora (nome do comprador, receitas) passam por aqui
+const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) =>
+  ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
 // Assinatura pessoal da criadora do produto
 const assinatura = () => `
   <p style="margin:18px 0 0;font-size:15px;color:#0E1330;line-height:1.65">
@@ -121,7 +125,7 @@ const assinatura = () => `
 
 // ---------- 1. Pagamento aprovado ----------
 export const emailCompra = (nome, urlAcesso) =>
-  shell(`Pagamento aprovado! Bem-vindo(a), ${nome} 🎉`, `
+  shell(`Pagamento aprovado! Bem-vindo(a), ${esc(nome)} 🎉`, `
     ${corpo('Seu pagamento foi confirmado e o acesso ao <strong>Livro de Receitas Digital da Núbia</strong> <strong>já está liberado</strong>.')}
     ${botao(urlAcesso, 'Entrar na área de membros')}
     <p style="margin:6px 0 4px;font-size:15px;font-weight:bold;color:#0E1330">O que fazer agora:</p>
@@ -136,7 +140,7 @@ export const emailCompra = (nome, urlAcesso) =>
 
 // ---------- 2. Definir senha (primeiro acesso / redefinição) ----------
 export const emailDefinirSenha = (nome, url) =>
-  shell(`Crie seu acesso, ${nome} 🔑`, `
+  shell(`Crie seu acesso, ${esc(nome)} 🔑`, `
     ${corpo('Sua conta já está criada. É só definir uma senha para entrar na área de membros do <strong>Livro de Receitas Digital da Núbia</strong>.')}
     ${botao(url, 'Definir minha senha')}
     ${corpo('<span style="color:#5B627E;font-size:13px">O link é válido por 7 dias. Se você já tem senha, é só ignorar este e-mail e entrar normalmente.</span>')}
@@ -144,11 +148,11 @@ export const emailDefinirSenha = (nome, url) =>
 
 // ---------- 3. Boas-vindas ----------
 export const emailBoasVindas = (nome, urlAcesso) =>
-  shell(`Bem-vindo(a) ao Livro de Receitas da Núbia, ${nome}! 💪`, `
+  shell(`Bem-vindo(a) ao Livro de Receitas Digital da Núbia, ${esc(nome)}! 💪`, `
     ${corpo('Seu acesso é <strong>vitalício</strong>: você paga uma única vez e recebe receitas novas toda semana, para sempre.')}
     ${botao(urlAcesso, 'Começar agora')}
     <table width="100%" cellpadding="0" cellspacing="0" border="0">
-      ${passo(1, 'Explore a biblioteca', 'Mais de 50 receitas liberadas para todos os momentos: café da manhã, almoço, jantar, lanche e sobremesa.')}
+      ${passo(1, 'Explore a biblioteca', 'Mais de 10 receitas liberadas para todos os momentos: café da manhã, almoço, jantar, lanche e sobremesa.')}
       ${passo(2, 'Marque suas favoritas', 'Toque no ❤️ para guardar as receitas que você mais gosta.')}
       ${passo(3, 'Cozinhe e registre', 'Marque as receitas como feitas e acompanhe sua evolução na cozinha.')}
     </table>
@@ -158,13 +162,13 @@ export const emailBoasVindas = (nome, urlAcesso) =>
 
 // ---------- 4. Nova receita da semana ----------
 export const emailNovaReceita = (nome, receita, urlReceita) =>
-  shell(`Saiu receita nova: ${receita.nome} 🥗`, `
-    ${corpo(`Olá ${nome}, acabou de liberar uma receita nova na sua conta:`)}
+  shell(`Saiu receita nova: ${esc(receita.nome)} 🥗`, `
+    ${corpo(`Olá ${esc(nome)}, acabou de liberar uma receita nova na sua conta:`)}
     <table width="100%" cellpadding="0" cellspacing="0" border="0" style="border:1px solid #E4E8F5;border-radius:16px;overflow:hidden">
-      ${receita.foto ? `<tr><td><img src="${abs(receita.foto)}" alt="${receita.nome}" width="504" style="width:100%;display:block" /></td></tr>` : ''}
+      ${receita.foto ? `<tr><td><img src="${esc(abs(receita.foto))}" alt="${esc(receita.nome)}" width="504" style="width:100%;display:block" /></td></tr>` : ''}
       <tr><td style="padding:18px 20px;font-family:Arial,Helvetica,sans-serif">
-        <strong style="font-size:18px;color:#0E1330">${receita.nome}</strong>
-        <p style="margin:8px 0;color:#5B627E;font-size:14px;line-height:1.6">${receita.descricao || ''}</p>
+        <strong style="font-size:18px;color:#0E1330">${esc(receita.nome)}</strong>
+        <p style="margin:8px 0;color:#5B627E;font-size:14px;line-height:1.6">${esc(receita.descricao || '')}</p>
         <p style="margin:0;color:#2743D6;font-size:14px;font-weight:bold">⏱ ${receita.tempo_preparo_min} min &nbsp;•&nbsp; 🍽 ${receita.porcoes} porção(ões)</p>
       </td></tr>
     </table>
@@ -174,7 +178,7 @@ export const emailNovaReceita = (nome, receita, urlReceita) =>
 
 // ---------- 5. Link de acesso (após o primeiro login) ----------
 export const emailLinkAcesso = (nome, urlAcesso) =>
-  shell(`Acesse por aqui da próxima vez, ${nome} 🔗`, `
+  shell(`Acesse por aqui da próxima vez, ${esc(nome)} 🔗`, `
     ${corpo('Você acabou de entrar na sua área de membros. Para os seus <strong>próximos acessos</strong>, é só usar o botão abaixo:')}
     ${botao(urlAcesso, 'Acessar minha área de membros')}
     <p style="margin:6px 0 4px;font-size:15px;font-weight:bold;color:#0E1330">Dicas para nunca perder o acesso:</p>
