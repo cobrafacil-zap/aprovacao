@@ -4,27 +4,50 @@
 //
 // Regras de conteúdo: linguagem de bem-estar, sem promessa de resultado,
 // aviso de que não substitui nutricionista/médico em TODOS os e-mails.
-import { createHmac } from 'crypto';
+import { createHmac, randomBytes, timingSafeEqual } from 'crypto';
 import { baseUrl } from './helpers.js';
+import { read, write } from './db.js';
 
-// Token estável por e-mail (HMAC): permite cancelar a inscrição sem senha
-// e sem gravar nada novo no banco.
-const SEGREDO_EMAILS = process.env.EMAILS_SECRET || process.env.CRON_SECRET || 'ofertafit-emails-v1';
-export const tokenEmails = (email) =>
-  createHmac('sha256', SEGREDO_EMAILS).update(String(email).toLowerCase().trim()).digest('hex').slice(0, 32);
+// Token estável por e-mail (HMAC): permite cancelar a inscrição sem senha.
+// O segredo é gerado uma vez e guardado no banco (não fica no código nem
+// depende de variável de ambiente esquecida).
+let segredoEmailsCache = null;
+export async function segredoEmails() {
+  if (segredoEmailsCache) return segredoEmailsCache;
+  const s = await read('settings', {});
+  if (!s.emailsSegredo) {
+    s.emailsSegredo = randomBytes(24).toString('hex');
+    await write('settings', s);
+  }
+  segredoEmailsCache = s.emailsSegredo;
+  return segredoEmailsCache;
+}
 
-export const urlCancelarEmails = (email) =>
-  `${baseUrl()}/api/emails/cancelar?e=${encodeURIComponent(email)}&t=${tokenEmails(email)}`;
+export async function tokenEmails(email) {
+  return createHmac('sha256', await segredoEmails())
+    .update(String(email).toLowerCase().trim()).digest('hex').slice(0, 32);
+}
 
-// Substitui {{CANCELAR}} pelo link do destinatário. Se o endereço não tiver
-// conta (e-mails de teste), a linha de cancelamento é removida inteira.
-function inserirCancelamento(html, to) {
+export function conferirTokenEmails(email, token) {
+  const a = Buffer.from(String(token || ''));
+  return tokenEmails(email).then((esperado) => {
+    const b = Buffer.from(esperado);
+    return a.length === b.length && timingSafeEqual(a, b);
+  });
+}
+
+export async function urlCancelarEmails(email) {
+  return `${baseUrl()}/api/emails/cancelar?e=${encodeURIComponent(email)}&t=${await tokenEmails(email)}`;
+}
+
+// Substitui {{CANCELAR}} pelo link do destinatário.
+async function inserirCancelamento(html, to) {
   if (!String(html).includes('{{CANCELAR}}')) return html;
-  return String(html).split('{{CANCELAR}}').join(urlCancelarEmails(to));
+  return String(html).split('{{CANCELAR}}').join(await urlCancelarEmails(to));
 }
 
 export async function sendEmail({ to, subject, html }) {
-  html = inserirCancelamento(html, to);
+  html = await inserirCancelamento(html, to);
   const from = process.env.FROM_EMAIL || 'entrega@ofertafit.smdigtal.com';
 
   if (process.env.RESEND_API_KEY) {

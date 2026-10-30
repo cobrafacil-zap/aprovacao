@@ -2,7 +2,7 @@
 // O link vem no rodapé de todos os e-mails, com e-mail + token estável.
 import { Router } from 'express';
 import { read, write } from '../lib/db.js';
-import { tokenEmails, urlMembros } from '../lib/mail.js';
+import { conferirTokenEmails, tokenEmails, urlMembros } from '../lib/mail.js';
 
 const router = Router();
 
@@ -42,7 +42,7 @@ const pagina = (titulo, texto, botao) => `
 async function mudarInscricao(req, res, ativo) {
   const email = String(req.query.e || '').toLowerCase().trim();
   const token = String(req.query.t || '');
-  if (!email || token !== tokenEmails(email)) {
+  if (!email || !(await conferirTokenEmails(email, token))) {
     return res.status(400).send(pagina(
       'Link inválido',
       'Este link de inscrição não é válido. Confirme se abriu o link completo enviado no e-mail.',
@@ -65,7 +65,7 @@ async function mudarInscricao(req, res, ativo) {
     return res.send(pagina(
       'Inscrição cancelada',
       'Pronto! Você não vai mais receber os e-mails de receitas novas e novidades. Os e-mails da sua conta (como acesso e senha) continuam funcionando normalmente.',
-      `<a class="btn" href="/api/emails/reativar?e=${encodeURIComponent(email)}&t=${token}">Voltar a receber os e-mails</a>`
+      `<a class="btn" href="/api/emails/reativar?e=${encodeURIComponent(email)}&t=${encodeURIComponent(token)}">Voltar a receber os e-mails</a>`
     ));
   }
   return res.send(pagina(

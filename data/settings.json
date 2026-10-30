@@ -7,5 +7,6 @@
   "diaLiberacao": "segunda-feira, 08:00",
   "fraseRodape": "Comer melhor sem complicar.",
   "adminSenhaHash": "a7c42f69d75ac5420f4aeeaf142dd7850c241dc2464755693c41de8756d47eba45c88a2e8d3c650f0dad4389dc060ffefe4425969146428a538226647514ecb7",
-  "adminSenhaSalt": "e031cfa48f64b01d0cc07c5e49c08949"
+  "adminSenhaSalt": "e031cfa48f64b01d0cc07c5e49c08949",
+  "emailsSegredo": "1cb49170acb39913e6cd79e87cd47df2b1aa055c3609f8ad"
 }
