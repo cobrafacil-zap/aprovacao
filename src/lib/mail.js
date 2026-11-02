@@ -14,10 +14,12 @@ import { read, write } from './db.js';
 let segredoEmailsCache = null;
 export async function segredoEmails() {
   if (segredoEmailsCache) return segredoEmailsCache;
-  const s = await read('settings', {});
+  let s = await read('settings', {});
   if (!s.emailsSegredo) {
     s.emailsSegredo = randomBytes(24).toString('hex');
     await write('settings', s);
+    // relê: se outra chamada gravou primeiro, vale o que está no banco
+    s = await read('settings', {});
   }
   segredoEmailsCache = s.emailsSegredo;
   return segredoEmailsCache;
@@ -54,6 +56,7 @@ export async function sendEmail({ to, subject, html }) {
     const r = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: { Authorization: `Bearer ${process.env.RESEND_API_KEY}`, 'Content-Type': 'application/json' },
+      signal: AbortSignal.timeout(15000),
       body: JSON.stringify({ from, to: [to], subject, html }),
     });
     if (!r.ok) throw new Error(`Resend: ${await r.text()}`);
@@ -175,7 +178,7 @@ export const emailBoasVindas = (nome, urlAcesso) =>
     ${corpo('Seu acesso é <strong>vitalício</strong>: você paga uma única vez e recebe receitas novas toda semana, para sempre.')}
     ${botao(urlAcesso, 'Começar agora')}
     <table width="100%" cellpadding="0" cellspacing="0" border="0">
-      ${passo(1, 'Explore a biblioteca', 'Mais de 40 receitas liberadas para todos os momentos: café da manhã, almoço, jantar, lanche e sobremesa.')}
+      ${passo(1, 'Explore a biblioteca', 'Mais de 30 receitas liberadas para todos os momentos: café da manhã, almoço, jantar, lanche e sobremesa.')}
       ${passo(2, 'Marque suas favoritas', 'Toque no ❤️ para guardar as receitas que você mais gosta.')}
       ${passo(3, 'Cozinhe e registre', 'Marque as receitas como feitas e acompanhe sua evolução na cozinha.')}
     </table>

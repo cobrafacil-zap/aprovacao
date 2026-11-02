@@ -509,16 +509,7 @@
     "ativo": true,
     "dificuldade": "media",
     "custo": "baixo",
-    "liberadaEm": "2026-11-02T11:06:53.855Z",
-    "emailsEnviados": [
-      "usr_mvse7jsdezn02c",
-      "usr_mvsef20711hvdo",
-      "usr_mvsf67g0cj1zo4",
-      "usr_mvsj05p0oaqkau",
-      "usr_mvsjby1uwnbck8",
-      "usr_mvskz42217tt2q",
-      "usr_umqavlrcjz58"
-    ]
+    "liberadaEm": "2026-11-02T11:06:53.855Z"
   },
   {
     "id": "rec_pudim_chia_frutas",

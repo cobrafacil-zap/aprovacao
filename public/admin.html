@@ -55,7 +55,7 @@
         <div class="linha-flex mt-2">
           <h2 style="font-size:1.35rem">Visão geral</h2>
           <div class="espaçador"></div>
-          <select id="periodo-metricas" style="padding:10px 14px;border-radius:12px;border:2px solid var(--borda);font-family:inherit">
+          <select id="periodo-metricas" aria-label="Período das métricas" style="padding:10px 14px;border-radius:12px;border:2px solid var(--borda);font-family:inherit">
             <option value="7">Últimos 7 dias</option>
             <option value="14" selected>Últimos 14 dias</option>
             <option value="30">Últimos 30 dias</option>
@@ -227,7 +227,7 @@
         <div class="painel-card" style="max-width:620px">
           <h3>Testar envio de e-mail</h3>
           <div class="linha-flex mt-2">
-            <input id="teste-email" type="email" placeholder="seu@email.com" style="flex:1;padding:13px 16px;border-radius:14px;border:2px solid var(--borda);font-family:inherit" />
+            <input id="teste-email" aria-label="E-mail para o teste" type="email" placeholder="seu@email.com" style="flex:1;padding:13px 16px;border-radius:14px;border:2px solid var(--borda);font-family:inherit" />
             <button class="btn btn--azul btn--pequeno" id="btn-teste-email">Enviar teste</button>
           </div>
           <p class="pequeno cinza mt-1" id="status-email"></p>

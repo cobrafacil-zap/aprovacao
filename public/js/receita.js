@@ -106,8 +106,8 @@
       </div>
       ${(r.dificuldade || r.custo) ? `
       <div class="nutricao mt-1">
-        ${r.dificuldade ? `<div class="nutri"><strong>${rotulo[r.dificuldade] || r.dificuldade}</strong><span>dificuldade</span></div>` : ''}
-        ${r.custo ? `<div class="nutri"><strong>${rotulo[r.custo] || r.custo}</strong><span>custo estimado</span></div>` : ''}
+        ${r.dificuldade ? `<div class="nutri"><strong>${esc(rotulo[r.dificuldade] || r.dificuldade)}</strong><span>dificuldade</span></div>` : ''}
+        ${r.custo ? `<div class="nutri"><strong>${esc(rotulo[r.custo] || r.custo)}</strong><span>custo estimado</span></div>` : ''}
       </div>` : ''}
 
       <h2 class="titulo-secao">Informação nutricional (aproximada)</h2>
@@ -245,7 +245,7 @@
         <a class="receita-card" href="receita.html?id=${x.id}">
           <div class="foto-wrap">
             <img class="foto" src="${esc(x.foto || '/assets/receitas/bowl-frango-quinoa.jpg')}" alt="${esc(x.nome)}" />
-            <span class="cat-badge">${(x.categoria || '').replace(/-/g, ' ')}</span>
+            <span class="cat-badge">${esc((x.categoria || '').replace(/-/g, ' '))}</span>
           </div>
           <div class="corpo">
             <h3>${esc(x.nome)}</h3>

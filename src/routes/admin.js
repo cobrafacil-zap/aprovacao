@@ -195,7 +195,7 @@ router.post('/receitas/:id/publicar', async (req, res) => {
   await write('receitas', receitas);
 
   // envio retomável: quem cancelou a inscrição fica de fora e nada é repetido
-  const { enviados, pendentes } = await enviarAvisosDeNovaReceita(r, { maxPorChamada: 200 });
+  const { enviados, pendentes } = await enviarAvisosDeNovaReceita(r, { maxPorChamada: 40 });
   await track({ tipo: 'receita_liberada', receitaId: r.id, origem: 'admin' });
   res.json({ ok: true, receita: r, emails: enviados, pendentes });
 });
@@ -279,15 +279,27 @@ router.get('/config', async (req, res) => {
   delete s.adminSenha;
   delete s.adminSenhaHash;
   delete s.adminSenhaSalt;
+  delete s.emailsSegredo; // segredo interno: não volta para o navegador
   res.json({ config: s });
 });
 
 router.put('/config', async (req, res) => {
   const s = await read('settings', {});
   const b = req.body || {};
-  ['nomeProduto', 'preco', 'precoAntigo', 'garantiaDias', 'emailSuporte', 'diaLiberacao', 'fraseRodape'].forEach((k) => {
-    if (b[k] !== undefined) s[k] = b[k];
-  });
+  // tipos conferidos: preço numérico e textos limitados, sem injeção de objeto
+  for (const k of ['preco', 'precoAntigo', 'garantiaDias']) {
+    if (b[k] !== undefined) {
+      const n = Number(b[k]);
+      if (!Number.isFinite(n) || n < 0) return res.status(400).json({ error: `${k} inválido` });
+      s[k] = n;
+    }
+  }
+  for (const k of ['nomeProduto', 'emailSuporte', 'diaLiberacao', 'fraseRodape']) {
+    if (b[k] !== undefined) {
+      if (typeof b[k] !== 'string' || b[k].length > 200) return res.status(400).json({ error: `${k} inválido` });
+      s[k] = b[k];
+    }
+  }
   if (b.adminSenha) {
     const { salt, hash } = hashSenha(b.adminSenha);
     s.adminSenhaHash = hash;

@@ -2,6 +2,10 @@
 // PRODUÇÃO: Orders API do Mercado Pago (tokenização do cartão via SDK oficial).
 // MODO DEMO: sem MP_ACCESS_TOKEN — simula o pagamento para testes.
 (() => {
+  // escape para qualquer texto que entra em HTML (XSS)
+  const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) =>
+    ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const linkSeguro = (u) => (/^https:\/\//.test(String(u || '')) ? u : '');
   const $ = (s) => document.querySelector(s);
   const $$ = (s) => document.querySelectorAll(s);
   const fmt = (v) => `R$ ${Number(v).toFixed(2).replace('.', ',')}`;
@@ -21,7 +25,11 @@
     const topo = $('#preco-topo');
     if (topo) topo.textContent = precoTxt;
     if (p.mp_ativo && p.mp_public_key) prepararSDK();
-  }).catch(() => {});
+  }).catch(() => {
+  // escape para qualquer texto que entra em HTML (XSS)
+  const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) =>
+    ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const linkSeguro = (u) => (/^https:\/\//.test(String(u || '')) ? u : '');});
 
   function prepararSDK() {
     if (window.MercadoPago) return;
@@ -167,31 +175,31 @@
 
     if (metodo === 'pix') {
       const qr = d.pix?.qrBase64
-        ? `<img alt="QR Code Pix" style="width:200px;height:200px;margin:0 auto;display:block;border-radius:14px" src="data:image/png;base64,${d.pix.qrBase64}" />`
+        ? `<img alt="QR Code Pix" style="width:200px;height:200px;margin:0 auto;display:block;border-radius:14px" src="data:image/png;base64,${String(d.pix.qrBase64).replace(/[^A-Za-z0-9+/=]/g, '')}" />`
         : '<div class="qr-demo" aria-label="QR Code Pix (demonstração)"></div>';
       painel.innerHTML = `
         <h3 style="font-size:1.02rem">⚡ Pague com Pix</h3>
         <div class="pix-caixa">
           ${qr}
           <p class="pequeno cinza texto-centro">Escaneie o QR Code acima no app do seu banco</p>
-          <div class="pix-codigo">${d.pix?.copiaECola || ''}</div>
+          <div class="pix-codigo">${esc(d.pix?.copiaECola || '')}</div>
           <button class="btn btn--contorno btn--pequeno btn--bloco" id="btn-copiar">📋 Copiar código Pix</button>
-          ${d.pix?.link ? `<a class="btn btn--azul btn--pequeno btn--bloco mt-2" href="${d.pix.link}" target="_blank">Abrir no app do Mercado Pago</a>` : ''}
+          ${linkSeguro(d.pix?.link) ? `<a class="btn btn--azul btn--pequeno btn--bloco mt-2" href="${esc(linkSeguro(d.pix.link))}" target="_blank" rel="noopener">Abrir no app do Mercado Pago</a>` : ''}
         </div>
         ${botoesDemo(d)}`;
     } else if (metodo === 'cartao') {
       painel.innerHTML = `
         <h3 style="font-size:1.02rem">💳 Cartão de crédito</h3>
-        <p class="pequeno cinza">${d.cartao?.detalhe ? `Situação: ${d.cartao.detalhe}` : `Valor: ${fmt(d.pedido.valor)} • até 2x sem juros`}</p>
+        <p class="pequeno cinza">${d.cartao?.detalhe ? `Situação: ${esc(d.cartao.detalhe)}` : `Valor: ${fmt(d.pedido.valor)} • parcelamento disponível`}</p>
         ${botoesDemo(d)}`;
     } else {
       painel.innerHTML = `
         <h3 style="font-size:1.02rem">📄 Boleto bancário</h3>
         <div class="pix-caixa">
-          ${d.boleto?.link
-            ? `<a class="btn btn--azul btn--bloco" href="${d.boleto.link}" target="_blank">Abrir boleto</a>`
+          ${linkSeguro(d.boleto?.link)
+            ? `<a class="btn btn--azul btn--bloco" href="${esc(linkSeguro(d.boleto.link))}" target="_blank" rel="noopener">Abrir boleto</a>`
             : ''}
-          ${d.boleto?.linhaDigitavel ? `<p class="pequeno cinza mt-2">Linha digitável:</p><div class="pix-codigo">${d.boleto.linhaDigitavel}</div>` : ''}
+          ${d.boleto?.linhaDigitavel ? `<p class="pequeno cinza mt-2">Linha digitável:</p><div class="pix-codigo">${esc(d.boleto.linhaDigitavel)}</div>` : ''}
           <button class="btn btn--contorno btn--pequeno btn--bloco" id="btn-copiar">📋 Copiar linha digitável</button>
           <p class="pequeno cinza mt-1">O acesso é liberado após a compensação (até 2 dias úteis).</p>
         </div>
@@ -233,8 +241,8 @@
           return;
         }
       } catch {}
-      // boleto pode demorar dias: desacelera e para de insistir depois de 20 min
-      if (tentativas === 240) {
+      // boleto pode demorar dias: desacelera e para de insistir depois de ~30 min
+      if (tentativas === 120) {
         clearInterval(pollTimer);
         mostrarErro('Pagamento ainda em processamento. Você recebe o acesso por e-mail assim que for aprovado.');
       } else if (tentativas > 30) {

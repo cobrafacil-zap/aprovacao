@@ -12,11 +12,12 @@ import checkoutRoutes from './routes/checkout.js';
 import membersRoutes from './routes/members.js';
 import adminRoutes from './routes/admin.js';
 import emailsRoutes from './routes/emails.js';
-import { liberarPendentes, marcarAbandonados } from './lib/release.js';
+import { liberarPendentes, marcarAbandonados, retomarAvisosPendentes } from './lib/release.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
 
+app.set('trust proxy', 1); // atrás da Vercel: req.ip vira o IP real do visitante
 app.use(express.json({ limit: '2mb' }));
 
 // Rota de cron (Vercel Cron → ver vercel.json). Protegida por CRON_SECRET.
@@ -31,8 +32,9 @@ app.get('/api/cron', async (req, res) => {
     return res.status(401).json({ error: 'não autorizado' });
   }
   const liberadas = await liberarPendentes().catch((e) => ({ liberadas: 0, erro: e.message }));
+  const retomadas = await retomarAvisosPendentes().catch(() => ({ retomadas: 0 }));
   const abandonados = await marcarAbandonados().catch(() => 0);
-  res.json({ ok: true, ...liberadas, abandonados });
+  res.json({ ok: true, ...liberadas, ...retomadas, abandonados });
 });
 
 // APIs

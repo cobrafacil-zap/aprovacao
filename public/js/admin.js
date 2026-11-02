@@ -10,7 +10,7 @@
   const $$ = (s) => document.querySelectorAll(s);
   const api = async (url, opts = {}) => {
     try {
-      const r = await fetch(url, { headers: { 'Content-Type': 'application/json' }, ...(opts.body instanceof FormData ? { headers: {} } : opts) });
+      const r = await fetch(url, { ...opts, headers: opts.body instanceof FormData ? {} : { 'Content-Type': 'application/json' } });
       const dados = await r.json().catch(() => ({}));
       if (!r.ok && !dados.error) {
         dados.error = r.status >= 500
@@ -119,7 +119,7 @@
       ['📈 Receita', fmt(m.receita), `ticket médio ${fmt(m.ticket_medio)}`],
       ['👥 Membros ativos', m.membros?.ativos ?? 0, `${m.membros?.total ?? 0} contas criadas`],
       ['📚 Receitas liberadas', m.receitas?.liberadas ?? 0, `${m.receitas?.total ?? 0} no total`],
-      ['📅 Próxima receita', m.receitas?.proxima ? new Date(m.receitas.proxima.data).toLocaleDateString('pt-BR') : '—', m.receitas?.proxima?.nome || 'sem agendamento'],
+      ['📅 Próxima receita', m.receitas?.proxima ? new Date(m.receitas.proxima.data).toLocaleDateString('pt-BR') : '—', esc(m.receitas?.proxima?.nome || 'sem agendamento')],
     ].map(([rotulo, valor, sub]) => `
       <div class="metrica-card"><div class="valor">${valor}</div><div class="rotulo-m">${rotulo}</div><div class="delta pos">${sub}</div></div>
     `).join('');
@@ -170,7 +170,7 @@
       return `
       <tr>
         <td><strong>${esc(r.nome)}</strong><br><small class="cinza">${(r.tags || []).map(esc).join(' • ') || 'sem tags'}</small></td>
-        <td>${r.categoria.replace(/-/g, ' ')}</td>
+        <td>${esc(r.categoria.replace(/-/g, ' '))}</td>
         <td>${dataBR(r.data_liberacao)}</td>
         <td><span class="status-pill ${agendada ? 'status-agendada' : 'status-liberada'}">${agendada ? '⏳ agendada' : '✓ liberada'}</span></td>
         <td class="acoes">

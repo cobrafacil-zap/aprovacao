@@ -58,7 +58,9 @@
       nos.forEach((n) => {
         if (alvo.test(n.nodeValue)) n.nodeValue = n.nodeValue.replace(alvo, fmt(p.preco));
         if (qtd > 10 && alvoQtd.test(n.nodeValue)) {
-          n.nodeValue = n.nodeValue.replace(alvoQtd, `Mais de ${qtd} receitas`);
+          // arredonda para baixo: "mais de 30" com 40 receitas é sempre verdade
+          const alvo = Math.max(10, Math.floor((qtd - 1) / 10) * 10);
+          n.nodeValue = n.nodeValue.replace(alvoQtd, `Mais de ${alvo} receitas`);
         }
       });
     } catch {}

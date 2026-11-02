@@ -108,7 +108,7 @@ function pixCopiaECola(pedido) {
   return `00020126580014BR.GOV.BCB.PIX0136${pedido.id}5204000053039865802BR5913OFERTA FIT BR6009SAO PAULO62070503***6304${Math.random().toString(16).slice(2, 6).toUpperCase()}`;
 }
 
-router.get('/pedidos/:id', async (req, res) => {
+router.get('/pedidos/:id', limite({ max: 60, janelaMs: 60 * 1000 }), async (req, res) => {
   if (!idValido(req.params.id)) return res.status(400).json({ error: 'id de pedido inválido' });
   const pedidos = await read('orders', []);
   const p = pedidos.find((x) => x.id === req.params.id);
@@ -116,10 +116,10 @@ router.get('/pedidos/:id', async (req, res) => {
 
   // fallback de confirmação: se ainda está aguardando, confere direto no MP
   // (não depende do webhook estar configurado — a página faz polling aqui)
-  if (p.status === 'aguardando' && p.mpOrderId && mpAtivo()) {
+  if ((p.status === 'aguardando' || p.status === 'abandonado') && p.mpOrderId && mpAtivo()) {
     try {
       const mp = await consultarOrder(p.mpOrderId);
-      if (estaPago(mp.status, mp.statusDetail)) await aprovarPedido(p, pedidos);
+      if (estaPago(mp.status, mp.statusDetail)) await aprovarPedido(p);
     } catch (e) {
       console.error('[MP] falha ao consultar order:', e.message);
     }
@@ -131,31 +131,42 @@ router.get('/pedidos/:id', async (req, res) => {
 
 // DEMO: botão "simular pagamento aprovado". Só existe quando o Mercado Pago
 // NÃO está configurado; em produção este endpoint é bloqueado.
-router.post('/pedidos/:id/aprovar', async (req, res) => {
-  if (mpAtivo()) return res.status(403).json({ error: 'indisponível com pagamentos ativos' });
+router.post('/pedidos/:id/aprovar', limite({ max: 20, janelaMs: 5 * 60 * 1000 }), async (req, res) => {
+  // demo é só para desenvolvimento: em produção (com ou sem MP) não existe
+  if (mpAtivo() || process.env.VERCEL_ENV === 'production') {
+    return res.status(403).json({ error: 'indisponível com pagamentos ativos' });
+  }
   if (!idValido(req.params.id)) return res.status(400).json({ error: 'id de pedido inválido' });
   const pedidos = await read('orders', []);
   const p = pedidos.find((x) => x.id === req.params.id);
   if (!p) return res.status(404).json({ error: 'pedido não encontrado' });
   if (p.status === 'pago') return res.json({ ok: true, jaPago: true, url: `${baseUrl()}/obrigado.html?pedido=${p.id}` });
-  await aprovarPedido(p, pedidos);
+  await aprovarPedido(p);
   res.json({ ok: true, url: `${baseUrl()}/obrigado.html?pedido=${p.id}` });
 });
 
 const idValido = (v) => /^[A-Za-z0-9_-]{1,80}$/.test(String(v || ''));
 
-async function aprovarPedido(pedido, pedidos) {
+async function aprovarPedido(pedidoRef) {
   // idempotente: se já foi pago, ou outra chamada já está aprovando, não repete
   // (webhook e polling podem chegar ao mesmo tempo)
+  if (pedidoRef.status === 'pago') return pedidoRef;
+  if (!(await setNx(`of:aprovando:${pedidoRef.id}`, 120))) return pedidoRef;
+
+  // relê o banco na hora do commit: grava o array ATUAL, nunca uma cópia velha
+  // (senão um pedido criado durante a aprovação some)
+  const pedidos = await read('orders', []);
+  const pedido = pedidos.find((x) => x.id === pedidoRef.id);
+  if (!pedido) return pedidoRef;
   if (pedido.status === 'pago') return pedido;
-  if (!(await setNx(`of:aprovando:${pedido.id}`, 120))) return pedido;
   pedido.status = 'pago';
   pedido.pagoEm = agora();
   pedido.acessoLiberado = true;
   await write('orders', pedidos);
 
   const usuario = await garantirConta({ nome: pedido.nome, email: pedido.email, pedidoId: pedido.id });
-  await track({ tipo: 'purchase', pedidoId: pedido.id, valor: pedido.valor, utm: pedido.utm, origem: 'checkout' });
+  await track({ tipo: 'purchase', pedidoId: pedido.id, valor: pedido.valor, utm: pedido.utm, origem: 'checkout' })
+    .catch((e) => console.error('[TRACK] purchase:', e.message));
 
   const url = urlMembros();
   try {
@@ -218,20 +229,20 @@ router.post('/webhook', async (req, res) => {
       if (pedidoId && estaPago(pagamento?.status, pagamento?.statusDetail)) {
         const pedidos = await read('orders', []);
         const p = pedidos.find((x) => x.id === pedidoId);
-        if (p && p.status !== 'pago') await aprovarPedido(p, pedidos);
+        if (p && p.status !== 'pago') await aprovarPedido(p);
       }
       return res.json({ ok: true, consultado: recursoId, status: pagamento?.status });
     }
 
     // modo demo / payloads de teste: aceita external_reference + status direto
-    // BLOQUEADO quando há pagamento real: só o Mercado Pago pode confirmar
-    if (mpAtivo()) return res.json({ ok: true });
+    // BLOQUEADO em produção: só o Mercado Pago pode confirmar um pagamento
+    if (mpAtivo() || process.env.VERCEL_ENV === 'production') return res.json({ ok: true });
     const pedidoId = body.external_reference || body.pedidoId;
     const status = body.status || (body.type === 'payment' ? 'approved' : null);
     if (pedidoId && status === 'approved') {
       const pedidos = await read('orders', []);
       const p = pedidos.find((x) => x.id === pedidoId);
-      if (p && p.status !== 'pago') await aprovarPedido(p, pedidos);
+      if (p && p.status !== 'pago') await aprovarPedido(p);
     }
     res.json({ ok: true });
   } catch (e) {
@@ -250,7 +261,7 @@ async function consultarPagamentoMP(id) {
     `https://api.mercadopago.com/v1/payments/${id}`,
   ]) {
     try {
-      const r = await fetch(url, { headers });
+      const r = await fetch(url, { headers, signal: AbortSignal.timeout(10000) });
       if (r.ok) {
         const d = await r.json();
         // Orders: status em transactions.payments[]; Payments: status direto

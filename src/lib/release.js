@@ -59,6 +59,19 @@ export async function enviarAvisosDeNovaReceita(receita, { maxPorChamada = 40 } 
   const fila = membros.filter((u) => !jaEnviados.has(u.id));
   let enviados = 0;
 
+  const gravarProgresso = async () => {
+    const receitas = await read('receitas', []);
+    const alvo = receitas.find((x) => x.id === receita.id);
+    if (alvo) {
+      alvo.emailsEnviados = receita.emailsEnviados;
+      alvo.emailsPendentes = receita.emailsPendentes === true;
+    }
+    await write('receitas', receitas);
+  };
+
+  receita.emailsPendentes = true; // marca já de início: retomada cobre até falha total
+  await gravarProgresso().catch(() => {});
+
   for (const u of fila.slice(0, maxPorChamada)) {
     try {
       await sendEmail({
@@ -73,16 +86,35 @@ export async function enviarAvisosDeNovaReceita(receita, { maxPorChamada = 40 } 
     jaEnviados.add(u.id);
     receita.emailsEnviados = [...jaEnviados];
     enviados += 1;
+    // grava de 5 em 5: se a função morrer no meio, nada se perde nem se repete
+    if (enviados % 5 === 0) await gravarProgresso().catch(() => {});
   }
 
-  if (enviados) {
-    // grava o progresso mesmo sem ter terminado todo mundo
-    const receitas = await read('receitas', []);
-    const alvo = receitas.find((x) => x.id === receita.id);
-    if (alvo) alvo.emailsEnviados = receita.emailsEnviados;
-    await write('receitas', receitas);
-  }
+  receita.emailsPendentes = fila.length - enviados > 0;
+  await gravarProgresso().catch(() => {});
   return { enviados, pendentes: Math.max(0, fila.length - enviados) };
+}
+
+// Retomada: receitas liberadas com gente pendente de aviso continuam a fila
+// nas próximas chamadas (cron diário ou abertura da área de membros).
+export async function retomarAvisosPendentes({ maxPorChamada = 40 } = {}) {
+  const [receitas, users] = await Promise.all([read('receitas', []), read('users', [])]);
+  const alvos = (users || []).filter((u) => u.acesso?.ativo && u.emailsAtivos !== false);
+  if (!alvos.length) return { retomadas: 0 };
+  const pendentes = receitas.filter((r) => {
+    if (r.ativo === false || !r.liberada) return false;
+    const ja = new Set(r.emailsEnviados || []);
+    if (!alvos.some((u) => !ja.has(u.id))) return false;
+    // Só retoma lote EXPLICITAMENTE pendente (iniciado e não terminado).
+    // Receita liberada antes disso nunca dispara e-mail retroativo.
+    return r.emailsPendentes === true;
+  });
+  let retomadas = 0;
+  for (const r of pendentes.slice(0, 3)) {
+    const { pendentes: restam } = await enviarAvisosDeNovaReceita(r, { maxPorChamada });
+    if (restam === 0) retomadas += 1;
+  }
+  return { retomadas };
 }
 
 // Versão "preguiçosa": só roda se a última checagem tem mais de 10 min.

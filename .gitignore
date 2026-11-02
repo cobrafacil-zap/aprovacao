@@ -4,10 +4,11 @@ node_modules/
 data/sessions.json
 data/*.tmp
 
-# dados de clientes (PII): nunca versionar
+# dados de clientes (PII) e configuração com segredos: nunca versionar
 data/users.json
 data/orders.json
 data/events.json
+data/settings.json
 *.log
 .vercel
 .env*

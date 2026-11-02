@@ -226,7 +226,7 @@
           ${r.feita ? `<span class="feita-selo ${nova ? 'com-nova' : ''}">✓ já feita</span>` : ''}
           <button class="favorito" data-fav="${r.id}" aria-label="Favoritar">${r.favorito ? '❤️' : '🤍'}</button>
           <img class="foto" src="${esc(r.foto || '/assets/receitas/bowl-frango-quinoa.jpg')}" alt="${esc(r.nome)}" />
-          <span class="cat-badge">${(r.categoria || '').replace(/-/g, ' ')}</span>
+          <span class="cat-badge">${esc((r.categoria || '').replace(/-/g, ' '))}</span>
         </div>
         <div class="corpo">
           <h3>${esc(r.nome)}</h3>
@@ -338,7 +338,7 @@
         <p class="cinza">${esc(r.descricao || '')}</p>
         <div class="meta-flex">
           ${r.tempo_preparo_min ? `<span>⏱ ${r.tempo_preparo_min} min</span>` : ''}
-          ${r.categoria ? `<span>📂 ${r.categoria.replace(/-/g, ' ')}</span>` : ''}
+          ${r.categoria ? `<span>📂 ${esc(r.categoria.replace(/-/g, ' '))}</span>` : ''}
           ${(r.tags || []).map((t) => `<span>🏷 ${esc(t.replace(/-/g, ' '))}</span>`).join('')}
         </div>
 
@@ -365,8 +365,8 @@
         </div>
         ${(r.dificuldade || r.custo) ? `
         <div class="nutricao mt-1">
-          ${r.dificuldade ? `<div class="nutri"><strong>${({facil:'Fácil',media:'Média',dificil:'Difícil'})[r.dificuldade] || r.dificuldade}</strong><span>dificuldade</span></div>` : ''}
-          ${r.custo ? `<div class="nutri"><strong>${({baixo:'Baixo',medio:'Médio',alto:'Alto'})[r.custo] || r.custo}</strong><span>custo estimado</span></div>` : ''}
+          ${r.dificuldade ? `<div class="nutri"><strong>${esc(({facil:'Fácil',media:'Média',dificil:'Difícil'})[r.dificuldade] || r.dificuldade)}</strong><span>dificuldade</span></div>` : ''}
+          ${r.custo ? `<div class="nutri"><strong>${esc(({baixo:'Baixo',medio:'Médio',alto:'Alto'})[r.custo] || r.custo)}</strong><span>custo estimado</span></div>` : ''}
         </div>` : ''}
 
 
@@ -514,7 +514,7 @@
     $('#selecao-receitas').innerHTML = receitas.map((r) => `
       <label class="lista-item" style="cursor:pointer">
         <input type="checkbox" value="${r.id}" />
-        <div><strong>${r.nome}</strong><span class="de-receita">${(r.ingredientes?.length || 0)} ingredientes</span></div>
+        <div><strong>${esc(r.nome)}</strong><span class="de-receita">${(r.ingredientes?.length || 0)} ingredientes</span></div>
       </label>`).join('');
     $('#modal-lista').classList.remove('oculto');
     document.body.style.overflow = 'hidden';
@@ -546,8 +546,8 @@
         <div class="lista-item ${i.marcado ? 'marcado' : ''}">
           <input type="checkbox" data-idx="${idx}" ${i.marcado ? 'checked' : ''} />
           <div>
-            <span class="texto"><strong class="qtd">${[i.qtd, unidadePorExtenso(i.unidade, i.qtd)].filter(Boolean).join(' ') || ''}</strong> ${i.item}</span>
-            <span class="de-receita">${(i.receitas || []).join(' • ')}</span>
+            <span class="texto"><strong class="qtd">${esc([i.qtd, unidadePorExtenso(i.unidade, i.qtd)].filter(Boolean).join(' ') || '')}</strong> ${esc(i.item)}</span>
+            <span class="de-receita">${(i.receitas || []).map(esc).join(' • ')}</span>
           </div>
           <button class="remover" data-del="${idx}">✕</button>
         </div>`).join('')
