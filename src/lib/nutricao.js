@@ -233,6 +233,7 @@ function tirarMedidas(t) {
   let mudou = true;
   while (mudou && s) {
     mudou = false;
+    s = s.replace(/^(de|da|do|das|dos)\s+/i, '').trim();
     const baixo = s.toLowerCase();
     for (const m of PALAVRAS_MEDIDA) {
       if (baixo === m) return '';
@@ -271,6 +272,9 @@ export function interpretar(ing, bruto) {
   const corte = consumidas;
   let resto = String(texto).trim().split(/\s+/).slice(corte).join(' ').trim();
   resto = resto.replace(/^(de|da|do|dos|das)\s+/i, '').replace(/\s+(e|ou)$/i, '').trim();
+  // qualificadores de medida ("xícara CHEIA de...", "colher RASA de...") não
+  // fazem parte do nome do ingrediente
+  resto = resto.replace(/^(cheia|cheio|rasa|raso|amontoada|amontoado)\s+(de\s+)?/i, '').trim();
   const itemExibicao = resto || itemLimpo;
 
   // "Sal a gosto" e afins não ganham quantidade inventada
@@ -290,11 +294,16 @@ function acharAlimento(item) {
     const nomes = [e.nome, ...e.aliase];
     if (candidatos.some((c) => c && nomes.includes(c))) return e;
   }
+  let melhor = null;
   for (const e of TABELA) {
-    const nomes = [e.nome, ...e.aliase];
-    if (nomes.some((n) => n.length > 3 && (limpo.includes(n) || n.includes(limpo)))) return e;
+    for (const n of [e.nome, ...e.aliase]) {
+      if (n.length <= 3) continue;
+      // o RUIDO tira "em pó", "grelhado" etc.: confere o texto original também
+      const casa = candidatos.some((c) => c.includes(n) || (c.length >= 4 && n.includes(c)));
+      if (casa && (!melhor || n.length > melhor.len)) melhor = { e, len: n.length };
+    }
   }
-  return null;
+  return melhor ? melhor.e : null;
 }
 
 // detecta a unidade quando ela vem no texto (ex.: "3 colheres de...", "500 g de...")
@@ -359,9 +368,13 @@ export function calcularNutricao(ingredientes = [], porcoes = 1) {
   for (const ing of ingredientes) {
     const item = String(ing?.item ?? ing ?? '');
     const { qtd, unidade, itemLimpo } = interpretar(ing, item);
-    const entrada = acharAlimento(itemLimpo || item);
+    const entrada = acharAlimento(item || itemLimpo);
     if (!entrada || qtd == null) continue;
     let gramas = paraGramas(qtd, unidade, entrada);
+    // gramatura escrita pelo usuário entre parênteses é a mais confiável:
+    // "1 xícara de farinha de amêndoas (90 gramas)" vale 90 g, não 240 g
+    const pesada = String(item).match(/\((\d+[.,]?\d*)\s*(g|gr|gramas?)\)/i);
+    if (pesada) gramas = Number(pesada[1].replace(',', '.'));
     if (gramas == null || gramas <= 0) continue;
     // "a gosto"/pitadas/untar: temperos contam pouco (máx. 5 g)
     if (/a gosto|pitada|se quiser|opcional|para untar/i.test(item)) gramas = Math.min(gramas, 5);
