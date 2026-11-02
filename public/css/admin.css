@@ -96,5 +96,5 @@
   box-shadow: 0 12px 30px rgba(14, 19, 48, 0.35); max-width: 88vw; text-align: center;
 }
 .toast-admin.visivel { opacity: 1; transform: translateX(-50%) translateY(0); }
-.toast-admin.sucesso { background: #12B76A; }
+.toast-admin.sucesso { background: var(--verde); }
 .toast-admin.erro { background: #FF4B2E; }

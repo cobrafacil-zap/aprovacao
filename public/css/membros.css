@@ -347,7 +347,7 @@ ul.ingredientes li {
   padding: 8px 14px; border-radius: 11px; font-size: 0.8rem; font-weight: 600;
 }
 .btn-mini-whats {
-  background: #25D366; color: #fff;
+  background: #0C7A47; color: #fff;
   padding: 8px 14px; border-radius: 11px; font-size: 0.82rem; font-weight: 700;
   display: inline-flex; align-items: center; gap: 6px;
 }
@@ -357,7 +357,7 @@ ul.ingredientes li {
 .progresso-info { display: flex; justify-content: space-between; font-size: 0.83rem; color: var(--cinza); margin-bottom: 8px; }
 .progresso-info strong { color: var(--verde); }
 .progresso-trilho { height: 10px; border-radius: 999px; background: var(--fundo); overflow: hidden; }
-.progresso-trilho i { display: block; height: 100%; background: linear-gradient(90deg, var(--verde), #3ED89A); border-radius: 999px; transition: width 0.35s ease; }
+.progresso-trilho i { display: block; height: 100%; background: linear-gradient(90deg, var(--verde), #12B76A); border-radius: 999px; transition: width 0.35s ease; }
 .lista-item {
   display: flex; align-items: center; gap: 14px; padding: 15px 22px;
   border-bottom: 1px solid var(--borda); font-size: 1.05rem;
