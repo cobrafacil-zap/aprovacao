@@ -514,7 +514,7 @@
     $('#selecao-receitas').innerHTML = receitas.map((r) => `
       <label class="lista-item" style="cursor:pointer">
         <input type="checkbox" value="${r.id}" />
-        <div><strong>${esc(r.nome)}</strong><span class="de-receita">${(r.ingredientes?.length || 0)} ingredientes</span></div>
+        <div><strong>${esc(r.nome)}</strong><span class="de-receita">${r.ingredientes_total ?? (r.ingredientes?.length || 0)} ingredientes</span></div>
       </label>`).join('');
     $('#modal-lista').classList.remove('oculto');
     document.body.style.overflow = 'hidden';

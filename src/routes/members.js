@@ -133,6 +133,7 @@ const receitaPublica = (r, u) => ({
   descricao: r.descricao,
   categoria: r.categoria,
   tags: detectarTags(r), // sempre automáticas, sem preenchimento manual
+  ingredientes_total: (r.ingredientes || []).length,
   tempo_preparo_min: r.tempo_preparo_min,
   porcoes: r.porcoes,
   foto: r.foto || null,
