@@ -15,6 +15,7 @@ import { resumo, track } from '../lib/analytics.js';
 import { liberarPendentes, receitasLiberadas, proximaReceita, enviarAvisosDeNovaReceita } from '../lib/release.js';
 import { sendEmail, emailNovaReceita, emailTeste, urlMembros } from '../lib/mail.js';
 import { detectarTags } from '../lib/tags.js';
+import { calcularNutricao } from '../lib/nutricao.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const UPLOAD_DIR = path.join(__dirname, '..', '..', 'public', 'assets', 'receitas');
@@ -78,7 +79,7 @@ router.get('/receitas', async (req, res) => {
     .slice()
     .sort((a, b) => new Date(b.data_liberacao) - new Date(a.data_liberacao))
     // tags sempre calculadas na hora: nada de preenchimento manual
-    .map((r) => ({ ...r, tags: detectarTags(r) }));
+    .map((r) => ({ ...r, tags: detectarTags(r), nutricao_aprox: calcularNutricao(r.ingredientes || [], r.porcoes || 1) }));
   res.json({ receitas: lista, agora: new Date().toISOString() });
 });
 

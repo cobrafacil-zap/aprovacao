@@ -169,7 +169,9 @@
       const agendada = new Date(r.data_liberacao) > new Date(d.agora);
       return `
       <tr>
-        <td><strong>${esc(r.nome)}</strong><br><small class="cinza">${(r.tags || []).map(esc).join(' • ') || 'sem tags'}</small></td>
+        <td><strong>${esc(r.nome)}</strong><br><small class="cinza">${(r.tags || []).map(esc).join(' • ') || 'sem tags'}</small>
+          ${(() => { const k = r.nutricao_aprox?.kcal_por_porcao || 0;
+            return (k > 1200 || (k > 0 && k < 60)) ? `<br><small class="aviso-porcoes">⚠ revisar porções (${k} kcal/porção)</small>` : ''; })()}</td>
         <td>${esc(r.categoria.replace(/-/g, ' '))}</td>
         <td>${dataBR(r.data_liberacao)}</td>
         <td><span class="status-pill ${agendada ? 'status-agendada' : 'status-liberada'}">${agendada ? '⏳ agendada' : '✓ liberada'}</span></td>

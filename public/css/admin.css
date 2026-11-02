@@ -98,3 +98,5 @@
 .toast-admin.visivel { opacity: 1; transform: translateX(-50%) translateY(0); }
 .toast-admin.sucesso { background: var(--verde); }
 .toast-admin.erro { background: #FF4B2E; }
+
+.aviso-porcoes { color: var(--vermelho-escuro); font-weight: 700; }
