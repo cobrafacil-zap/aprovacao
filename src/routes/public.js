@@ -24,7 +24,9 @@ const RECEITA_PUBLICA = (r) => ({
 
 router.get('/produto', async (req, res) => {
   const s = await read('settings', {});
+  const receitas = await receitasLiberadas();
   res.json({
+    receitas_liberadas: receitas.length,
     nome: s.nomeProduto || 'OfertaFitBR',
     preco: s.preco ?? 19.9,
     precoAntigo: s.precoAntigo ?? 97,

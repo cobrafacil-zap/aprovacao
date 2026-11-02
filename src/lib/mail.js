@@ -175,7 +175,7 @@ export const emailBoasVindas = (nome, urlAcesso) =>
     ${corpo('Seu acesso é <strong>vitalício</strong>: você paga uma única vez e recebe receitas novas toda semana, para sempre.')}
     ${botao(urlAcesso, 'Começar agora')}
     <table width="100%" cellpadding="0" cellspacing="0" border="0">
-      ${passo(1, 'Explore a biblioteca', 'Mais de 10 receitas liberadas para todos os momentos: café da manhã, almoço, jantar, lanche e sobremesa.')}
+      ${passo(1, 'Explore a biblioteca', 'Mais de 40 receitas liberadas para todos os momentos: café da manhã, almoço, jantar, lanche e sobremesa.')}
       ${passo(2, 'Marque suas favoritas', 'Toque no ❤️ para guardar as receitas que você mais gosta.')}
       ${passo(3, 'Cozinhe e registre', 'Marque as receitas como feitas e acompanhe sua evolução na cozinha.')}
     </table>

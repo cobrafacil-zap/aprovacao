@@ -47,13 +47,19 @@
       });
       $$('.compra-fixa .preco strong').forEach((b) => { b.textContent = fmt(p.preco); });
       precoAtual = Number(p.preco) || precoAtual;
+      // a quantidade de receitas citada no texto acompanha o banco
+      const alvoQtd = /Mais de 10 receitas/gi;
       // qualquer "R$ 19,90" escrito no texto segue o preço configurado
       const alvo = /R\$\s?19,90/g;
       const caminhador = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
       const nos = [];
       while (caminhador.nextNode()) nos.push(caminhador.currentNode);
+      const qtd = Number(p.receitas_liberadas) || 0;
       nos.forEach((n) => {
         if (alvo.test(n.nodeValue)) n.nodeValue = n.nodeValue.replace(alvo, fmt(p.preco));
+        if (qtd > 10 && alvoQtd.test(n.nodeValue)) {
+          n.nodeValue = n.nodeValue.replace(alvoQtd, `Mais de ${qtd} receitas`);
+        }
       });
     } catch {}
   }
