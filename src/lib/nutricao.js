@@ -19,7 +19,8 @@ limao|22|7.1|0.8|0.1|un:50;aliase:limão,suco de limao,raspas de limao
 mamao|45|11.1|0.5|0.1|un:200;aliase:mamão,papaia
 abacaxi|48|12.3|0.4|0.1|un:800;aliase:abacaxi perola
 manga|54|15|0.8|0.2|un:200;aliase:manga palmer
-uva|53|14|0.6|0.2|un:5;aliase:uva passa,passas
+uva|53|14|0.6|0.2|un:5
+uva passa|302|79|3.4|0.5|cs:18;xc:160;aliase:passas,uvas-passas
 morango|30|6.8|0.9|0.3|un:15;aliase:morangos
 amora|43|9.6|1.4|0.5|xc:140;aliase:mirtelo,blueberry,mirtilo
 figo|43|10.7|1.1|0.2|un:40;aliase:figos
@@ -101,12 +102,12 @@ castanha de caju|553|30|18|44|cs:12;xc:140;aliase:castanha-de-caju,castanhas,mix
 noz|654|14|15|65|cs:12;xc:140;aliase:nozes
 castanha do para|656|12|16|66|un:5;aliase:castanha-do-pará,castanha do pará
 pistache|560|28|20|45
-chia|486|42|17|31|cs:12;aliase:sementes de chia
-linhaca|534|29|18|42|cs:10;aliase:linhaça
-gergelim|573|22|18|50|cs:9
+chia|486|42|17|31|cs:12;xc:160;aliase:sementes de chia
+linhaca|534|29|18|42|cs:10;xc:150;aliase:linhaça
+gergelim|573|22|18|50|cs:9;xc:140
 tahine|595|21|17|54|cs:15;aliase:tahini
-semente de girassol|570|20|21|51|cs:10
-semente de abobora|540|54|20|25|cs:10;aliase:semente de abóbora,abóbora
+semente de girassol|570|20|21|51|cs:10;xc:130
+semente de abobora|540|54|20|25|cs:10;xc:130;aliase:semente de abóbora,abóbora
 
 arroz branco|128|28|2.5|0.2|xc:180;aliase:arroz,arroz cozido
 arroz integral|124|25|2.6|1|xc:180;aliase:arroz integral cozido
@@ -118,6 +119,7 @@ farinha de trigo|364|75|9.8|1.4|xc:120;cs:8;aliase:farinha,farinha de aveia,fari
 farinha de mandioca|330|78|1.5|0.3|xc:120;cs:8;aliase:flocao,farinha de mandioca,goma
 goma de tapioca|358|88|0.2|0.1|xc:100;cs:10;aliase:tapioca,polvilho,polvilho azedo,polvilho doce,tapioca hidratada,tapioca pronta
 aveia|389|66|14|7|xc:80;cs:20;aliase:aveia em flocos,flocos de aveia,farelo de aveia,granola
+flocos de milho|357|84|7|1|xc:30;cs:8;aliase:flocos de milho sem acucar,flocos de milho integral,cornflakes
 granola|471|65|12|20|xc:120;cs:15
 barra de cereal|380|65|8|12|un:35;aliase:barra de cereal caseira,cereal bar
 batata inglesa|52|12|1.2|0.1|un:130;xc:150;aliase:batata,batata cozida,purê de batata
@@ -131,7 +133,7 @@ pao de forma|270|50|8|4|un:40
 biscoito|450|75|6|15|un:12;aliase:biscoito integral,cookie,gotas de chocolate
 
 acucar|387|99|0|0|cs:12;cd:4;aliase:açúcar,acucar refinado,acucar demerara,acucar mascavo,xarope de bordo
-mel|304|82|0.4|0|cs:21
+mel|304|82|0.4|0|cs:21;xc:340
 gelatina|335|84|8|0|cs:10;aliase:gelatina em po
 chocolate|535|59|7|30|cs:15;aliase:chocolate ao leite,chocolate em gotas,calda de chocolate
 chocolate meio amargo|546|61|5|31|cs:15;aliase:chocolate amargo,chocolate 70
@@ -141,8 +143,8 @@ doce de leite|315|57|7|7|cs:18
 marmelada|250|65|0.4|0.1|cs:20;aliase:geleia,doce de abobora
 
 azeite|884|0|0|100|cs:14;cd:5;aliase:azeite de oliva
-oleo de soja|884|0|0|100|cs:14;aliase:óleo,oleo,oleo de girassol
-oleo de coco|862|0|0|100|cs:14;aliase:óleo de coco
+oleo de soja|884|0|0|100|cs:14;xc:220;aliase:óleo,oleo,oleo de girassol
+oleo de coco|862|0|0|100|cs:14;xc:220;aliase:óleo de coco
 maionese|680|7|1|75|cs:15
 ketchup|101|25|1|0.5|cs:15
 mostarda|66|6|4|3|cs:15
@@ -193,7 +195,7 @@ aspargo|20|3.9|2.2|0.1
 `;
 
 // descritores que não mudam o alimento
-const RUIDO = /\b(cozido|cozida|cozidos|fresco|fresca|frescos|picado|picada|picadas|ralado|ralada|ralados|em po|em pó|em fatias|em cubos|em pedacos|em pedaços|em rodela|em rodelas|em listras|desfiado|desfiada|sem sementes|meias-luas|pequeno|pequena|pequenos|grande|grandes|grelhado|grelhada|assado|assada|frito|frita|refogado|refogada|optional|opcional|para untar|a gosto|natural|caseiro|caseira|pronto|pronta)/g;
+const RUIDO = /\b(cozido|cozida|cozidos|fresco|fresca|frescos|picado|picada|picadas|ralado|ralada|ralados|em po|em pó|em fatias|em cubos|em pedacos|em pedaços|em rodela|em rodelas|em listras|desfiado|desfiada|sem sementes|meias-luas|pequeno|pequena|pequenos|grande|grandes|grelhado|grelhada|assado|assada|frito|frita|refogado|refogada|optional|opcional|para untar|a gosto|natural|caseiro|caseira|pronto|pronta|sem acucar|sem açúcar|sem sal|sem lactose|sem gluten|sem glúten|quebrada|quebradas|quebrado|quebrados|grossa|grossos|fina|finas|fino|finos)/g;
 
 // tabela indexada
 const TABELA = DADOS.trim().split('\n').map((linha) => {
