@@ -101,7 +101,7 @@
   padding: 16px 18px; margin-top: 14px; box-shadow: var(--sombra);
 }
 .pp-cabeca { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
-.pp-cabeca h3 { font-size: 1.02rem; }
+.pp-cabeca h2 { font-size: 1.02rem; }
 .pp-fechar { color: var(--cinza); font-size: 1.05rem; padding: 4px 8px; }
 .pp-item {
   display: flex; align-items: center; gap: 12px; padding: 9px 2px;
@@ -484,7 +484,7 @@ ul.ingredientes li {
 .sub-item li strong { color: #0E1330; }
 
 .check-grupo { margin-top: 16px; }
-.check-grupo h3 { font-size: 1rem; margin-bottom: 8px; }
+.check-grupo h2.check-titulo { font-size: 1rem; margin-bottom: 8px; }
 .check-item { padding: 7px 2px; }
 
 @media print {

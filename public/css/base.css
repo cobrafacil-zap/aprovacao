@@ -11,8 +11,8 @@
   --azul-claro: #E9EDFF;
   --amarelo: #FFC61A;
   --amarelo-claro: #FFF4CC;
-  --vermelho: #FF4B2E;
-  --vermelho-escuro: #E23A1F;
+  --vermelho: #D63518;
+  --vermelho-escuro: #B52A16;
   --tinta: #0E1330;
   --cinza: #4B5266;
   --fundo: #F7F8FC;
@@ -128,7 +128,6 @@ h3 { font-size: clamp(1.15rem, 3vw, 1.45rem); }
   background: var(--amarelo-claro); border-left: 4px solid var(--amarelo);
   padding: 12px 16px; border-radius: 12px; font-size: 0.82rem; color: var(--cinza);
 }
-.selo-avaliacao { color: var(--amarelo); font-size: 1.05rem; letter-spacing: 2px; }
 .oculto { display: none !important; }
 
 /* ============================================================

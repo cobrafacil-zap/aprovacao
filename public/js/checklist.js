@@ -36,7 +36,7 @@
     const e = estado();
     $('#checklist').innerHTML = GRUPOS.map((g) => `
       <div class="check-grupo">
-        <h3>${g.nome}</h3>
+        <h2 class="check-titulo">${g.nome}</h2>
         ${g.itens.map((item) => `
           <label class="pp-item check-item">
             <input type="checkbox" data-item="${item}" ${e[item] ? 'checked' : ''} />
