@@ -492,3 +492,18 @@ ul.ingredientes li {
   .lista-card { border: none; box-shadow: none; }
   body { background: #fff; }
 }
+
+
+/* ===== Tags: pill com espaço em qualquer página (receita, cards, modais) ===== */
+.tags { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.tags .tag,
+.tag {
+  display: inline-block; background: var(--azul-claro); color: var(--azul-escuro);
+  font-size: 0.72rem; font-weight: 700; padding: 4px 10px; border-radius: 999px;
+  white-space: nowrap; line-height: 1.4;
+}
+
+/* ===== Cartões de informação: nunca estouram a tela e alinham entre as linhas ===== */
+.nutricao {
+  grid-template-columns: repeat(auto-fit, minmax(min(88px, 100%), 1fr));
+}

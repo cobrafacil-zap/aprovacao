@@ -3,6 +3,12 @@
 // modo impressão de receita e perfil (nome/senha).
 (() => {
   const $ = (s) => document.querySelector(s);
+  const rotuloTag = (t) => ({
+    'rapido': 'rápido', 'sem-gluten': 'sem glúten', 'sem-lactose': 'sem lactose',
+    'alto-proteico': 'alto proteico', 'low-carb': 'low carb',
+    'vegetariano': 'vegetariano', 'vegano': 'vegano',
+  }[t] || String(t).replace(/-/g, ' '));
+
 
   // escape obrigatório para qualquer texto que entra em HTML (XSS)
   const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) =>
@@ -230,7 +236,7 @@
         </div>
         <div class="corpo">
           <h3>${esc(r.nome)}</h3>
-          <div class="tags-linha">${(r.tags || []).slice(0, 2).map((t) => `<span class="tag">${esc(t.replace(/-/g, ' '))}</span>`).join('')}</div>
+          <div class="tags-linha">${(r.tags || []).slice(0, 2).map((t) => `<span class="tag">${esc(rotuloTag(t))}</span>`).join('')}</div>
           <div class="meta">
             <span class="meta-chip">⏱ ${r.tempo_preparo_min ?? ''} min</span>
             ${kcal ? `<span class="meta-chip kcal">🔥 ~${kcal} kcal</span>` : ''}
@@ -339,7 +345,7 @@
         <div class="meta-flex">
           ${r.tempo_preparo_min ? `<span>⏱ ${r.tempo_preparo_min} min</span>` : ''}
           ${r.categoria ? `<span>📂 ${esc(r.categoria.replace(/-/g, ' '))}</span>` : ''}
-          ${(r.tags || []).map((t) => `<span>🏷 ${esc(t.replace(/-/g, ' '))}</span>`).join('')}
+          ${(r.tags || []).map((t) => `<span>🏷 ${esc(rotuloTag(t))}</span>`).join('')}
         </div>
 
         <div class="ingredientes-topo">

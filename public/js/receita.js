@@ -29,6 +29,12 @@
 
   // ---------- utilidades ----------
   const rotulo = { facil: 'Fácil', media: 'Média', dificil: 'Difícil', baixo: 'Baixo', medio: 'Médio', alto: 'Alto' };
+  const rotuloTag = (t) => ({
+    'rapido': 'rápido', 'sem-gluten': 'sem glúten', 'sem-lactose': 'sem lactose',
+    'alto-proteico': 'alto proteico', 'low-carb': 'low carb',
+    'vegetariano': 'vegetariano', 'vegano': 'vegano',
+  }[t] || String(t).replace(/-/g, ' '));
+
   const formatarQtd = (n) => {
     if (Math.abs(n - Math.round(n)) < 0.005) return String(Math.round(n));
     return String(Math.round(n * 100) / 100).replace('.', ',');
@@ -96,7 +102,7 @@
 
       <h1 class="titulo-receita">${esc(r.nome)}</h1>
       ${r.descricao ? `<p class="subtitulo-receita">${esc(r.descricao)}</p>` : ''}
-      <div class="tags mt-2">${(r.tags || []).map((t) => `<span class="tag">${esc(t.replace(/-/g, ' '))}</span>`).join('')}</div>
+      <div class="tags mt-2">${(r.tags || []).map((t) => `<span class="tag">${esc(rotuloTag(t))}</span>`).join('')}</div>
 
       <div class="nutricao info-receita">
         <div class="nutri"><strong>${r.tempo_preparo_min ?? ''} min</strong><span>preparo</span></div>
@@ -249,7 +255,7 @@
           </div>
           <div class="corpo">
             <h3>${esc(x.nome)}</h3>
-            <div class="tags-linha">${(x.tags || []).slice(0, 2).map((t) => `<span class="tag">${esc(t.replace(/-/g, ' '))}</span>`).join('')}</div>
+            <div class="tags-linha">${(x.tags || []).slice(0, 2).map((t) => `<span class="tag">${esc(rotuloTag(t))}</span>`).join('')}</div>
             <div class="meta">
               <span class="meta-chip">⏱ ${x.tempo_preparo_min ?? ''} min</span>
               ${kcal ? `<span class="meta-chip kcal">🔥 ~${kcal} kcal</span>` : ''}
