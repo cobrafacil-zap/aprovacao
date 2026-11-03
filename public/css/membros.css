@@ -342,6 +342,12 @@ ul.ingredientes li {
 .lista-card { background: #fff; border-radius: var(--raio); border: 1px solid var(--borda); box-shadow: var(--sombra); overflow: hidden; }
 .lista-card .cabeca { padding: 18px 22px; background: var(--amarelo-claro); display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
 .lista-card .cabeca .espaçador { flex: 1; }
+/* altura idêntica em todos os botões do cabeçalho (emoji não pode esticar) */
+.lista-card .cabeca .btn,
+.lista-card .cabeca button {
+  height: 42px; padding: 0 18px; line-height: 1;
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+}
 .lista-card .cabeca h3 { color: var(--azul-escuro); }
 .btn-mini-cinza {
   background: #fff; border: 2px solid var(--borda); color: var(--cinza);
